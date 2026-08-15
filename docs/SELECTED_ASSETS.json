@@ -1,0 +1,205 @@
+[
+  {
+    "source": "453403604_122099924528448205_6958138580234201416_n.jpg",
+    "dest": "public/assets/church/logo/logo-gmc-sered.png",
+    "width": 512,
+    "height": 512,
+    "use": "logo"
+  },
+  {
+    "source": "453403604_122099924528448205_6958138580234201416_n.jpg",
+    "dest": "public/favicon.png",
+    "width": 192,
+    "height": 192,
+    "use": "favicon"
+  },
+  {
+    "source": "686936155_122197862546448205_5468100000822418005_n.jpg",
+    "dest": "public/assets/church/hero/hero-spolocne-chvaly-desktop.webp",
+    "width": 1920,
+    "height": 1080,
+    "use": "new hero desktop"
+  },
+  {
+    "source": "686936155_122197862546448205_5468100000822418005_n.jpg",
+    "dest": "public/assets/church/hero/hero-spolocne-chvaly-tablet.webp",
+    "width": 1400,
+    "height": 1050,
+    "use": "new hero tablet"
+  },
+  {
+    "source": "686936155_122197862546448205_5468100000822418005_n.jpg",
+    "dest": "public/assets/church/hero/hero-spolocne-chvaly-mobile.webp",
+    "width": 900,
+    "height": 1200,
+    "use": "new hero mobile"
+  },
+  {
+    "source": "717265091_122201005112448205_3656492891217098637_n.jpg",
+    "dest": "public/assets/church/hero/hero-bohosluzba-01.webp",
+    "width": 1920,
+    "height": 1440,
+    "use": "retired old hero asset"
+  },
+  {
+    "source": "744739363_122204069510448205_1240653993147040944_n.jpg",
+    "dest": "public/assets/church/leadership/jan-tagaj.webp",
+    "width": 760,
+    "height": 940,
+    "use": "leadership portrait Ján Tagaj"
+  },
+  {
+    "source": "732299166_122202817292448205_6651326599660145146_n.jpg",
+    "dest": "public/assets/church/activities/spolocne-uctievame.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "activity group worship"
+  },
+  {
+    "source": "743942325_3324107234644870_2214884612349380700_n.png.jpeg",
+    "dest": "public/assets/church/activities/spolocne-rastieme.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "activity group growth"
+  },
+  {
+    "source": "615156389_122186615138448205_8975384385368730501_n.jpg",
+    "dest": "public/assets/church/activities/spolocne-zijeme.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "activity group shared life"
+  },
+  {
+    "source": "732081652_122202818162448205_5319924591957018652_n.jpg",
+    "dest": "public/assets/church/visit/bohosluzba-spolocenstvo.webp",
+    "width": 1440,
+    "height": 1080,
+    "use": "about and visit support"
+  },
+  {
+    "source": "469321355_122131286228448205_7821818581652263353_n.jpg",
+    "dest": "public/assets/church/location/vstup-interier-01.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "location interior"
+  },
+  {
+    "source": "526181890_634535136345666_8746960355691818520_n.jpg",
+    "dest": "public/assets/church/location/banner-gmc-contain.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "location banner"
+  },
+  {
+    "source": "734862566_122202817874448205_5950394199592307942_n.jpg",
+    "dest": "public/assets/church/first-visit/prva-navsteva-rodiny.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "first visit"
+  },
+  {
+    "source": "732081652_122202818162448205_5319924591957018652_n.jpg",
+    "dest": "public/assets/church/first-visit/chvaly-spolocenstvo.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "final call to action"
+  },
+  {
+    "source": "614942906_122186616272448205_3307245249692858702_n.jpg",
+    "dest": "public/assets/church/people/spolocenstvo-pri-stole.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "scripture background"
+  },
+  {
+    "source": "724500949_122201595356448205_5914231802249944560_n.jpg",
+    "dest": "public/assets/church/sermons/kazen-strong.webp",
+    "width": 1440,
+    "height": 1080,
+    "use": "sermon section"
+  },
+  {
+    "source": "717909065_122201005694448205_217945198775521169_n.jpg",
+    "dest": "public/assets/church/gallery/bohosluzba-01.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "gallery"
+  },
+  {
+    "source": "732299166_122202818210448205_3476656976788266618_n.jpg",
+    "dest": "public/assets/church/gallery/chvaly-01.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "gallery"
+  },
+  {
+    "source": "738774399_1025035339927748_7738208865666619122_n.png.jpeg",
+    "dest": "public/assets/church/gallery/mladi-01.webp",
+    "width": 1200,
+    "height": 846,
+    "use": "gallery"
+  },
+  {
+    "source": "584008162_122179901936448205_3481877125256585344_n.jpg",
+    "dest": "public/assets/church/gallery/sportovy-den-01.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "gallery"
+  },
+  {
+    "source": "715463817_122201005844448205_4041392769156650730_n.jpg",
+    "dest": "public/assets/church/gallery/rodiny-02.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "gallery"
+  },
+  {
+    "source": "736948809_1552528953197083_468695933581047868_n.png.jpeg",
+    "dest": "public/assets/church/gallery/deti-v-bohosluzbe-01.webp",
+    "width": 900,
+    "height": 1294,
+    "use": "gallery"
+  },
+  {
+    "source": "/Users/patus/Downloads/ChatGPT Image Jul 20, 2026 at 05_30_30 PM.png",
+    "dest": "public/assets/church/editorial/comu-verime-kriz-desktop.webp",
+    "width": 1920,
+    "height": 1080,
+    "use": "belief section photographic cross desktop"
+  },
+  {
+    "source": "/Users/patus/Downloads/ChatGPT Image Jul 20, 2026 at 05_30_30 PM.png",
+    "dest": "public/assets/church/editorial/comu-verime-kriz-tablet.webp",
+    "width": 1400,
+    "height": 1050,
+    "use": "belief section photographic cross tablet"
+  },
+  {
+    "source": "/Users/patus/Downloads/ChatGPT Image Jul 20, 2026 at 05_30_30 PM.png",
+    "dest": "public/assets/church/editorial/comu-verime-kriz-mobile.webp",
+    "width": 900,
+    "height": 1200,
+    "use": "belief section photographic cross mobile"
+  },
+  {
+    "source": "743940487_122204069216448205_2849289414665625378_n.jpg",
+    "dest": "public/assets/church/first-visit/prva-navsteva-wow-chvaly.webp",
+    "width": 1600,
+    "height": 1000,
+    "use": "homepage first visit background"
+  },
+  {
+    "source": "734862841_122202817496448205_4514237627715632458_n.jpg",
+    "dest": "public/assets/church/first-visit/prva-navsteva-wow-kava.webp",
+    "width": 900,
+    "height": 1200,
+    "use": "homepage first visit coffee photo"
+  },
+  {
+    "source": "751437814_122204683376448205_6683666747982553074_n.jpg",
+    "dest": "public/assets/church/first-visit/prva-navsteva-wow-stol.webp",
+    "width": 1200,
+    "height": 900,
+    "use": "homepage first visit table photo"
+  }
+]
