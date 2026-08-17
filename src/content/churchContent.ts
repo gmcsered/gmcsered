@@ -315,9 +315,9 @@ export const churchContent = {
     localName: "Zbor Sereď",
     tagline: "Miesto, kde si vítaný.",
     logo: asset(
-      "/assets/church/logo/logo-gmc-sered.png",
-      512,
-      512,
+      "/assets/church/logo/logo-gmc-sered-transparent.png",
+      1200,
+      1090,
       "Logo zboru GMC Sereď",
     ),
   },
@@ -474,13 +474,11 @@ export const churchContent = {
           "Pre deti a mládež je pripravený vlastný program. Nemusíte prísť pripravení, stačí prísť otvorene a prirodzene.",
         facts: ["Každú nedeľu o 9:30", "Dlhá 6, Sereď", "Vlastný program pre deti a mládež"],
         promoVideo: {
-          eyebrow: "Krátke video",
           heading: "Pozrite si, ako vyzerá život nášho zboru.",
           text: "Niekoľko chvíľ zo spoločenstva, chvál a spoločného času v GMC Sereď.",
-          src: "/assets/church/media/promo.mp4",
+          src: "/assets/church/media/promo-video-final-sk.mp4",
           poster: iaImages.homeWorship,
           label: "Promo video zboru GMC Sereď",
-          fallbackLabel: "Ak sa video nespustí, otvoriť samostatne",
         },
       },
       chapters: [
@@ -546,6 +544,10 @@ export const churchContent = {
         text:
           "Najlepšie sa spoločenstvo spozná osobne. V nedeľu o 9:30 vás radi privítame na Dlhej 6 v Seredi.",
         action: { label: "Prídem v nedeľu", href: "/prva-navsteva", route: true },
+        leadership: [
+          { label: "Pastor", name: "Ján Tagaj" },
+          { label: "Konferenčná superintendentka", name: "Mgr. Gabriella Kopas, PhD." },
+        ],
       },
     },
     about: {
@@ -1505,7 +1507,7 @@ export const getContactLinks = (): LinkTarget[] => {
   return [
     contact.phone ? { label: "Zavolať", href: `tel:${contact.phone.replace(/\s+/g, "")}` } : null,
     contact.email ? { label: "Napísať e-mail", href: `mailto:${contact.email}` } : null,
-    facebook.url ? { label: facebook.name, href: facebook.url } : null,
+    facebook.url ? { label: "Facebook GMC Sereď", href: facebook.url } : null,
     youtube.enabled && youtube.channelUrl ? { label: "YouTube kanál Ján Tagaj", href: youtube.channelUrl } : null,
     site.nationalWebsiteUrl ? { label: site.nationalWebsiteLabel, href: site.nationalWebsiteUrl } : null,
   ].filter(Boolean) as LinkTarget[];

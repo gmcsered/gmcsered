@@ -1710,6 +1710,13 @@ a {
   gap: 2rem;
 }
 
+.site-footer__logo {
+  width: clamp(86px, 8vw, 112px);
+  height: auto;
+  margin-bottom: 1rem;
+  filter: brightness(0) invert(1);
+}
+
 .footer-brand {
   margin-bottom: 0.75rem;
   color: var(--white);
@@ -1719,6 +1726,11 @@ a {
 
 .footer-tagline {
   font-weight: 800;
+}
+
+.footer-office {
+  margin-top: 1.2rem;
+  font-size: 0.94rem;
 }
 
 .footer-links {
@@ -5594,23 +5606,6 @@ a {
   fill: currentColor;
 }
 
-.home-promo-video__fallback {
-  width: fit-content;
-  padding: 0.5rem 0.7rem;
-  border-radius: var(--radius-small);
-  color: var(--blue-dark);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: var(--shadow-soft);
-  font-weight: 850;
-  text-decoration: none;
-}
-
-.home-promo-video__fallback:hover,
-.home-promo-video__fallback:focus-visible {
-  color: var(--white);
-  background: var(--blue);
-}
-
 .home-facts,
 .warm-list,
 .reassurance-pills {
@@ -5754,6 +5749,13 @@ a {
     linear-gradient(135deg, var(--blue-deep), var(--blue-dark));
 }
 
+.home-final__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.36fr);
+  gap: clamp(2rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
 .home-final__content {
   display: grid;
   justify-items: center;
@@ -5768,6 +5770,38 @@ a {
 .home-final p:not(.eyebrow) {
   max-width: 54ch;
   color: rgba(255, 255, 255, 0.86);
+}
+
+.home-final__leadership {
+  padding: 1.2rem 0 1.2rem 1.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.home-final__leader {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.home-final__leader + .home-final__leader {
+  margin-top: 1.15rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.home-final__leader span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.home-final__leader strong {
+  color: var(--white);
+  font-weight: 800;
+}
+
+.home-final__leader:not(.home-final__leader--inline) span,
+.home-final__leader:not(.home-final__leader--inline) strong {
+  display: block;
 }
 
 .page-chapter {
@@ -7248,19 +7282,27 @@ a {
     padding: 0.72rem 0.9rem;
   }
 
-  .home-promo-video__fallback {
-    position: static;
-    display: block;
-    margin: 0.7rem;
-    text-align: center;
-  }
-
   .program-event {
     grid-template-columns: 1fr;
   }
 
   .program-event > div:first-child {
     min-height: 60px;
+  }
+}
+
+@media (max-width: 760px) {
+  .home-final__layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .home-final__leadership {
+    width: min(100%, 420px);
+    margin-inline: auto;
+    padding: 1.15rem 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+    border-left: 0;
   }
 }
 

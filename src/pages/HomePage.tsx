@@ -10,6 +10,7 @@ export function HomePage() {
   const promoVideo = home.invitation.promoVideo;
   const promoVideoRef = useRef<HTMLVideoElement | null>(null);
   const [promoStarted, setPromoStarted] = useState(false);
+  const [promoControls, setPromoControls] = useState(false);
 
   const handlePromoPlay = async () => {
     const video = promoVideoRef.current;
@@ -21,7 +22,9 @@ export function HomePage() {
     try {
       await video.play();
       setPromoStarted(true);
+      setPromoControls(true);
     } catch {
+      setPromoControls(true);
       video.controls = true;
     }
   };
@@ -65,7 +68,6 @@ export function HomePage() {
         {promoVideo ? (
           <Reveal className="container home-promo-video">
             <div className="home-promo-video__copy">
-              <p className="eyebrow">{promoVideo.eyebrow}</p>
               <h3>{promoVideo.heading}</h3>
               <p>{promoVideo.text}</p>
             </div>
@@ -73,12 +75,15 @@ export function HomePage() {
               <div className="home-promo-video__frame">
                 <video
                   ref={promoVideoRef}
-                  controls
+                  controls={promoControls}
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   poster={promoVideo.poster.src}
                   aria-label={promoVideo.label}
-                  onPlay={() => setPromoStarted(true)}
+                  onPlay={() => {
+                    setPromoStarted(true);
+                    setPromoControls(true);
+                  }}
                 >
                   <source src={promoVideo.src} type="video/mp4" />
                   Váš prehliadač nedokáže prehrať toto video.
@@ -90,11 +95,6 @@ export function HomePage() {
                   </button>
                 ) : null}
               </div>
-              {promoVideo.fallbackLabel ? (
-                <a className="home-promo-video__fallback" href={promoVideo.src} target="_blank" rel="noopener noreferrer">
-                  {promoVideo.fallbackLabel}
-                </a>
-              ) : null}
             </div>
           </Reveal>
         ) : null}
@@ -135,15 +135,25 @@ export function HomePage() {
       </section>
 
       <section className="home-final" aria-labelledby="home-final-title">
-        <Reveal className="container home-final__content">
-          <p className="eyebrow">Nedeľa o 9:30</p>
-          <h2 id="home-final-title">{home.finalCta.heading}</h2>
-          <p>{home.finalCta.text}</p>
-          <a className="button button--primary" href={home.finalCta.action.href} data-route={home.finalCta.action.route ? "true" : undefined}>
-            {home.finalCta.action.label}
-            <ArrowRight aria-hidden="true" />
-          </a>
-        </Reveal>
+        <div className="container home-final__layout">
+          <Reveal className="home-final__content">
+            <p className="eyebrow">Nedeľa o 9:30</p>
+            <h2 id="home-final-title">{home.finalCta.heading}</h2>
+            <p>{home.finalCta.text}</p>
+            <a className="button button--primary" href={home.finalCta.action.href} data-route={home.finalCta.action.route ? "true" : undefined}>
+              {home.finalCta.action.label}
+              <ArrowRight aria-hidden="true" />
+            </a>
+          </Reveal>
+
+          <Reveal as="aside" className="home-final__leadership" aria-label="Vedenie zboru">
+            {home.finalCta.leadership.map((person, index) => (
+              <p className={index === 0 ? "home-final__leader home-final__leader--inline" : "home-final__leader"} key={person.label}>
+                <span>{person.label}:</span> <strong>{person.name}</strong>
+              </p>
+            ))}
+          </Reveal>
+        </div>
       </section>
     </article>
   );

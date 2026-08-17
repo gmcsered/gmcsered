@@ -10,23 +10,38 @@ export function Footer() {
     <footer className="site-footer">
       <div className="container site-footer__grid">
         <div>
+          <img
+            className="site-footer__logo"
+            src={churchContent.identity.logo.src}
+            width={churchContent.identity.logo.width}
+            height={churchContent.identity.logo.height}
+            alt=""
+            aria-hidden="true"
+          />
           <div className="footer-brand">{churchContent.identity.displayName}</div>
           <p>
             {churchContent.identity.officialName}
             <br />
             {churchContent.identity.denomination}
           </p>
-          <p className="footer-tagline">{churchContent.identity.tagline}</p>
+          <p className="footer-office">
+            sídlo ústredie: Panenská 10
+            <br />
+            811 03 Bratislava 1, IČO: 00468053
+            <br />
+            Zbor Sereď
+          </p>
         </div>
 
         <div>
           <h2>Adresa</h2>
           <p>
-            {churchContent.address.street}
+            Dlhá 2337/6 (Dlhá 6)
             <br />
-            {churchContent.address.city}
+            926 01 Sereď
           </p>
-          <p>{churchContent.service.title} o {churchContent.service.time}</p>
+          <p>Nedeľná bohoslužba o 9:30</p>
+          <p className="footer-tagline">Miesto, kde si vítaný.</p>
         </div>
 
         <div>
