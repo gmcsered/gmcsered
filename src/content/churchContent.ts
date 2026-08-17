@@ -371,7 +371,7 @@ export const churchContent = {
     },
     mapUrl,
     entranceDirections:
-      "Zbor nájdete v budove naľavo pri vstupe z Dlhej ulice. V budove hľadajte označenie GMC Sereď.",
+      "Zbor sa nachádza na Dlhej ulici č. 6. Hľadajte tabuľu s označením GMC Sereď (viď foto).",
     parkingDescription: "",
     accessibility: "",
   },
@@ -722,8 +722,7 @@ export const churchContent = {
       path: "/kontakt",
       eyebrow: "Kontakt a návšteva",
       heading: "Radi vás osobne privítame.",
-      intro:
-        "Stretávame sa každú nedeľu o 9:30 na adrese Dlhá 6 v Seredi. Zbor nájdete v budove naľavo pri vstupe z Dlhej ulice.",
+      intro: "Stretávame sa každú nedeľu o 9:30 na adrese Dlhá 6 v Seredi.",
       image: iaImages.worshipCongregation,
       secondaryImage: iaImages.contactWorshipTeam,
       exteriorImage: iaImages.contactExteriorBanner,

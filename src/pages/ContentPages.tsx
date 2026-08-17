@@ -332,9 +332,7 @@ export function ContactPage() {
           <Reveal className="contact-location__heading">
             <p className="eyebrow">Prakticky</p>
             <h2 id="contact-body-title">{service.title}</h2>
-            <p>
-              {service.day} o {service.time}. {location.entranceDirections}
-            </p>
+            <p>{location.entranceDirections}</p>
           </Reveal>
 
           <div className="contact-location__layout">
