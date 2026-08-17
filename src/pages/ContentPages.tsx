@@ -31,7 +31,7 @@ export function AboutPage() {
   return (
     <article className="route-page about-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
-      <section className="section page-chapter about-page-chapter" aria-labelledby="about-body-title">
+      <section className="section page-chapter about-page-chapter major-viewport-section" aria-labelledby="about-body-title">
         <div className="container editorial-two-col">
           <Reveal className="editorial-copy">
             <p className="eyebrow">Naša identita</p>
@@ -110,7 +110,7 @@ export function CommunityPage() {
   return (
     <article className="route-page community-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
-      <section className="section page-chapter community-page-chapter" aria-labelledby="community-body-title">
+      <section className="section page-chapter community-page-chapter major-viewport-section" aria-labelledby="community-body-title">
         <div className="container community-story">
           <Reveal className="community-story__copy">
             <p className="eyebrow">Vzťahy, káva a spoločný stôl</p>
@@ -149,7 +149,7 @@ export function ChurchLifePage() {
   return (
     <article className="route-page church-life-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
-      <section className="section page-chapter church-life-page" aria-labelledby="church-life-gallery-title">
+      <section className="section page-chapter church-life-page major-viewport-section" aria-labelledby="church-life-gallery-title">
         <div className="container">
           <Reveal className="section-heading">
             <p className="eyebrow">Výber fotografií</p>
@@ -159,7 +159,7 @@ export function ChurchLifePage() {
         </div>
       </section>
       {page.hopestreet ? (
-        <section className="section hopestreet-section" aria-labelledby="hopestreet-title">
+        <section className="section hopestreet-section major-viewport-section" aria-labelledby="hopestreet-title">
           <div className="container">
             <Reveal className="hopestreet-feature">
               <div className="hopestreet-feature__copy">
@@ -236,7 +236,7 @@ export function ProgramPage() {
           </div>
         </div>
       </section>
-      <section className="section page-chapter program-page" aria-labelledby="program-title">
+      <section className="section page-chapter program-page major-viewport-section" aria-labelledby="program-title">
         <div className="container program-layout">
           <div className="program-poster-column">
             <Reveal className="program-poster">
@@ -264,7 +264,7 @@ export function ProgramPage() {
           </Reveal>
         </div>
       </section>
-      <section className="section program-actions" aria-labelledby="program-actions-title">
+      <section className="section program-actions major-viewport-section" aria-labelledby="program-actions-title">
         <div className="container">
           <Reveal className="section-heading">
             <p className="eyebrow">Ďalšie kroky</p>
@@ -294,7 +294,7 @@ export function SermonsPage() {
   return (
     <article className="route-page sermons-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={{ ...page.channelAction, href: channelHref }} secondaryAction={page.cta} tone="light" />
-      <section className="section page-chapter sermons-page" aria-labelledby="sermons-body-title">
+      <section className="section page-chapter sermons-page major-viewport-section" aria-labelledby="sermons-body-title">
         <div className="container sermons-focus">
           <Reveal className="sermons-focus__image">
             <img src={page.previewImage.src} width={page.previewImage.width} height={page.previewImage.height} alt={page.previewImage.alt} loading="lazy" />
@@ -327,7 +327,7 @@ export function ContactPage() {
   return (
     <article className="route-page contact-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
-      <section className="section page-chapter contact-page" aria-labelledby="contact-body-title">
+      <section className="section page-chapter contact-page major-viewport-section" aria-labelledby="contact-body-title">
         <div className="container contact-location">
           <Reveal className="contact-location__heading">
             <p className="eyebrow">Prakticky</p>

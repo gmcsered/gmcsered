@@ -40,7 +40,7 @@ export function HomePage() {
         secondaryAction={home.hero.secondaryAction}
       />
 
-      <section className="home-invitation" aria-labelledby="home-invitation-title">
+      <section className="home-invitation major-viewport-section" aria-labelledby="home-invitation-title">
         <Reveal className="container home-invitation__grid">
           <div>
             <p className="eyebrow">Pozvanie</p>
@@ -100,7 +100,7 @@ export function HomePage() {
         ) : null}
       </section>
 
-      <section className="section chapter-hub" aria-labelledby="chapter-hub-title">
+      <section className="section chapter-hub major-viewport-section" aria-labelledby="chapter-hub-title">
         <div className="container">
           <Reveal className="section-heading">
             <p className="eyebrow">Vyberte si cestu</p>
@@ -134,7 +134,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="home-final" aria-labelledby="home-final-title">
+      <section className="home-final major-viewport-section" aria-labelledby="home-final-title">
         <div className="container home-final__layout">
           <Reveal className="home-final__content">
             <p className="eyebrow">Nedeľa o 9:30</p>

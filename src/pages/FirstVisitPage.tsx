@@ -18,7 +18,7 @@ export function FirstVisitPage() {
         secondaryAction={page.routeAction}
       />
 
-      <section className="section page-chapter first-visit-steps" aria-labelledby="first-visit-steps-title">
+      <section className="section page-chapter first-visit-steps major-viewport-section" aria-labelledby="first-visit-steps-title">
         <div className="container first-visit-steps__layout">
           <Reveal className="first-visit-steps__copy">
             <p className="eyebrow">Ako to môže vyzerať</p>
