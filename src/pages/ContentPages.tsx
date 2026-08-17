@@ -29,7 +29,7 @@ export function AboutPage() {
   const page = churchContent.pages.about;
 
   return (
-    <article className="route-page">
+    <article className="route-page about-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
       <section className="section page-chapter about-page-chapter" aria-labelledby="about-body-title">
         <div className="container editorial-two-col">
@@ -104,7 +104,7 @@ export function CommunityPage() {
   const page = churchContent.pages.community;
 
   return (
-    <article className="route-page">
+    <article className="route-page community-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
       <section className="section page-chapter community-page-chapter" aria-labelledby="community-body-title">
         <div className="container community-story">
@@ -143,7 +143,7 @@ export function ChurchLifePage() {
   const page = churchContent.pages.churchLife;
 
   return (
-    <article className="route-page">
+    <article className="route-page church-life-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
       <section className="section page-chapter church-life-page" aria-labelledby="church-life-gallery-title">
         <div className="container">
@@ -306,10 +306,10 @@ export function SermonsPage() {
 export function ContactPage() {
   const { pages, service, address, location, contact, facebook } = churchContent;
   const page = pages.contact;
-  const mapEmbedUrl = `https://www.google.com/maps?q=${location.coordinates.latitude},${location.coordinates.longitude}&z=17&output=embed`;
+  const mapEmbedUrl = `https://www.google.com/maps?q=${location.coordinates.latitude},${location.coordinates.longitude}&z=17&hl=sk&output=embed`;
 
   return (
-    <article className="route-page">
+    <article className="route-page contact-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
       <section className="section page-chapter contact-page" aria-labelledby="contact-body-title">
         <div className="container contact-location">

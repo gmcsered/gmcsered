@@ -8,7 +8,7 @@ export function FirstVisitPage() {
   const page = churchContent.pages.firstVisit;
 
   return (
-    <article className="route-page first-visit-compact">
+    <article className="route-page first-visit-route first-visit-compact">
       <PageHero
         eyebrow={page.eyebrow}
         heading={page.heading}

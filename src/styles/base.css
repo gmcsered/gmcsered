@@ -9432,3 +9432,131 @@ body.gallery-browser-open {
     flex-direction: column;
   }
 }
+
+/* Final page-position pass for the supplied desktop references. */
+.about-route .page-hero__content,
+.community-route .page-hero__content {
+  padding-bottom: clamp(4.4rem, 8vh, 6.4rem);
+}
+
+.about-route .page-hero__media img,
+.community-route .page-hero__media img {
+  object-position: center 40%;
+}
+
+.church-life-route .page-hero__content {
+  padding-bottom: clamp(5rem, 10vh, 7.5rem);
+}
+
+.church-life-route .page-hero__media img {
+  object-position: center 31%;
+}
+
+.sermons-route .page-hero__content {
+  padding-bottom: clamp(4rem, 8vh, 6rem);
+}
+
+.sermons-route .page-hero__media img {
+  object-position: center 52%;
+}
+
+.first-visit-route .page-hero__media img {
+  object-position: center 16%;
+}
+
+.contact-route .next-page-link img {
+  object-position: center 18%;
+}
+
+.contact-location__map iframe {
+  -webkit-filter: none !important;
+  filter: none !important;
+  color-scheme: light;
+}
+
+.program-intro__inner {
+  width: min(100% - clamp(2rem, 6vw, 7rem), 1420px);
+  max-width: none;
+  min-height: clamp(350px, 42vh, 500px);
+}
+
+.program-intro__shapes::before {
+  position: absolute;
+  top: 8%;
+  right: clamp(3rem, 9vw, 10rem);
+  width: clamp(16rem, 28vw, 28rem);
+  height: clamp(11rem, 22vw, 19rem);
+  border: 1px solid rgba(255, 250, 235, 0.22);
+  border-radius: 1.4rem;
+  background:
+    linear-gradient(rgba(255, 250, 235, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 250, 235, 0.1) 1px, transparent 1px);
+  background-size: 2.4rem 2.4rem;
+  transform: rotate(-4deg);
+  content: "";
+}
+
+.program-intro__shapes::after {
+  position: absolute;
+  top: 10%;
+  right: clamp(4.5rem, 11vw, 13rem);
+  width: clamp(4rem, 7vw, 7rem);
+  height: 1.9rem;
+  border: 1px solid rgba(255, 250, 235, 0.28);
+  border-radius: 0.45rem;
+  background: rgba(255, 250, 235, 0.12);
+  box-shadow:
+    0.8rem 0.55rem 0 -0.1rem rgba(255, 250, 235, 0.08),
+    1.6rem 1.1rem 0 -0.2rem rgba(255, 250, 235, 0.06);
+  transform: rotate(-4deg);
+  content: "";
+}
+
+@media (max-width: 760px) {
+  .about-route .page-hero__content,
+  .community-route .page-hero__content,
+  .church-life-route .page-hero__content,
+  .sermons-route .page-hero__content {
+    padding-bottom: clamp(3.4rem, 8vh, 4.6rem);
+  }
+
+  .about-route .page-hero__media img,
+  .community-route .page-hero__media img {
+    object-position: center 34%;
+  }
+
+  .church-life-route .page-hero__media img {
+    object-position: center 26%;
+  }
+
+  .sermons-route .page-hero__media img {
+    object-position: center 48%;
+  }
+
+  .first-visit-route .page-hero__media img {
+    object-position: center 12%;
+  }
+
+  .contact-route .next-page-link img {
+    object-position: center 14%;
+  }
+
+  .program-intro__inner {
+    width: min(100% - 1.5rem, 640px);
+    min-height: 0;
+  }
+
+  .program-intro__shapes::before {
+    top: 10%;
+    right: -3rem;
+    width: 17rem;
+    height: 12rem;
+    opacity: 0.58;
+  }
+
+  .program-intro__shapes::after {
+    top: 11%;
+    right: 1.7rem;
+    opacity: 0.62;
+  }
+}

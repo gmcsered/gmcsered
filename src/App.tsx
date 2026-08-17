@@ -1,4 +1,4 @@
-import { type ReactElement, useEffect, useState } from "react";
+import { type ReactElement, useEffect, useLayoutEffect, useState } from "react";
 import { Footer } from "./components/layout/Footer";
 import { Header } from "./components/layout/Header";
 import { MetaTags } from "./components/layout/MetaTags";
@@ -20,6 +20,12 @@ const normalizePath = (pathname: string) =>
 
 export default function App() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+
+  useLayoutEffect(() => {
+    if (!window.location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
+  }, [path]);
 
   useEffect(() => {
     const updatePath = () => setPath(normalizePath(window.location.pathname));
@@ -43,7 +49,7 @@ export default function App() {
           document.querySelector(anchor.hash)?.scrollIntoView({ behavior: "smooth" });
         });
       } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       }
     };
 
