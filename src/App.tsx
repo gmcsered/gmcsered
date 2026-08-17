@@ -14,9 +14,9 @@ import {
   ProgramPage,
   SermonsPage,
 } from "./pages/ContentPages";
+import { routePath, withSiteBase } from "./utils/site";
 
-const normalizePath = (pathname: string) =>
-  pathname.replace(/\/+$/, "") || "/";
+const normalizePath = (pathname: string) => routePath(pathname);
 
 export default function App() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
@@ -35,12 +35,25 @@ export default function App() {
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest<HTMLAnchorElement>("a[data-route]");
 
-      if (!anchor || anchor.target || anchor.origin !== window.location.origin) {
+      if (
+        !anchor ||
+        anchor.target ||
+        anchor.origin !== window.location.origin ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
         return;
       }
 
       event.preventDefault();
-      window.history.pushState({}, "", anchor.href);
+      const requestedUrl = new URL(anchor.href, window.location.href);
+      const nextPath = withSiteBase(
+        `${requestedUrl.pathname}${requestedUrl.search}${requestedUrl.hash}`,
+      );
+      window.history.pushState({}, "", nextPath);
       updatePath();
       window.dispatchEvent(new Event("routechange"));
 

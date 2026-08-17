@@ -1,3 +1,5 @@
+import { siteAsset } from "../utils/site";
+
 export type GalleryPhoto = {
   src: string;
   width: number;
@@ -15,7 +17,7 @@ export type ChurchLifeGalleryCategory = {
 };
 
 const photo = (file: string, width: number, height: number, caption: string): GalleryPhoto => ({
-  src: `/assets/church/${file}`,
+  src: siteAsset(`/assets/church/${file}`),
   width,
   height,
   alt: `${caption} v GMC Sereď`,

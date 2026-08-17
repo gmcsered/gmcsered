@@ -1,4 +1,5 @@
 import type { ImageAsset } from "./churchContent";
+import { siteAsset } from "../utils/site";
 
 export type ProgramEvent = {
   date: string;
@@ -19,7 +20,7 @@ export const programData: ProgramData = {
   monthLabel: "August v GMC Sereď",
   title: "Letný program",
   poster: {
-    src: "/assets/church/events/august-program.jpg",
+    src: siteAsset("/assets/church/events/august-program.jpg"),
     width: 1120,
     height: 1400,
     alt: "Letný augustový program zboru GMC Sereď",

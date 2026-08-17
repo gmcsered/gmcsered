@@ -1,10 +1,11 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { churchContent } from "../../content/churchContent";
+import { routePath, withSiteBase } from "../../utils/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [activeHref, setActiveHref] = useState(() => window.location.pathname.replace(/\/+$/, "") || "/");
+  const [activeHref, setActiveHref] = useState(() => routePath(window.location.pathname));
 
   useEffect(() => {
     document.body.classList.toggle("menu-open", open);
@@ -12,7 +13,7 @@ export function Header() {
   }, [open]);
 
   useEffect(() => {
-    const updateRouteState = () => setActiveHref(window.location.pathname.replace(/\/+$/, "") || "/");
+    const updateRouteState = () => setActiveHref(routePath(window.location.pathname));
     window.addEventListener("popstate", updateRouteState);
     window.addEventListener("routechange", updateRouteState);
     return () => {
@@ -22,13 +23,13 @@ export function Header() {
   }, []);
 
   const closeMenu = () => setOpen(false);
-  const navClass = (href: string) => (href === activeHref ? "is-active" : "");
-  const ariaCurrent = (href: string) => (href === activeHref ? "location" : undefined);
+  const navClass = (href: string) => (routePath(href) === activeHref ? "is-active" : "");
+  const ariaCurrent = (href: string) => (routePath(href) === activeHref ? "location" : undefined);
 
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <a className="brand" href="/" data-route onClick={closeMenu}>
+        <a className="brand" href={withSiteBase("/")} data-route onClick={closeMenu}>
           <img
             src={churchContent.identity.logo.src}
             width={churchContent.identity.logo.width}
@@ -40,13 +41,13 @@ export function Header() {
 
         <nav className="desktop-nav" aria-label="Hlavná navigácia">
           {churchContent.nav.map((item) => (
-            <a key={item.href} href={item.href} data-route className={navClass(item.href)} aria-current={ariaCurrent(item.href)}>
+            <a key={item.href} href={withSiteBase(item.href)} data-route className={navClass(item.href)} aria-current={ariaCurrent(item.href)}>
               {item.label}
             </a>
           ))}
         </nav>
 
-        <a className="button button--primary header-action" href="/prva-navsteva" data-route>
+        <a className="button button--primary header-action" href={withSiteBase("/prva-navsteva")} data-route>
           Navštív nás
         </a>
 
@@ -65,11 +66,11 @@ export function Header() {
       <div className={`mobile-panel ${open ? "is-open" : ""}`} id="mobilna-navigacia">
         <nav aria-label="Mobilná navigácia">
           {churchContent.nav.map((item) => (
-            <a key={item.href} href={item.href} data-route onClick={closeMenu} className={navClass(item.href)} aria-current={ariaCurrent(item.href)}>
+            <a key={item.href} href={withSiteBase(item.href)} data-route onClick={closeMenu} className={navClass(item.href)} aria-current={ariaCurrent(item.href)}>
               {item.label}
             </a>
           ))}
-          <a className="button button--primary" href="/prva-navsteva" data-route onClick={closeMenu}>
+          <a className="button button--primary" href={withSiteBase("/prva-navsteva")} data-route onClick={closeMenu}>
             Navštív nás
           </a>
         </nav>

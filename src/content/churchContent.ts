@@ -1,4 +1,5 @@
 import { churchLifeGalleries } from "./churchLifeGalleries";
+import { siteAsset, withSiteBase } from "../utils/site";
 
 export type ImageAsset = {
   src: string;
@@ -1470,6 +1471,34 @@ export const churchContent = {
     { label: "Kontakt", href: "/kontakt" },
   ],
 };
+
+const normalizeSitePaths = (value: unknown): void => {
+  if (Array.isArray(value)) {
+    value.forEach(normalizeSitePaths);
+    return;
+  }
+
+  if (!value || typeof value !== "object") {
+    return;
+  }
+
+  const record = value as Record<string, unknown>;
+  Object.entries(record).forEach(([key, entry]) => {
+    if (typeof entry === "string" && key === "src" && entry.startsWith("/assets/")) {
+      record[key] = siteAsset(entry);
+      return;
+    }
+
+    if (typeof entry === "string" && key === "href" && entry.startsWith("/")) {
+      record[key] = withSiteBase(entry);
+      return;
+    }
+
+    normalizeSitePaths(entry);
+  });
+};
+
+normalizeSitePaths(churchContent);
 
 export const getContactLinks = (): LinkTarget[] => {
   const { contact, facebook, youtube, site } = churchContent;
