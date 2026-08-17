@@ -19,7 +19,7 @@ import { PageHero } from "../components/ui/PageHero";
 import { ProgramEventCard } from "../components/sections/ProgramEventCard";
 import { ChurchLifeGalleries } from "../components/sections/ChurchLifeGalleries";
 import { Reveal } from "../components/ui/Reveal";
-import { programData } from "../content/programData";
+import { programData } from "../content/program";
 
 const routeAttr = (route?: boolean) => (route ? "true" : undefined);
 
@@ -240,7 +240,7 @@ export function ProgramPage() {
         <div className="container program-layout">
           <div className="program-poster-column">
             <Reveal className="program-poster">
-              <img src={programData.poster.src} width={programData.poster.width} height={programData.poster.height} alt={programData.poster.alt} loading="lazy" />
+              <img src={programData.poster} alt={programData.posterAlt} loading="lazy" />
             </Reveal>
             <Reveal as="figure" className="program-moment">
               <img

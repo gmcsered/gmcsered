@@ -1,0 +1,15 @@
+{
+  "monthLabel": "August v GMC Sereď",
+  "title": "Letný program",
+  "poster": "/content/program/current-program.jpg",
+  "posterAlt": "Letný augustový program zboru GMC Sereď",
+  "events": [
+    { "date": "1.8.", "time": "15:00", "title": "Rodinný deň", "description": "Spoločný čas pre rodiny a priateľov." },
+    { "date": "2.8.", "time": "9:30", "title": "Nedeľná bohoslužba", "description": "Pastor Ján Tagaj" },
+    { "date": "9.8.", "time": "9:30", "title": "Nedeľná bohoslužba", "description": "Pastor Ján Tagaj" },
+    { "date": "16.8.", "time": "9:30", "title": "Nedeľná bohoslužba a vodný krst", "description": "Pastor Ján Tagaj" },
+    { "date": "23.8.", "time": "9:30", "title": "Nedeľná bohoslužba", "description": "Pastor Ján Tagaj" },
+    { "date": "29.8.", "time": "15:00", "title": "Rodinný deň", "description": "Spoločný čas pre rodiny a priateľov." },
+    { "date": "30.8.", "time": "9:30", "title": "Nedeľná bohoslužba", "description": "Pastor Ján Tagaj" }
+  ]
+}

@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "content:generate": "node scripts/generate-gallery-manifest.mjs",
+    "content:check": "node scripts/generate-gallery-manifest.mjs --check",
+    "prebuild": "npm run content:generate",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc -b"

@@ -75,8 +75,6 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
             >
               <img
                 src={gallery.cover.src}
-                width={gallery.cover.width}
-                height={gallery.cover.height}
                 alt=""
                 aria-hidden="true"
                 loading="lazy"
@@ -126,7 +124,7 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
                   <button className="gallery-browser__nav gallery-browser__nav--previous" type="button" aria-label="Predchádzajúca fotografia" onClick={showPrevious}>
                     <ChevronLeft aria-hidden="true" />
                   </button>
-                  <img src={activePhoto.src} width={activePhoto.width} height={activePhoto.height} alt={activePhoto.alt} />
+                  <img src={activePhoto.src} alt={activePhoto.alt} />
                   <button className="gallery-browser__nav gallery-browser__nav--next" type="button" aria-label="Nasledujúca fotografia" onClick={showNext}>
                     <ChevronRight aria-hidden="true" />
                   </button>
@@ -143,7 +141,7 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
                 {activeGallery.photos.map((image, index) => (
                   <button type="button" key={image.src} onClick={() => setActivePhotoIndex(index)} aria-label={`Zväčšiť fotografiu: ${image.caption}`}>
                     <span className="gallery-browser__thumbnail">
-                      <img src={image.src} width={image.width} height={image.height} alt={image.alt} loading="lazy" />
+                      <img src={image.src} alt={image.alt} loading="lazy" />
                     </span>
                     <span>{image.caption}</span>
                   </button>

@@ -1,4 +1,4 @@
-import type { ProgramEvent } from "../../content/programData";
+import type { ProgramEvent } from "../../content/program";
 
 type ProgramEventCardProps = {
   event: ProgramEvent;

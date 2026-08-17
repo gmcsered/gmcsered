@@ -1,0 +1,7 @@
+[
+  { "id": "worship", "category": "Bohoslužby", "title": "Nedeľné chvály", "folder": "worship" },
+  { "id": "music", "category": "Bohoslužby", "title": "Hudba a chvály", "folder": "music" },
+  { "id": "children", "category": "Deti a mládež", "title": "Vlastný program", "folder": "children" },
+  { "id": "fellowship", "category": "Spoločenstvo", "title": "Rozhovory a blízkosť", "folder": "fellowship" },
+  { "id": "community", "category": "Spoločné stretnutia", "title": "Rodiny a spoločný stôl", "folder": "community" }
+]

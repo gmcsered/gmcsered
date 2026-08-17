@@ -1,6 +1,34 @@
 # GMC Sereď
 
-Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React aplikácia bez backendu. Verejný obsah je v slovenčine a je centralizovaný v `src/content/churchContent.ts`.
+Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React aplikácia bez backendu. Route obsah je v slovenčine a je centralizovaný v `src/content/churchContent.ts`; mesačný program a fotogalérie majú vlastné jednoduché obsahové priečinky nižšie.
+
+## Ako aktualizovať web GMC Sereď
+
+Web ostáva jednoduchý statický web: po uložení zmien do GitHubu ho GitHub Actions automaticky znovu zverejní. Nie je potrebný žiadny redakčný systém ani server.
+
+### Mesačný program
+
+1. Nahraďte súbor `public/content/program/current-program.jpg` novým plagátom. Názov súboru musí zostať presne `current-program.jpg`.
+2. Otvorte `src/content/program.json` a zmeňte iba `monthLabel`, `title`, text `posterAlt` a položky v `events`.
+3. Zmeny commitnite a pushnite do `main`.
+
+Stránka programu vždy používa ten istý súbor plagátu. Pri novom mesiaci preto netreba meniť žiadny komponent ani cestu k obrázku.
+
+### Fotogalérie po nedeľi
+
+1. Otvorte správny priečinok v `public/content/gallery/`:
+   - `worship/` – Nedeľné chvály
+   - `music/` – Hudba a chvály
+   - `children/` – Vlastný program detí a mládeže
+   - `fellowship/` – Rozhovory a blízkosť
+   - `community/` – Rodiny a spoločný stôl
+2. Skopírujte doň nové fotografie vo formáte `.jpg`, `.jpeg`, `.png` alebo `.webp`.
+3. Odporúčaný názov je napríklad `2026-08-17-001.jpg`, `2026-08-17-002.jpg`. Takéto fotografie sa zobrazia ako najnovšie.
+4. Zmeny commitnite a pushnite do `main`.
+
+Pri builde sa galérie načítajú automaticky zo všetkých podporovaných obrázkov v priečinkoch. Nikdy netreba dopĺňať importy alebo meniť React komponenty. Poradie a názvy kategórií ovláda jediný súbor `src/content/galleryCategories.json`.
+
+Pred odoslaním zmien je možné spustiť `npm run content:check`. Overí programový plagát, programové dáta, priečinky galérií a nepodporované súbory.
 
 ## Technológia
 
@@ -29,7 +57,7 @@ Web už nie je jedna dlhá landing page. Obsah je rozdelený do krátkych strán
 - `/kto-sme` - ľudia, prijatie a nádej v Ježišovi Kristovi.
 - `/comu-verime` - základy viery s reálnym monumentálnym krížom.
 - `/spolocenstvo` - vzťahy, káva, jedlo a spoločný život.
-- `/zivot-zboru` - kurátorovaná galéria 8 silných fotografií.
+- `/zivot-zboru` - fotogalérie z jednotlivých oblastí života zboru.
 - `/kazne` - nedeľné kázne a odkaz na YouTube kanál.
 - `/prva-navsteva` - pokojná prvá návšteva v štyroch krokoch.
 - `/kontakt` - adresa, čas bohoslužby, budova, vstup a odkazy.
