@@ -1,10 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// Keep the deploy path in one place. A future custom-domain build only needs `/` here.
-const githubPagesBase = "/gmcsered/";
+// The production site is served from the custom domain root.
+const productionBase = "/";
 
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? githubPagesBase : "/",
+  base: mode === "production" ? productionBase : "/",
   plugins: [react()],
 }));
