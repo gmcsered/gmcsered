@@ -72,6 +72,10 @@ export function BeliefsPage() {
         </picture>
         <div className="beliefs-page-hero__overlay" aria-hidden="true" />
         <div className="container beliefs-page-hero__layout">
+          <blockquote className="beliefs-page-hero__scripture">
+            <p>{page.scripture.text}</p>
+            <cite>{page.scripture.citation}</cite>
+          </blockquote>
           <div className="beliefs-page-hero__content">
             <h1 id="beliefs-page-title">{page.heading}</h1>
             <p className="beliefs-page-hero__subheading">{page.subheading}</p>
@@ -234,9 +238,21 @@ export function ProgramPage() {
       </section>
       <section className="section page-chapter program-page" aria-labelledby="program-title">
         <div className="container program-layout">
-          <Reveal className="program-poster">
-            <img src={programData.poster.src} width={programData.poster.width} height={programData.poster.height} alt={programData.poster.alt} loading="lazy" />
-          </Reveal>
+          <div className="program-poster-column">
+            <Reveal className="program-poster">
+              <img src={programData.poster.src} width={programData.poster.width} height={programData.poster.height} alt={programData.poster.alt} loading="lazy" />
+            </Reveal>
+            <Reveal as="figure" className="program-moment">
+              <img
+                src={page.contextImage.src}
+                width={page.contextImage.width}
+                height={page.contextImage.height}
+                alt={page.contextImage.alt}
+                loading="lazy"
+              />
+              {page.contextImage.caption ? <figcaption>{page.contextImage.caption}</figcaption> : null}
+            </Reveal>
+          </div>
           <Reveal className="program-copy">
             <p className="eyebrow">{programData.monthLabel}</p>
             <h2 id="program-title">{programData.title}</h2>

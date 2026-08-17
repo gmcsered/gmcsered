@@ -9602,3 +9602,214 @@ body.gallery-browser-open {
     opacity: 0.62;
   }
 }
+
+/* Focused refinement for the current GMC editorial page layouts. */
+.about-route .page-hero__content,
+.community-route .page-hero__content,
+.church-life-route .page-hero__content {
+  transform: translateY(calc(-1 * clamp(2rem, 5.5vh, 4rem)));
+}
+
+.sermons-route .page-hero__content {
+  margin-left: clamp(7rem, 17vw, 15rem);
+  margin-right: auto;
+  padding-bottom: clamp(3.4rem, 6vh, 4.8rem);
+  transform: translateY(calc(-1 * clamp(2rem, 5vh, 4rem)));
+}
+
+.first-visit-route .page-hero {
+  min-height: min(68svh, 640px);
+}
+
+.first-visit-route .page-hero__content {
+  padding-block: clamp(3.3rem, 5vh, 4.15rem) clamp(3.8rem, 6vh, 4.8rem);
+  transform: translateY(calc(-1 * clamp(1.5rem, 4vh, 3.2rem)));
+}
+
+.first-visit-route .page-hero__media img {
+  object-position: center 31%;
+}
+
+.sermons-route .next-page-link img {
+  object-position: center 26%;
+}
+
+.beliefs-page-hero__scripture {
+  display: block;
+  grid-column: 1;
+  align-self: end;
+  max-width: min(31rem, 100%);
+  margin: 0 0 clamp(3.25rem, 7vh, 6.5rem);
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  border-left: 2px solid rgba(240, 189, 114, 0.78);
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(4, 25, 45, 0.46), rgba(4, 25, 45, 0));
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 16px rgba(2, 20, 37, 0.68);
+}
+
+.beliefs-page-hero__scripture p {
+  color: inherit;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.18vw, 1.28rem);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.beliefs-page-hero__scripture cite {
+  margin-top: 0.65rem;
+  color: #f0bd72;
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.community-page-chapter {
+  padding-block: clamp(2.4rem, 4.2vw, 3.6rem);
+}
+
+.community-story {
+  align-items: start;
+}
+
+.community-story__copy {
+  align-self: center;
+}
+
+.community-magazine figure:first-child,
+.community-magazine figure:nth-child(2) {
+  min-height: 0;
+  aspect-ratio: 3 / 4;
+}
+
+.community-magazine figure:nth-child(3) {
+  min-height: 0;
+  aspect-ratio: 16 / 8;
+}
+
+.community-magazine figure:nth-child(3) img {
+  object-position: center 30%;
+}
+
+.program-route {
+  background: #f3f8fc;
+}
+
+.program-page {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 8% 16%, rgba(35, 110, 177, 0.09), transparent 20rem),
+    radial-gradient(circle at 92% 82%, rgba(196, 87, 58, 0.07), transparent 19rem),
+    linear-gradient(180deg, #f8fbfe 0%, #eef5fa 100%);
+}
+
+.program-page::after {
+  position: absolute;
+  inset: 7% auto auto 5%;
+  width: clamp(10rem, 16vw, 17rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(24, 91, 150, 0.11);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.program-layout,
+.program-copy,
+.program-poster-column {
+  position: relative;
+  z-index: 1;
+}
+
+.program-poster-column {
+  display: grid;
+  gap: 1rem;
+  align-content: center;
+  min-width: 0;
+}
+
+.program-poster {
+  box-shadow: 0 22px 42px rgba(15, 57, 96, 0.18);
+}
+
+.program-moment {
+  position: relative;
+  min-height: clamp(11rem, 18vw, 15rem);
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(24, 91, 150, 0.12);
+  border-radius: 1rem;
+  background: var(--blue-deep);
+  box-shadow: 0 16px 32px rgba(15, 57, 96, 0.12);
+}
+
+.program-moment img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.program-moment figcaption {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  margin: 0;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--blue-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .about-route .page-hero__content,
+  .community-route .page-hero__content,
+  .church-life-route .page-hero__content,
+  .sermons-route .page-hero__content,
+  .first-visit-route .page-hero__content {
+    margin-left: 0;
+    padding-bottom: clamp(3.4rem, 8vh, 4.6rem);
+    transform: none;
+  }
+
+  .first-visit-route .page-hero {
+    min-height: 540px;
+  }
+
+  .first-visit-route .page-hero__media img {
+    object-position: center 26%;
+  }
+
+  .sermons-route .next-page-link img {
+    object-position: center 22%;
+  }
+
+  .beliefs-page-hero__scripture {
+    grid-column: 1;
+    order: -1;
+    align-self: auto;
+    max-width: min(32rem, 100%);
+    margin: 0 0 1.35rem;
+    padding-left: 0.9rem;
+    background: linear-gradient(90deg, rgba(4, 25, 45, 0.5), rgba(4, 25, 45, 0));
+  }
+
+  .community-page-chapter {
+    padding-block: 2.2rem 2.8rem;
+  }
+
+  .community-magazine figure:first-child,
+  .community-magazine figure:nth-child(2),
+  .community-magazine figure:nth-child(3) {
+    aspect-ratio: 4 / 3;
+  }
+
+  .program-moment {
+    min-height: 13rem;
+  }
+}

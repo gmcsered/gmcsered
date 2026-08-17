@@ -577,7 +577,7 @@ export const churchContent = {
       scripture: {
         citation: "Ján 3:16",
         text:
-          "Lebo tak Boh miloval svet, že dal svojho jednorodeného Syna, aby nezahynul nik, kto v neho verí, ale mal večný život.“",
+          "„Lebo tak Boh miloval svet, že dal svojho jednorodeného Syna, aby nezahynul nik, kto v neho verí, ale mal večný život.“",
       },
       items: [
         {
@@ -650,6 +650,7 @@ export const churchContent = {
       intro:
         "Najbližšie stretnutia, pripravované chvíle a možnosti, ako sa zapojiť do života zboru GMC Sereď.",
       image: iaImages.augustProgram,
+      contextImage: iaImages.communityRoomFull,
       actionsHeading: "Čo pripravujeme a kde sa dá zapojiť",
       actions: [
         {
