@@ -10094,7 +10094,10 @@ body.gallery-browser-open {
   }
 
   .major-viewport-section > .container {
-    width: 100%;
+    width: min(
+      calc(100% - var(--route-page-gutter) - var(--route-page-gutter)),
+      var(--route-content-width)
+    );
   }
 
   .home-invitation {
@@ -10381,5 +10384,389 @@ body.gallery-browser-open {
 @media (max-width: 1023px) {
   .major-viewport-section {
     min-height: 0;
+  }
+}
+
+/* Final responsive composition pass
+ *
+ * The header keeps its own established width. Route content uses one shared
+ * frame so headings, maps, cards and editorial media never touch a viewport
+ * edge. Individual images then get subject-aware focal points below.
+ */
+.route-page {
+  --route-page-gutter: clamp(1.5rem, 4vw, 4rem);
+  --route-content-width: 1400px;
+}
+
+.route-page .major-viewport-section > .container {
+  width: min(
+    calc(100% - var(--route-page-gutter) - var(--route-page-gutter)),
+    var(--route-content-width)
+  );
+  max-width: none;
+  margin-inline: auto;
+}
+
+.about-page-chapter .editorial-collage--about img {
+  object-position: center top;
+}
+
+@media (min-width: 1024px) {
+  /* Kto sme: keep both faces in frame and trim spare space below them. */
+  .about-page-chapter .editorial-two-col {
+    gap: clamp(2rem, 3.5vw, 3.5rem);
+  }
+
+  .about-page-chapter .editorial-collage,
+  .about-page-chapter .editorial-collage figure:only-child {
+    height: clamp(29rem, 58svh, 33rem);
+  }
+
+  /* Spoločenstvo: the lower portrait carries equal visual weight instead of
+   * being reduced to a narrow strip. */
+  .community-story {
+    height: clamp(31rem, 65svh, 38rem);
+  }
+
+  .community-magazine {
+    grid-template-rows: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  }
+
+  .community-magazine figure:nth-child(3) img {
+    object-position: center 26%;
+  }
+
+  /* Život zboru: one compact, intentional category screen. */
+  .church-life-page.major-viewport-section {
+    min-height: min(72svh, 44rem);
+    padding-block: clamp(2.25rem, 4.5vh, 3.5rem);
+  }
+
+  .church-life-page > .container {
+    display: grid;
+    align-content: center;
+    gap: clamp(1.25rem, 2.4vh, 1.8rem);
+  }
+
+  .church-life-page .section-heading {
+    margin-bottom: 0;
+  }
+
+  .church-life-page .curated-gallery__item {
+    min-height: clamp(12rem, 21vh, 14rem);
+  }
+
+  /* Program: the copy and its actions now read as one block. A very softly
+   * blended church photograph breaks up the orange without replacing it. */
+  .program-intro__shapes {
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(218, 91, 67, 0) 42%,
+        rgba(218, 91, 67, 0.82) 66%,
+        rgba(218, 91, 67, 0.48) 100%
+      ),
+      url("/assets/church/ia/home-worship-hero.webp");
+    background-position: center, right 38%;
+    background-repeat: no-repeat;
+    background-size: cover, min(54vw, 860px) auto;
+  }
+
+  .program-intro__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 48rem) minmax(0, 1fr);
+    grid-template-areas:
+      "copy ."
+      "actions .";
+    grid-template-rows: auto auto;
+    align-content: center;
+    align-items: start;
+    row-gap: clamp(1.15rem, 2.2vh, 1.6rem);
+    width: min(
+      calc(100% - var(--route-page-gutter) - var(--route-page-gutter)),
+      var(--route-content-width)
+    );
+    padding: clamp(2.25rem, 5vh, 4rem) clamp(1rem, 3vw, 3rem);
+  }
+
+  .program-intro__copy {
+    grid-area: copy;
+    max-width: 44rem;
+    transform: translateY(clamp(-2.4rem, -3.5vh, -1.4rem));
+  }
+
+  .program-intro__copy h1 {
+    font-size: clamp(3.7rem, 5.4vw, 5.25rem);
+    line-height: 0.98;
+  }
+
+  .program-intro__actions {
+    grid-area: actions;
+    justify-self: start;
+    justify-content: flex-start;
+    margin: clamp(-2.4rem, -3.5vh, -1.4rem) 0 0;
+    max-width: min(100%, 38rem);
+  }
+
+  /* Kázne: a compact readable block leaves both CTA buttons fully visible. */
+  .sermons-route .page-hero__content {
+    box-sizing: border-box;
+    width: min(
+      calc(100% - var(--route-page-gutter) - var(--route-page-gutter)),
+      var(--route-content-width)
+    );
+    max-width: var(--route-content-width);
+    margin-inline: auto;
+    padding: clamp(2.25rem, 4.5vh, 3.5rem) clamp(4rem, 10vw, 9rem);
+    transform: translateY(clamp(-2.5rem, -4vh, -1.5rem));
+  }
+
+  .sermons-route .page-hero h1 {
+    max-width: 10ch;
+    font-size: clamp(3.5rem, 5vw, 4.85rem);
+    line-height: 1.06;
+  }
+
+  .sermons-route .page-hero .eyebrow {
+    display: block;
+    margin-bottom: 0.7rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: #f0bd72;
+    background: transparent;
+    box-shadow: none;
+    text-shadow:
+      -1px -1px 0 rgba(9, 38, 65, 0.74),
+      1px -1px 0 rgba(9, 38, 65, 0.74),
+      -1px 1px 0 rgba(9, 38, 65, 0.74),
+      1px 1px 0 rgba(9, 38, 65, 0.74),
+      0 2px 10px rgba(9, 38, 65, 0.32);
+  }
+
+  .sermons-route .page-hero__content .inline-actions {
+    margin-top: 1rem;
+  }
+
+  /* Prvykrat: fit all four steps, reassurance pills, CTAs and the complete
+   * photo caption in a single desktop composition. */
+  .first-visit-steps__layout {
+    height: clamp(31rem, 59svh, 35rem);
+    min-height: 0;
+    gap: clamp(1.25rem, 2.4vw, 2.4rem);
+  }
+
+  .first-visit-steps__copy h2 {
+    font-size: clamp(2.35rem, 3vw, 3.05rem);
+    line-height: 1.03;
+  }
+
+  .first-visit-steps__copy .eyebrow {
+    margin-bottom: 0.35rem;
+  }
+
+  .first-visit-steps__copy .compact-steps {
+    gap: 0.45rem;
+    margin-top: 0.65rem;
+  }
+
+  .first-visit-steps__copy .compact-steps article {
+    grid-template-columns: 31px minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 0.58rem 0.62rem;
+  }
+
+  .first-visit-steps__copy .compact-steps article > span {
+    width: 31px;
+    height: 31px;
+    font-size: 0.84rem;
+  }
+
+  .first-visit-steps__copy .compact-steps h3 {
+    font-size: 0.98rem;
+  }
+
+  .first-visit-steps__copy .compact-steps p {
+    margin-top: 0.12rem;
+    font-size: 0.8rem;
+    line-height: 1.25;
+  }
+
+  .first-visit-steps__copy .reassurance-pills {
+    gap: 0.38rem;
+    margin: 0.62rem 0 0.58rem;
+  }
+
+  .first-visit-steps__copy .reassurance-pills li {
+    padding: 0.38rem 0.56rem;
+    font-size: 0.8rem;
+    line-height: 1.18;
+  }
+
+  .first-visit-steps__copy .inline-actions {
+    gap: 0.55rem;
+    margin-top: 0.6rem;
+  }
+
+  .first-visit-steps__copy .button {
+    padding: 0.7rem 0.82rem;
+    font-size: 0.86rem;
+  }
+
+  .first-visit-steps__photo > img {
+    object-position: center top;
+  }
+
+  .first-visit-note {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.68rem 0.8rem;
+  }
+
+  .first-visit-note strong {
+    font-size: 1.05rem;
+  }
+
+  .first-visit-note span {
+    font-size: 0.82rem;
+  }
+
+  /* Kontakt: the complete map, recognition photo and details card share one
+   * bounded composition; the next section starts only after this grid. */
+  .contact-page {
+    padding-block: clamp(1.4rem, 2.5vh, 2rem);
+  }
+
+  .contact-location {
+    gap: clamp(0.7rem, 1.3vh, 1rem);
+  }
+
+  .contact-location__heading h2 {
+    font-size: clamp(2.55rem, 3.4vw, 3.3rem);
+  }
+
+  .contact-location__layout {
+    height: clamp(26rem, 51svh, 30rem);
+  }
+
+  .contact-location__aside {
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 0.6rem;
+    min-height: 0;
+  }
+
+  .contact-location__photo {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    min-height: 0;
+  }
+
+  .contact-location__photo img {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    object-fit: contain;
+  }
+
+  .contact-location__details {
+    padding: 0.66rem 0.78rem;
+  }
+
+  .contact-location__details h3 {
+    margin-bottom: 0.38rem;
+    font-size: 1rem;
+  }
+
+  .contact-location__details li {
+    padding: 0.3rem 0;
+  }
+}
+
+@media (min-width: 1180px) {
+  .church-life-page .curated-gallery {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(0.7rem, 1vw, 1rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  .route-page {
+    --route-page-gutter: clamp(1rem, 5vw, 1.5rem);
+  }
+
+  .program-intro__shapes {
+    background-image:
+      linear-gradient(rgba(218, 91, 67, 0.82), rgba(218, 91, 67, 0.92)),
+      url("/assets/church/ia/home-worship-hero.webp");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .sermons-route .page-hero .eyebrow {
+    padding: 0;
+    border: 0;
+    color: #f0bd72;
+    background: transparent;
+    box-shadow: none;
+    text-shadow:
+      -1px -1px 0 rgba(9, 38, 65, 0.7),
+      1px -1px 0 rgba(9, 38, 65, 0.7),
+      -1px 1px 0 rgba(9, 38, 65, 0.7),
+      1px 1px 0 rgba(9, 38, 65, 0.7);
+  }
+}
+
+@media (max-width: 760px) {
+  .program-intro__inner {
+    width: min(
+      calc(100% - var(--route-page-gutter) - var(--route-page-gutter)),
+      640px
+    );
+  }
+
+  .program-intro__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .program-intro__actions .button {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sermons-route .page-hero__content {
+    box-sizing: border-box;
+    width: min(
+      calc(100% - var(--route-page-gutter) - var(--route-page-gutter)),
+      640px
+    );
+    max-width: none;
+    margin-inline: auto;
+    padding-block: clamp(2.2rem, 7vh, 3.2rem);
+  }
+
+  .sermons-route .page-hero h1 {
+    font-size: clamp(2.7rem, 12vw, 3.8rem);
+    line-height: 1.05;
+  }
+
+  .sermons-route .page-hero__content .inline-actions,
+  .first-visit-steps__copy .inline-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .sermons-route .page-hero__content .button,
+  .first-visit-steps__copy .button {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .contact-location__map,
+  .contact-location__map iframe {
+    min-height: clamp(19rem, 80vw, 22rem);
   }
 }
