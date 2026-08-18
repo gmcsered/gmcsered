@@ -9275,6 +9275,145 @@ body.gallery-browser-open {
   color: rgba(255, 255, 255, 0.7);
 }
 
+.sunday-archive-section {
+  background:
+    radial-gradient(circle at 12% 16%, rgba(194, 108, 77, 0.08), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+}
+
+.sunday-archive-section .section-heading {
+  max-width: 760px;
+}
+
+.sunday-archive-section .section-heading p:not(.eyebrow) {
+  max-width: 58ch;
+  color: var(--muted);
+}
+
+.sunday-archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+}
+
+.sunday-archive-card {
+  position: relative;
+  min-height: clamp(210px, 20vw, 300px);
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--blue-deep);
+  box-shadow: var(--shadow-soft);
+}
+
+.sunday-archive-card button {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sunday-archive-card img,
+.sunday-archive-card__shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.sunday-archive-card img {
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 500ms ease;
+}
+
+.sunday-archive-card__shade {
+  background: linear-gradient(180deg, rgba(7, 31, 54, 0.03) 30%, rgba(7, 31, 54, 0.9) 100%);
+}
+
+.sunday-archive-card__content {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  display: grid;
+  gap: 0.4rem;
+  padding: 3rem 1rem 1rem;
+}
+
+.sunday-archive-card__content span {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  color: #f0bd82;
+  font-size: 0.88rem;
+  font-weight: 850;
+}
+
+.sunday-archive-card__content svg {
+  width: 17px;
+  height: 17px;
+}
+
+.sunday-archive-card__content strong {
+  color: var(--white);
+  font-size: 1.45rem;
+  line-height: 1.08;
+}
+
+.sunday-archive-card button:hover img,
+.sunday-archive-card button:focus-visible img {
+  transform: scale(1.035);
+}
+
+.sunday-archive-card button:focus-visible {
+  outline: 3px solid #f0bd82;
+  outline-offset: -5px;
+}
+
+.sunday-archive-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.3rem;
+}
+
+.sunday-archive-empty,
+.sunday-archive-loading,
+.sunday-archive-error {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(35, 105, 166, 0.14);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow-soft);
+}
+
+.sunday-archive-empty svg {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  color: var(--blue);
+}
+
+.sunday-archive-error {
+  margin: 1rem;
+  color: #7f1d1d;
+  background: #fff5f5;
+}
+
+.sunday-archive-loading {
+  margin: 1rem;
+}
+
 .contact-page {
   background: #fbfaf7;
 }

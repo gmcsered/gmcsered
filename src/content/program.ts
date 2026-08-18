@@ -16,7 +16,7 @@ export type ProgramData = {
   events: ProgramEvent[];
 };
 
-// Monthly content is edited only in program.json. The poster keeps this stable public path.
+// Monthly content is edited in public/content/program/program.txt; program.json is generated automatically.
 export const programData: ProgramData = {
   ...monthlyProgram,
   poster: siteAsset(monthlyProgram.poster),

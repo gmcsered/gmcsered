@@ -7,6 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "content:generate": "node scripts/generate-gallery-manifest.mjs",
     "content:check": "node scripts/generate-gallery-manifest.mjs --check",
+    "sunday:upload": "node scripts/upload-sunday-gallery.mjs",
     "prebuild": "npm run content:generate",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
@@ -18,9 +19,12 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1112.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "dotenv": "^17.4.2",
+    "sharp": "^0.35.3",
     "typescript": "^5.7.3",
     "vite": "^6.1.0"
   }

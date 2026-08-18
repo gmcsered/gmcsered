@@ -18,8 +18,10 @@ import { NextPageLink } from "../components/ui/NextPageLink";
 import { PageHero } from "../components/ui/PageHero";
 import { ProgramEventCard } from "../components/sections/ProgramEventCard";
 import { ChurchLifeGalleries } from "../components/sections/ChurchLifeGalleries";
+import { SundayArchive } from "../components/sections/SundayArchive";
 import { Reveal } from "../components/ui/Reveal";
 import { programData } from "../content/program";
+import { sundayArchive } from "../content/sundayArchive";
 
 const routeAttr = (route?: boolean) => (route ? "true" : undefined);
 
@@ -156,6 +158,16 @@ export function ChurchLifePage() {
             <h2 id="church-life-gallery-title">Niekoľko skutočných chvíľ</h2>
           </Reveal>
           <ChurchLifeGalleries galleries={page.galleries} />
+        </div>
+      </section>
+      <section className="section sunday-archive-section" aria-labelledby="sunday-archive-title">
+        <div className="container">
+          <Reveal className="section-heading">
+            <p className="eyebrow">Fotoarchív</p>
+            <h2 id="sunday-archive-title">Nedele v GMC Sereď</h2>
+            <p>Chronologický archív nedeľných fotografií, oddelený od kurátorských výberov vyššie.</p>
+          </Reveal>
+          <SundayArchive sundays={sundayArchive} />
         </div>
       </section>
       {page.hopestreet ? (

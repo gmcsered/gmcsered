@@ -1,35 +1,133 @@
 # GMC Sereď
 
-Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React aplikácia bez backendu. Route obsah je v slovenčine a je centralizovaný v `src/content/churchContent.ts`; mesačný program a fotogalérie majú vlastné jednoduché obsahové priečinky nižšie.
+Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React aplikácia bez backendu. Web beží na GitHub Pages, mesačný program je v jednoduchom textovom súbore a dlhodobý nedeľný fotoarchív je pripravený pre Cloudflare R2.
 
 ## Ako aktualizovať web GMC Sereď
 
-Web ostáva jednoduchý statický web: po uložení zmien do GitHubu ho GitHub Actions automaticky znovu zverejní. Nie je potrebný žiadny redakčný systém ani server.
+Web ostáva jednoduchý statický web: jeden príkaz skontroluje obsah, pripraví fotky, vytvorí build, commitne zmeny a pošle ich na GitHub. GitHub Actions potom web automaticky zverejní. Nie je potrebný žiadny redakčný systém ani server.
+
+### Nedeľné fotky
+
+Toto je bežný týždenný postup pre nedeľný fotoarchív `Nedele v GMC Sereď`.
+
+1. Vytvorte priečinok s dátumom nedele:
+
+   ```text
+   content-import/sundays/YYYY-MM-DD/
+   ```
+
+   Príklad:
+
+   ```text
+   content-import/sundays/2026-08-23/
+   ```
+
+2. Skopírujte doň všetky fotky z tej nedele.
+
+   Netreba ich triediť. Netreba ich premenovať. Netreba ich zmenšovať.
+
+3. Spustite:
+
+   ```bash
+   ./update-site.sh
+   ```
+
+Skript fotky automaticky zmenší, prevedie na WebP, vytvorí náhľady, nahrá ich do Cloudflare R2 a do GitHubu uloží iba malý manifest s URL adresami. Originálne fotky z `content-import/` sa nikdy necommitujú do GitHubu.
+
+Ak chcete spracovať iba jednu konkrétnu nedeľu, môžete použiť:
+
+```bash
+./update-site.sh 2026-08-23
+```
 
 ### Mesačný program
 
 1. Nahraďte súbor `public/content/program/current-program.jpg` novým plagátom. Názov súboru musí zostať presne `current-program.jpg`.
-2. Otvorte `src/content/program.json` a zmeňte iba `monthLabel`, `title`, text `posterAlt` a položky v `events`.
-3. Zmeny commitnite a pushnite do `main`.
+2. Otvorte `public/content/program/program.txt`.
+3. Upravte prvý riadok, druhý riadok a udalosti.
+4. Spustite:
 
-Stránka programu vždy používa ten istý súbor plagátu. Pri novom mesiaci preto netreba meniť žiadny komponent ani cestu k obrázku.
+   ```bash
+   ./update-site.sh
+   ```
 
-### Fotogalérie po nedeľi
+Formát programu:
 
-1. Otvorte správny priečinok v `public/content/gallery/`:
-   - `spolocny-cas/` – Spoločný čas v zbore
-   - `deti-mladez/` – Deti a mládež
-   - `chvaly-slovo/` – Chvály a Slovo
-   - `family-days/` – Family Days
-2. Skopírujte doň nové fotografie vo formáte `.jpg`, `.jpeg`, `.png` alebo `.webp`.
-3. Odporúčaný názov je napríklad `2026-08-17-001.jpg`, `2026-08-17-002.jpg`. Takéto fotografie sa zobrazia ako najnovšie.
-4. Zmeny commitnite a pushnite do `main`.
+```text
+September v GMC Sereď
+Jesenný program
 
-Pri builde sa galérie načítajú automaticky zo všetkých podporovaných obrázkov v priečinkoch. Nikdy netreba dopĺňať importy alebo meniť React komponenty. Poradie, názvy a popisy týchto štyroch trvalých kurátorských kategórií ovláda jediný súbor `src/content/galleryCategories.json`.
+6.9. | 9:30 | Nedeľná bohoslužba | Pastor Ján Tagaj
+13.9. | 9:30 | Nedeľná bohoslužba | Pastor Ján Tagaj
+20.9. | 9:30 | Nedeľná bohoslužba | Pastor Ján Tagaj
+```
 
-Tieto priečinky sú určené iba pre trvalé výberové galérie na stránke „Život zboru“. Budúci samostatný archív „Nedele v GMC Sereď“ bude oddelený systém a tieto kurátorské priečinky sa doň nemajú miešať automaticky.
+Stránka programu vždy používa ten istý súbor plagátu. Pri novom mesiaci preto netreba meniť žiadny komponent ani cestu k obrázku. Súbor `src/content/program.json` je generovaný automaticky; neupravujte ho ručne.
 
-Pred odoslaním zmien je možné spustiť `npm run content:check`. Overí programový plagát, programové dáta, priečinky galérií a nepodporované súbory.
+### Kurátorské výberové galérie
+
+Tieto galérie sú malý trvalý výber fotiek, ktoré ukazujú život zboru. Sú uložené priamo v Git repozitári a nie sú to týždenné nedeľné archívy.
+
+Používajú sa presne tieto priečinky:
+
+- `public/content/gallery/spolocny-cas/` – Spoločný čas v zbore
+- `public/content/gallery/deti-mladez/` – Deti a mládež
+- `public/content/gallery/chvaly-slovo/` – Chvály a Slovo
+- `public/content/gallery/family-days/` – Family Days
+
+Pri builde sa tieto galérie načítajú automaticky zo všetkých podporovaných obrázkov v priečinkoch. Poradie, názvy a popisy ovláda jediný súbor `src/content/galleryCategories.json`.
+
+Týždenné nedeľné fotky nedávajte sem. Tie patria do `content-import/sundays/YYYY-MM-DD/` a po uploadnutí budú uložené v Cloudflare R2.
+
+### Presun na iný Mac
+
+Na inom počítači stačí:
+
+1. naklonovať repozitár z GitHubu,
+2. nainštalovať Node/npm závislosti:
+
+   ```bash
+   npm ci
+   ```
+
+3. vytvoriť lokálny `.env` podľa `.env.example`,
+4. používať rovnaký príkaz:
+
+   ```bash
+   ./update-site.sh
+   ```
+
+Nie sú potrebné žiadne absolútne lokálne cesty.
+
+## Cloudflare R2 nastavenie pre nedeľný fotoarchív
+
+Dlhodobé nedeľné fotky sa nemajú ukladať do GitHubu. Patria do Cloudflare R2 a budú verejne dostupné cez:
+
+```text
+https://media.gmcsered.sk
+```
+
+Pred prvým nedeľným uploadom treba v Cloudflare pripraviť:
+
+- Cloudflare účet,
+- R2 bucket,
+- R2 API token / prístupové kľúče,
+- verejnú custom domain `media.gmcsered.sk` pre R2 bucket,
+- DNS/custom-domain nastavenie v Cloudflare.
+
+Lokálne vytvorte súbor `.env` podľa `.env.example`:
+
+```text
+R2_ACCOUNT_ID=...
+R2_ACCESS_KEY_ID=...
+R2_SECRET_ACCESS_KEY=...
+R2_BUCKET_NAME=...
+R2_PUBLIC_BASE_URL=https://media.gmcsered.sk
+```
+
+Skutočné heslá a kľúče nikdy necommitujte. `.env` je ignorovaný Gitom.
+
+Ak R2 ešte nie je nakonfigurované, web sa stále dá normálne buildnúť a nasadiť. R2 údaje sú potrebné iba vtedy, keď sa pokúšate nahrať nové nedeľné fotky.
 
 ## Technológia
 
