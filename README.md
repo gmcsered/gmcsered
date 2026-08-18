@@ -17,16 +17,17 @@ Stránka programu vždy používa ten istý súbor plagátu. Pri novom mesiaci p
 ### Fotogalérie po nedeľi
 
 1. Otvorte správny priečinok v `public/content/gallery/`:
-   - `worship/` – Nedeľné chvály
-   - `music/` – Hudba a chvály
-   - `children/` – Vlastný program detí a mládeže
-   - `fellowship/` – Rozhovory a blízkosť
-   - `community/` – Rodiny a spoločný stôl
+   - `spolocny-cas/` – Spoločný čas v zbore
+   - `deti-mladez/` – Deti a mládež
+   - `chvaly-slovo/` – Chvály a Slovo
+   - `family-days/` – Family Days
 2. Skopírujte doň nové fotografie vo formáte `.jpg`, `.jpeg`, `.png` alebo `.webp`.
 3. Odporúčaný názov je napríklad `2026-08-17-001.jpg`, `2026-08-17-002.jpg`. Takéto fotografie sa zobrazia ako najnovšie.
 4. Zmeny commitnite a pushnite do `main`.
 
-Pri builde sa galérie načítajú automaticky zo všetkých podporovaných obrázkov v priečinkoch. Nikdy netreba dopĺňať importy alebo meniť React komponenty. Poradie a názvy kategórií ovláda jediný súbor `src/content/galleryCategories.json`.
+Pri builde sa galérie načítajú automaticky zo všetkých podporovaných obrázkov v priečinkoch. Nikdy netreba dopĺňať importy alebo meniť React komponenty. Poradie, názvy a popisy týchto štyroch trvalých kurátorských kategórií ovláda jediný súbor `src/content/galleryCategories.json`.
+
+Tieto priečinky sú určené iba pre trvalé výberové galérie na stránke „Život zboru“. Budúci samostatný archív „Nedele v GMC Sereď“ bude oddelený systém a tieto kurátorské priečinky sa doň nemajú miešať automaticky.
 
 Pred odoslaním zmien je možné spustiť `npm run content:check`. Overí programový plagát, programové dáta, priečinky galérií a nepodporované súbory.
 

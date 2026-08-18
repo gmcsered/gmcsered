@@ -82,8 +82,8 @@ async function main() {
 
   const posterPath = path.join(publicDirectory, program.poster.replace(/^\//, ""));
   if (!(await exists(posterPath))) throw new Error(`Programový plagát neexistuje: ${program.poster}`);
-  if (!Array.isArray(categories) || categories.some((category) => !category.id || !category.folder || !category.title || !category.category)) {
-    throw new Error("src/content/galleryCategories.json musí obsahovať id, category, title a folder pre každú galériu.");
+  if (!Array.isArray(categories) || categories.some((category) => !category.id || !category.folder || !category.title || !category.category || !category.description)) {
+    throw new Error("src/content/galleryCategories.json musí obsahovať id, category, title, description a folder pre každú galériu.");
   }
 
   const manifest = {};

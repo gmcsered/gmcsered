@@ -12,6 +12,7 @@ export type ChurchLifeGalleryCategory = {
   id: string;
   category: string;
   title: string;
+  description: string;
   folder: string;
   cover: GalleryPhoto;
   photos: GalleryPhoto[];
@@ -21,6 +22,7 @@ type GalleryCategoryConfig = {
   id: string;
   category: string;
   title: string;
+  description: string;
   folder: string;
 };
 

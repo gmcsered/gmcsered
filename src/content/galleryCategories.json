@@ -1,7 +1,30 @@
 [
-  { "id": "worship", "category": "Bohoslužby", "title": "Nedeľné chvály", "folder": "worship" },
-  { "id": "music", "category": "Bohoslužby", "title": "Hudba a chvály", "folder": "music" },
-  { "id": "children", "category": "Deti a mládež", "title": "Vlastný program", "folder": "children" },
-  { "id": "fellowship", "category": "Spoločenstvo", "title": "Rozhovory a blízkosť", "folder": "fellowship" },
-  { "id": "community", "category": "Spoločné stretnutia", "title": "Rodiny a spoločný stôl", "folder": "community" }
+  {
+    "id": "spolocny-cas",
+    "category": "Spoločenstvo",
+    "title": "Spoločný čas v zbore",
+    "description": "Rozhovory, káva, spoločné jedlo, smiech a chvíle, ktoré nás spájajú.",
+    "folder": "spolocny-cas"
+  },
+  {
+    "id": "deti-mladez",
+    "category": "Deti a mládež",
+    "title": "Deti a mládež",
+    "description": "Priestor pre deti a mladých, kde môžu rásť, tvoriť, hrať sa a byť spolu.",
+    "folder": "deti-mladez"
+  },
+  {
+    "id": "chvaly-slovo",
+    "category": "Bohoslužby",
+    "title": "Chvály a Slovo",
+    "description": "Spoločné chvály, hudba, modlitba a Božie slovo.",
+    "folder": "chvaly-slovo"
+  },
+  {
+    "id": "family-days",
+    "category": "Family Days",
+    "title": "Family Days",
+    "description": "Spoločné výlety, športové dni a chvíle mimo bežného nedeľného programu.",
+    "folder": "family-days"
+  }
 ]

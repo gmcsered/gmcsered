@@ -7,6 +7,12 @@ type ChurchLifeGalleriesProps = {
   galleries: ChurchLifeGalleryCategory[];
 };
 
+const formatPhotoCount = (count: number) => {
+  if (count === 1) return "1 fotografia";
+  if (count > 1 && count < 5) return `${count} fotografie`;
+  return `${count} fotografií`;
+};
+
 export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState<number | null>(null);
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
@@ -70,7 +76,7 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
             <button
               className="curated-gallery__trigger"
               type="button"
-              aria-label={`Otvoriť galériu ${gallery.title}, ${gallery.photos.length} fotografií`}
+              aria-label={`Otvoriť galériu ${gallery.title}, ${formatPhotoCount(gallery.photos.length)}`}
               onClick={() => openGallery(index)}
             >
               <img
@@ -83,9 +89,10 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
               <span className="curated-gallery__caption">
                 <span>{gallery.category}</span>
                 <strong>{gallery.title}</strong>
+                <em>{gallery.description}</em>
                 <small>
                   <Images aria-hidden="true" />
-                  {gallery.photos.length} fotografií
+                  {formatPhotoCount(gallery.photos.length)}
                 </small>
               </span>
             </button>
@@ -108,6 +115,7 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
               <div>
                 <span>{activeGallery.category}</span>
                 <h3 id="gallery-browser-title">{activeGallery.title}</h3>
+                <p>{activeGallery.description}</p>
               </div>
               <button className="gallery-browser__close" type="button" aria-label="Zatvoriť galériu" onClick={closeGallery}>
                 <X aria-hidden="true" />
