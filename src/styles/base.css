@@ -6810,6 +6810,104 @@ a {
   font-size: 0.95rem;
 }
 
+.program-action-card-wrapper {
+  min-width: 0;
+}
+
+.program-action-card--interactive {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.program-action-card--interactive:focus-visible {
+  outline: 3px solid rgba(240, 189, 130, 0.95);
+  outline-offset: 3px;
+}
+
+body.program-invitation-open {
+  overflow: hidden;
+}
+
+.program-invitation-modal {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.program-invitation-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: rgba(3, 19, 34, 0.9);
+  cursor: pointer;
+}
+
+.program-invitation-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(780px, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  background: #071f36;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+  outline: none;
+}
+
+.program-invitation-modal__header {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  height: 0;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.program-invitation-modal__close {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  margin: 0.2rem;
+  padding: 0;
+  border: 1px solid rgba(7, 31, 54, 0.18);
+  border-radius: 999px;
+  color: var(--blue-dark);
+  background: var(--white);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+  place-items: center;
+  pointer-events: auto;
+}
+
+.program-invitation-modal__close:focus-visible {
+  outline: 3px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
+.program-invitation-modal__panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .page-hero__media img {
     animation: heroImageBreathe 18s ease-in-out infinite alternate;
@@ -9142,13 +9240,6 @@ body.gallery-browser-open {
   object-fit: contain;
 }
 
-.gallery-browser__grid > button > span:last-child {
-  padding-inline: 0.2rem;
-  overflow-wrap: anywhere;
-  font-size: 0.84rem;
-  font-weight: 750;
-}
-
 .gallery-browser__photo-view {
   padding: 0.9rem 1rem 1rem;
 }
@@ -9204,18 +9295,6 @@ body.gallery-browser-open {
 
 .gallery-browser__nav--next {
   right: 0.3rem;
-}
-
-.gallery-browser__photo-caption {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0.2rem 0;
-  color: var(--white);
-}
-
-.gallery-browser__photo-caption span {
-  color: rgba(255, 255, 255, 0.7);
 }
 
 .sunday-archive-section {
@@ -9616,8 +9695,21 @@ body.gallery-browser-open {
     transform: none;
   }
 
-  .gallery-browser__photo-caption {
-    padding-inline: 0.2rem;
+  .program-invitation-modal {
+    padding: 0.4rem;
+  }
+
+  .program-invitation-modal__panel {
+    width: calc(100vw - 0.8rem);
+    max-height: calc(100dvh - 0.8rem);
+    padding: 0.45rem;
+    border-radius: 0.8rem;
+  }
+
+  .program-invitation-modal__close {
+    width: 42px;
+    height: 42px;
+    margin: 0.12rem;
   }
 
   .contact-location__aside {
@@ -9783,6 +9875,7 @@ body.gallery-browser-open {
 .beliefs-page-hero__scripture {
   display: block;
   grid-column: 1;
+  grid-row: 1;
   align-self: end;
   max-width: min(31rem, 100%);
   margin: 0 0 clamp(3.25rem, 7vh, 6.5rem);

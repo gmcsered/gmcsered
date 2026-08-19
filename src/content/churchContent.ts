@@ -374,7 +374,7 @@ export const churchContent = {
   contact: {
     churchName: "GMC Sereď",
     email: "sered@metodisti.sk",
-    phone: "",
+    phone: "0902 144 643",
     messengerUrl: "",
   },
   address: {
@@ -597,7 +597,7 @@ export const churchContent = {
       scripture: {
         citation: "Ján 3:16",
         text:
-          "„Lebo tak Boh miloval svet, že dal svojho jednorodeného Syna, aby nezahynul nik, kto v neho verí, ale mal večný život.“",
+          "„Veď Boh tak miloval svet, že dal svojho jednorodeného Syna, aby nezahynul nik, kto v neho verí, ale mal večný život.“",
       },
       items: [
         {

@@ -137,21 +137,19 @@ export function ChurchLifeGalleries({ galleries }: ChurchLifeGalleriesProps) {
                     <ChevronRight aria-hidden="true" />
                   </button>
                 </div>
-                <div className="gallery-browser__photo-caption" aria-live="polite">
-                  <strong>{activePhoto.caption}</strong>
-                  <span>
-                    {activePhotoIndex + 1} / {activeGallery.photos.length}
-                  </span>
-                </div>
               </div>
             ) : (
               <div className="gallery-browser__grid">
                 {activeGallery.photos.map((image, index) => (
-                  <button type="button" key={image.src} onClick={() => setActivePhotoIndex(index)} aria-label={`Zväčšiť fotografiu: ${image.caption}`}>
+                  <button
+                    type="button"
+                    key={image.src}
+                    onClick={() => setActivePhotoIndex(index)}
+                    aria-label={`Zväčšiť fotografiu ${index + 1} z ${activeGallery.photos.length}`}
+                  >
                     <span className="gallery-browser__thumbnail">
                       <img src={image.src} alt={image.alt} loading="lazy" />
                     </span>
-                    <span>{image.caption}</span>
                   </button>
                 ))}
               </div>

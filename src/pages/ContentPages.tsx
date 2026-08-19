@@ -13,7 +13,7 @@ import {
   Users,
   Utensils,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { churchContent } from "../content/churchContent";
 import { NextPageLink } from "../components/ui/NextPageLink";
 import { PageHero } from "../components/ui/PageHero";
@@ -289,6 +289,27 @@ export function ChurchLifePage() {
 
 export function ProgramPage() {
   const page = churchContent.pages.program;
+  const [isAnniversaryInvitationOpen, setIsAnniversaryInvitationOpen] = useState(false);
+  const invitationDialogRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!isAnniversaryInvitationOpen) return undefined;
+
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsAnniversaryInvitationOpen(false);
+    };
+
+    document.body.classList.add("program-invitation-open");
+    document.addEventListener("keydown", closeOnEscape);
+    window.requestAnimationFrame(() => invitationDialogRef.current?.focus());
+
+    return () => {
+      document.body.classList.remove("program-invitation-open");
+      document.removeEventListener("keydown", closeOnEscape);
+      previouslyFocused?.focus();
+    };
+  }, [isAnniversaryInvitationOpen]);
 
   return (
     <article className="route-page program-route">
@@ -354,16 +375,73 @@ export function ProgramPage() {
             <h2 id="program-actions-title">{page.actionsHeading}</h2>
           </Reveal>
           <div className="program-action-grid">
-            {page.actions.map((action) => (
-              <Reveal as="article" className="program-action-card" key={action.title}>
-                <Check aria-hidden="true" />
-                <h3>{action.title}</h3>
-                <p>{action.text}</p>
-              </Reveal>
-            ))}
+            {page.actions.map((action) => {
+              const isAnniversaryAction = action.title === "Pripravujeme 100. výročie";
+              const cardContents = (
+                <>
+                  <Check aria-hidden="true" />
+                  <h3>{action.title}</h3>
+                  <p>{action.text}</p>
+                </>
+              );
+
+              return isAnniversaryAction ? (
+                <Reveal className="program-action-card-wrapper" key={action.title}>
+                  <button
+                    className="program-action-card program-action-card--interactive"
+                    type="button"
+                    aria-label="Zobraziť pozvánku na 100. výročie"
+                    aria-controls="anniversary-invitation-dialog"
+                    onClick={() => setIsAnniversaryInvitationOpen(true)}
+                  >
+                    {cardContents}
+                  </button>
+                </Reveal>
+              ) : (
+                <Reveal as="article" className="program-action-card" key={action.title}>
+                  {cardContents}
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
+      {isAnniversaryInvitationOpen ? (
+        <div className="program-invitation-modal" role="presentation">
+          <button
+            className="program-invitation-modal__backdrop"
+            type="button"
+            aria-label="Zatvoriť pozvánku"
+            onClick={() => setIsAnniversaryInvitationOpen(false)}
+          />
+          <section
+            className="program-invitation-modal__panel"
+            id="anniversary-invitation-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Pozvánka na 100. výročie"
+            ref={invitationDialogRef}
+            tabIndex={-1}
+          >
+            <div className="program-invitation-modal__header">
+              <button
+                className="program-invitation-modal__close"
+                type="button"
+                aria-label="Zatvoriť pozvánku"
+                onClick={() => setIsAnniversaryInvitationOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+            <img
+              src={siteAsset("/assets/church/events/100th-anniversary-invitation.jpg")}
+              width={1132}
+              height={1600}
+              alt="Pozvánka na 100. výročie založenia zboru GMC Sereď, 13. september 2026"
+            />
+          </section>
+        </div>
+      ) : null}
       <NextPageLink link={page.next} />
     </article>
   );

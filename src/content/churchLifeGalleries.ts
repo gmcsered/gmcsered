@@ -5,7 +5,6 @@ import { siteAsset } from "../utils/site";
 export type GalleryPhoto = {
   src: string;
   alt: string;
-  caption: string;
 };
 
 export type ChurchLifeGalleryCategory = {
@@ -26,22 +25,10 @@ type GalleryCategoryConfig = {
   folder: string;
 };
 
-const toCaption = (source: string) => {
-  const filename = source.split("/").pop()?.replace(/\.[^.]+$/, "") ?? "Fotografia";
-  return filename
-    .replace(/^\d{4}-\d{2}-\d{2}[-_]?/, "")
-    .replace(/[-_]+/g, " ")
-    .replace(/\b\w/g, (letter) => letter.toLocaleUpperCase("sk"));
-};
-
-const createPhoto = (source: string): GalleryPhoto => {
-  const caption = toCaption(source);
-  return {
-    src: siteAsset(source),
-    alt: `${caption} v GMC Sereď`,
-    caption,
-  };
-};
+const createPhoto = (source: string): GalleryPhoto => ({
+  src: siteAsset(source),
+  alt: "Fotografia z galérie GMC Sereď",
+});
 
 const manifest = galleryManifest as Record<string, string[]>;
 

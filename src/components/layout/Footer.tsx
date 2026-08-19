@@ -5,6 +5,7 @@ const isExternal = (href: string) => href.startsWith("http");
 
 export function Footer() {
   const links = getContactLinks();
+  const { contact } = churchContent;
 
   return (
     <footer className="site-footer">
@@ -45,6 +46,11 @@ export function Footer() {
             926 01 Sereď
           </p>
           <p>Nedeľná bohoslužba o 9:30</p>
+          {contact.phone ? (
+            <p>
+              Telefón: <a href={`tel:${contact.phone.replace(/\s+/g, "")}`}>{contact.phone}</a>
+            </p>
+          ) : null}
           <p className="footer-tagline">Miesto, kde si vítaný.</p>
         </div>
 
