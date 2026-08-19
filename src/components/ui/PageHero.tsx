@@ -9,6 +9,7 @@ type PageHeroProps = {
   primaryAction?: LinkTarget & { route?: boolean };
   secondaryAction?: LinkTarget & { route?: boolean };
   tone?: "light" | "dark";
+  overlay?: boolean;
 };
 
 const isResponsiveImage = (image: ImageAsset | ResponsiveImageAsset): image is ResponsiveImageAsset =>
@@ -32,6 +33,7 @@ export function PageHero({
   primaryAction,
   secondaryAction,
   tone = "dark",
+  overlay = true,
 }: PageHeroProps) {
   return (
     <section className={`page-hero page-hero--${tone}`} aria-labelledby="page-title">
@@ -49,7 +51,7 @@ export function PageHero({
           : null}
         <img src={image.src} width={image.width} height={image.height} alt="" aria-hidden="true" />
       </picture>
-      <div className="page-hero__overlay" aria-hidden="true" />
+      {overlay ? <div className="page-hero__overlay" aria-hidden="true" /> : null}
       <div className="container page-hero__content">
         <p className="eyebrow">{eyebrow}</p>
         <h1 id="page-title">{heading}</h1>

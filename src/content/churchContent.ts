@@ -193,11 +193,11 @@ const iaImages = {
     1250,
     "Srdečné privítanie v zbore GMC Sereď",
   ),
-  sermonsBible: iaAsset(
-    "sermons-bible-hero.webp",
-    1800,
-    1125,
-    "Otvorená Biblia pri okne s modrou oblohou",
+  sermonsBible: asset(
+    "/assets/church/ia/a_bright_serene_outdoor_still_life_scene_on_a_lig.png",
+    1536,
+    1024,
+    "Otvorená Biblia s modrou stužkou, bielym závesom, krajinou a olivovníkom",
   ),
   sermonsPreacher: iaAsset(
     "sermons-preacher.webp",

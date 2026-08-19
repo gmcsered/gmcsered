@@ -377,7 +377,16 @@ export function SermonsPage() {
 
   return (
     <article className="route-page sermons-route">
-      <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={{ ...page.channelAction, href: channelHref }} secondaryAction={page.cta} tone="light" />
+      <PageHero
+        eyebrow={page.eyebrow}
+        heading={page.heading}
+        text={page.intro}
+        image={page.image}
+        primaryAction={{ ...page.channelAction, href: channelHref }}
+        secondaryAction={page.cta}
+        tone="light"
+        overlay={false}
+      />
       <section className="section page-chapter sermons-page major-viewport-section" aria-labelledby="sermons-body-title">
         <div className="container sermons-focus">
           <Reveal className="sermons-focus__image">
