@@ -11378,3 +11378,80 @@ body.gallery-browser-open {
     color: var(--accent-gold);
   }
 }
+
+/* Keep the desktop Kázne copy legible without changing the photograph: this
+ * is a soft, local wash behind the left copy only and fades before the Bible's
+ * centre pages. */
+@media (min-width: 901px) {
+  .sermons-route .page-hero__content {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .sermons-route .page-hero__content::before {
+    position: absolute;
+    z-index: -1;
+    top: -1.25rem;
+    bottom: -1.35rem;
+    left: -2rem;
+    width: min(43vw, 40rem);
+    background: radial-gradient(
+      ellipse 100% 135% at 0% 50%,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.55) 62%,
+      rgba(255, 255, 255, 0.18) 90%,
+      transparent 100%
+    );
+    content: "";
+    pointer-events: none;
+  }
+
+  .sermons-route .page-hero__content > p:not(.eyebrow) {
+    max-width: 39ch;
+    font-size: clamp(1.05rem, 1.25vw, 1.16rem);
+    font-weight: 600;
+    line-height: 1.46;
+  }
+}
+
+/* Mobile route heroes retain the photograph's colour and subject while a
+ * short, soft dark wash remains only under the HTML copy. */
+@media (max-width: 760px) {
+  .page-hero__media img {
+    filter: brightness(1.06) contrast(1.035) saturate(1.025);
+  }
+
+  .page-hero__overlay,
+  .page-hero--light .page-hero__overlay {
+    background:
+      linear-gradient(90deg, rgba(11, 35, 58, 0.5) 0%, rgba(11, 35, 58, 0.3) 42%, rgba(11, 35, 58, 0.08) 68%, transparent 88%),
+      linear-gradient(0deg, rgba(11, 35, 58, 0.28), rgba(11, 35, 58, 0.03) 64%, transparent);
+  }
+
+  .page-hero__content {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .page-hero__content::before {
+    position: absolute;
+    z-index: -1;
+    inset: -1.35rem -1.15rem -1.5rem;
+    background: radial-gradient(
+      ellipse 100% 92% at 10% 52%,
+      rgba(6, 28, 48, 0.7) 0%,
+      rgba(6, 28, 48, 0.42) 56%,
+      transparent 100%
+    );
+    content: "";
+    pointer-events: none;
+  }
+
+  .sermons-route .page-hero__media img {
+    filter: none;
+  }
+
+  .sermons-route .page-hero__content::before {
+    content: none;
+  }
+}
