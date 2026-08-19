@@ -13,6 +13,7 @@ import {
   Users,
   Utensils,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { churchContent } from "../content/churchContent";
 import { NextPageLink } from "../components/ui/NextPageLink";
 import { PageHero } from "../components/ui/PageHero";
@@ -22,10 +23,55 @@ import { SundayArchive } from "../components/sections/SundayArchive";
 import { Reveal } from "../components/ui/Reveal";
 import { programData } from "../content/program";
 import { sundayArchive } from "../content/sundayArchive";
+import { siteAsset } from "../utils/site";
 
 const routeAttr = (route?: boolean) => (route ? "true" : undefined);
 
 const beliefIcons = [Cross, Heart, BookOpen, Check, Users];
+
+type LatestSermon = {
+  id: string;
+  title: string;
+  thumbnail: string;
+  url: string;
+  embedUrl: string;
+  publishedAt: string;
+  durationSeconds: number;
+};
+
+type LatestSermonFeed = {
+  sermon: LatestSermon | null;
+};
+
+const isLatestSermon = (value: unknown): value is LatestSermon => {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const sermon = value as Partial<LatestSermon>;
+  return Boolean(sermon.id && sermon.title && sermon.thumbnail && sermon.url && sermon.embedUrl);
+};
+
+const useLatestSermon = () => {
+  const [sermon, setSermon] = useState<LatestSermon | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetch(siteAsset("/data/latest-sermon.json"), { signal: controller.signal })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: LatestSermonFeed | null) => {
+        if (isLatestSermon(data?.sermon)) {
+          setSermon(data.sermon);
+        }
+      })
+      .catch(() => undefined);
+
+    return () => controller.abort();
+  }, []);
+
+  return sermon;
+};
 
 export function AboutPage() {
   const page = churchContent.pages.about;
@@ -52,6 +98,32 @@ export function AboutPage() {
                 <img src={image.src} width={image.width} height={image.height} alt={image.alt} loading="lazy" />
               </figure>
             ))}
+          </Reveal>
+        </div>
+      </section>
+      <section className="section about-pastor" aria-labelledby="about-pastor-title">
+        <div className="container about-pastor__layout">
+          <Reveal className="about-pastor__photo">
+            <img
+              src={siteAsset("/assets/church/about/pastor-and-wife.jpg")}
+              width={1536}
+              height={2048}
+              alt="Pastor Ján Tagaj s manželkou"
+              loading="lazy"
+            />
+          </Reveal>
+          <Reveal className="about-pastor__copy">
+            <p className="eyebrow">Náš pastor</p>
+            <h2 id="about-pastor-title">Ján Tagaj</h2>
+            <p>Náš pastor je človek, pri ktorom máte niekedy pocit, že ste prišli za pastorom… a odchádzate od „tata“. 😄</p>
+            <p>Je ľudský, empatický a autentický. Vie povzbudiť, vypočuť, povedať pravdu, keď ju potrebujeme počuť – a veľmi často nás pri tom ešte aj rozosmiať.</p>
+            <p>
+              Jedným z darov, ktoré mu Boh dal, je <strong>slovo a výklad Písma</strong>. Dokáže otvoriť aj dobre známy biblický text a podať ho jednoducho, zrozumiteľne a prakticky. Nie preto, aby sme obdivovali kazateľa, ale aby sme lepšie poznávali <strong>Boha, Jeho charakter a Jeho slovo</strong> – a vedeli ho žiť aj mimo nedele.
+            </p>
+            <p>A áno, humor k tomu patrí. Niekedy si tak z kázne odnesiete hlbokú myšlienku, povzbudenie do ďalšieho týždňa… a jednu vetu, na ktorej sa budete smiať ešte cestou domov.</p>
+            <p>Máme radi aj to, že pastor pre nás nie je niekto, kto stojí nad ľuďmi, ale <strong>človek, ktorý kráča spolu s nimi</strong>. Môžete za ním prísť s otázkou, pochybnosťou, problémom aj radosťou – a nemusíte sa pritom na nič hrať.</p>
+            <p>Je pastorom, učiteľom, mentorom, občas tak trochu psychológom a miestami aj stand-up komikom. Predovšetkým je však človekom, ktorý chce svojimi darmi slúžiť Bohu a ľuďom.</p>
+            <p className="about-pastor__closing">Pretože dobrý pastor nevedie ľudí k sebe. Vedie ich bližšie ku Kristovi.</p>
           </Reveal>
         </div>
       </section>
@@ -235,16 +307,16 @@ export function ProgramPage() {
             <p className="eyebrow">{page.eyebrow}</p>
             <h1 id="program-page-title">{page.heading}</h1>
             <p>{page.intro}</p>
-          </div>
-          <div className="program-intro__actions">
-            <a className="button button--primary" href={page.cta.href}>
-              {page.cta.label}
-              <ArrowRight aria-hidden="true" />
-            </a>
-            <a className="button button--secondary" href={page.next.href} data-route={routeAttr(true)}>
-              {page.next.label}
-              <ArrowRight aria-hidden="true" />
-            </a>
+            <div className="program-intro__actions">
+              <a className="button button--primary" href={page.cta.href}>
+                {page.cta.label}
+                <ArrowRight aria-hidden="true" />
+              </a>
+              <a className="button button--secondary" href={page.next.href} data-route={routeAttr(true)}>
+                {page.next.label}
+                <ArrowRight aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -302,6 +374,7 @@ export function SermonsPage() {
   const { pages, youtube } = churchContent;
   const page = pages.sermons;
   const channelHref = youtube.channelUrl || page.channelAction.href;
+  const latestSermon = useLatestSermon();
 
   return (
     <article className="route-page sermons-route">
@@ -309,20 +382,36 @@ export function SermonsPage() {
       <section className="section page-chapter sermons-page major-viewport-section" aria-labelledby="sermons-body-title">
         <div className="container sermons-focus">
           <Reveal className="sermons-focus__image">
-            <img src={page.previewImage.src} width={page.previewImage.width} height={page.previewImage.height} alt={page.previewImage.alt} loading="lazy" />
-            {page.previewImage.caption ? <span className="sermons-focus__caption">{page.previewImage.caption}</span> : null}
-            <span className="play-mark" aria-hidden="true">
-              <Play />
-            </span>
+            {latestSermon ? (
+              <a className="sermons-focus__video" href={latestSermon.url} target="_blank" rel="noopener noreferrer" aria-label={`Prehrať kázeň: ${latestSermon.title}`}>
+                <img src={latestSermon.thumbnail} alt="" loading="lazy" />
+                <span className="play-mark" aria-hidden="true">
+                  <Play />
+                </span>
+              </a>
+            ) : (
+              <>
+                <img src={page.previewImage.src} width={page.previewImage.width} height={page.previewImage.height} alt={page.previewImage.alt} loading="lazy" />
+                {page.previewImage.caption ? <span className="sermons-focus__caption">{page.previewImage.caption}</span> : null}
+              </>
+            )}
           </Reveal>
           <Reveal className="sermons-focus__copy">
             <p className="eyebrow">{page.latestLabel}</p>
-            <h2 id="sermons-body-title">Nedeľné posolstvá</h2>
-            <p>{youtube.latestSermon.enabled && youtube.latestSermon.title ? youtube.latestSermon.title : page.latestUnavailable}</p>
-            <a className="button button--primary" href={channelHref} target="_blank" rel="noopener noreferrer">
-              {page.channelAction.label}
-              <ExternalLink aria-hidden="true" />
-            </a>
+            <h2 id="sermons-body-title">{latestSermon?.title ?? "Nedeľné posolstvá"}</h2>
+            {latestSermon ? <p>Najnovšie nedeľné biblické posolstvo z kanála Jána Tagaja.</p> : null}
+            <div className="inline-actions">
+              {latestSermon ? (
+                <a className="button button--primary" href={latestSermon.url} target="_blank" rel="noopener noreferrer">
+                  Prehrať kázeň
+                  <Play aria-hidden="true" />
+                </a>
+              ) : null}
+              <a className={latestSermon ? "button button--secondary" : "button button--primary"} href={channelHref} target="_blank" rel="noopener noreferrer">
+                {page.channelAction.label}
+                <ExternalLink aria-hidden="true" />
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>

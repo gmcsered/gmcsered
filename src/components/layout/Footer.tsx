@@ -27,9 +27,9 @@ export function Footer() {
                 {churchContent.identity.denomination}
               </p>
               <p className="footer-office">
-                sídlo ústredie: Panenská 10
+                Sídlo Ústredia: Panenská 10
                 <br />
-                811 03 Bratislava 1, IČO: 00468053
+                811 03 Bratislava 1
                 <br />
                 Zbor Sereď
               </p>

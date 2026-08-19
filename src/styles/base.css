@@ -9,6 +9,7 @@
   --cream: #fffaf2;
   --green: #6f8f6a;
   --clay: #b46b4f;
+  --accent-gold: #f0bd82;
   --rose: #b33a45;
   --text: #20242a;
   --muted: #626b73;
@@ -342,7 +343,7 @@ a {
 
 .eyebrow {
   margin: 0 0 0.75rem;
-  color: var(--clay);
+  color: var(--accent-gold);
   font-weight: 850;
   letter-spacing: 0;
 }
@@ -1031,7 +1032,7 @@ a {
   align-items: center;
   gap: 0.45rem;
   margin-bottom: 0.7rem;
-  color: var(--clay);
+  color: var(--accent-gold);
   font-weight: 850;
 }
 
@@ -2274,7 +2275,7 @@ a {
 
 .beliefs-page-hero__content .eyebrow {
   margin-bottom: 1.1rem;
-  color: var(--clay);
+  color: var(--accent-gold);
   font-size: 0.95rem;
 }
 
@@ -2308,7 +2309,7 @@ a {
 .beliefs-page-hero__scripture cite {
   display: block;
   margin-top: 0.45rem;
-  color: var(--clay);
+  color: var(--accent-gold);
   font-size: 0.95rem;
   font-style: normal;
   font-weight: 850;
@@ -2326,7 +2327,7 @@ a {
 
 .beliefs-page-hero__subheading {
   margin: 0.8rem 0 0.45rem;
-  color: var(--clay);
+  color: var(--accent-gold);
   font-size: clamp(1.15rem, 1.7vw, 1.55rem);
   font-weight: 850;
   line-height: 1.15;
@@ -3889,7 +3890,7 @@ a {
 }
 
 .hero .eyebrow {
-  color: #f8dcae;
+  color: var(--accent-gold);
 }
 
 .hero-card {
@@ -4138,7 +4139,7 @@ a {
 }
 
 .belief-cross-section__intro .eyebrow {
-  color: #f4cf91;
+  color: var(--accent-gold);
 }
 
 .belief-cross-section__intro h2 {
@@ -4499,7 +4500,7 @@ a {
 }
 
 .first-visit-invite__copy .eyebrow {
-  color: #f4cf91;
+  color: var(--accent-gold);
 }
 
 .first-visit-invite__copy p:not(.eyebrow) {
@@ -5530,7 +5531,7 @@ a {
 }
 
 .page-hero .eyebrow {
-  color: #f0bd82;
+  color: var(--accent-gold);
 }
 
 .page-hero--light h1,
@@ -5590,7 +5591,7 @@ a {
 }
 
 .home-promo-video__copy .eyebrow {
-  color: #f5d8a7;
+  color: var(--accent-gold);
 }
 
 .home-promo-video__copy h3 {
@@ -6042,7 +6043,7 @@ a {
   width: fit-content;
   padding: 0.3rem 0.6rem;
   border-radius: 999px;
-  color: #f5d8a7;
+  color: var(--accent-gold);
   background: rgba(7, 27, 48, 0.34);
   font-size: 0.78rem;
 }
@@ -6167,7 +6168,7 @@ a {
 
 .community-page-chapter {
   background:
-    radial-gradient(circle at 0 0, rgba(180, 107, 79, 0.12), transparent 22rem),
+    radial-gradient(circle at 0 0, rgba(240, 189, 130, 0.14), transparent 22rem),
     #fbfdff;
 }
 
@@ -6176,11 +6177,11 @@ a {
   isolation: isolate;
   overflow: hidden;
   padding: clamp(1.2rem, 2vw, 2rem);
-  border: 1px solid rgba(180, 107, 79, 0.14);
+  border: 1px solid rgba(240, 189, 130, 0.2);
   border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(246, 251, 255, 0.72)),
-    radial-gradient(circle at 8% 10%, rgba(180, 107, 79, 0.2), transparent 15rem),
+    radial-gradient(circle at 8% 10%, rgba(240, 189, 130, 0.2), transparent 15rem),
     radial-gradient(circle at 100% 100%, rgba(35, 105, 166, 0.14), transparent 17rem),
     repeating-linear-gradient(135deg, rgba(35, 105, 166, 0.05) 0 1px, transparent 1px 14px);
   box-shadow: var(--shadow-soft);
@@ -6206,7 +6207,7 @@ a {
   z-index: -1;
   width: 82px;
   height: 82px;
-  border: 1px solid rgba(180, 107, 79, 0.22);
+  border: 1px solid rgba(240, 189, 130, 0.26);
   border-radius: 50%;
   box-shadow:
     -18px 18px 0 rgba(35, 105, 166, 0.08),
@@ -6224,13 +6225,17 @@ a {
   height: 4px;
   margin-top: 0.65rem;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--clay), rgba(35, 105, 166, 0.42), transparent);
+  background: linear-gradient(90deg, var(--accent-gold), rgba(35, 105, 166, 0.42), transparent);
 }
 
 .warm-list {
   display: grid;
   gap: 0.55rem;
   margin: 1.3rem 0 1.6rem;
+}
+
+.community-story__copy .warm-list svg {
+  color: var(--accent-gold);
 }
 
 .warm-list li {
@@ -6306,7 +6311,7 @@ a {
 }
 
 .curated-gallery__item figcaption span {
-  color: #f0bd82;
+  color: var(--accent-gold);
   font-size: 0.78rem;
   font-weight: 850;
 }
@@ -6605,7 +6610,7 @@ a {
 
 .next-page-link__content .eyebrow {
   display: block;
-  color: #f0bd82;
+  color: var(--accent-gold);
 }
 
 .next-page-link__content strong {
@@ -8713,7 +8718,7 @@ a {
 
 .beliefs-page-hero__subheading {
   margin: 0.9rem 0 0.55rem;
-  color: #f0bd72;
+  color: var(--accent-gold);
   font-size: clamp(1.2rem, 1.65vw, 1.62rem);
   line-height: 1.16;
 }
@@ -9001,7 +9006,7 @@ a {
 }
 
 .curated-gallery__caption > span {
-  color: #f0bd82;
+  color: var(--accent-gold);
   font-size: 0.78rem;
   font-weight: 850;
 }
@@ -9108,7 +9113,7 @@ body.gallery-browser-open {
 }
 
 .gallery-browser__header span {
-  color: var(--clay);
+  color: var(--accent-gold);
   font-size: 0.78rem;
   font-weight: 850;
 }
@@ -9351,7 +9356,7 @@ body.gallery-browser-open {
   display: flex;
   align-items: center;
   gap: 0.42rem;
-  color: #f0bd82;
+  color: var(--accent-gold);
   font-size: 0.88rem;
   font-weight: 850;
 }
@@ -9881,7 +9886,7 @@ body.gallery-browser-open {
 
 .beliefs-page-hero__scripture cite {
   margin-top: 0.65rem;
-  color: #f0bd72;
+  color: var(--accent-gold);
   font-size: clamp(0.82rem, 0.95vw, 0.95rem);
   font-style: normal;
   font-weight: 800;
@@ -10089,7 +10094,7 @@ body.gallery-browser-open {
   }
 }
 
-/* Kázne: maintain the airy light hero, but give the orange label and the
+/* Kázne: maintain the airy light hero, but give the gold label and the
  * tall Slovak diacritics enough contrast and line-height. */
 .sermons-route .page-hero .eyebrow {
   display: inline-flex;
@@ -10695,7 +10700,7 @@ body.gallery-browser-open {
     padding: 0;
     border: 0;
     border-radius: 0;
-    color: #f0bd72;
+    color: var(--accent-gold);
     background: transparent;
     box-shadow: none;
     text-shadow:
@@ -10870,7 +10875,7 @@ body.gallery-browser-open {
   .sermons-route .page-hero .eyebrow {
     padding: 0;
     border: 0;
-    color: #f0bd72;
+    color: var(--accent-gold);
     background: transparent;
     box-shadow: none;
     text-shadow:
@@ -10930,5 +10935,444 @@ body.gallery-browser-open {
   .contact-location__map,
   .contact-location__map iframe {
     min-height: clamp(19rem, 80vw, 22rem);
+  }
+}
+
+/* Targeted August 2026 route refinements. */
+.program-intro__shapes {
+  background-image: none;
+}
+
+.program-intro__inner {
+  display: block;
+  min-height: 0;
+  height: auto;
+  padding-block: clamp(4rem, 8vh, 6.25rem);
+}
+
+.program-intro__copy {
+  max-width: 46rem;
+  transform: none;
+}
+
+.program-intro__actions {
+  justify-content: flex-start;
+  margin-top: 1.35rem;
+}
+
+@media (min-width: 1024px) {
+  .program-intro {
+    min-height: calc(100svh - var(--header-height));
+    height: calc(100svh - var(--header-height));
+  }
+
+  .program-intro__inner {
+    display: grid;
+    align-content: center;
+    min-height: 100%;
+    height: 100%;
+    padding-block: clamp(4rem, 8vh, 6.25rem);
+  }
+
+  .program-intro__copy {
+    max-width: 46rem;
+    transform: none;
+  }
+
+  .program-intro__actions {
+    justify-self: auto;
+    margin-top: 1.35rem;
+  }
+
+  .home-invitation.major-viewport-section,
+  .home-final.major-viewport-section {
+    display: block;
+    min-height: 0;
+  }
+
+  .home-invitation.major-viewport-section {
+    padding-block: clamp(3rem, 5.5vh, 4.4rem);
+  }
+
+  .home-final.major-viewport-section {
+    padding-block: clamp(3.2rem, 5.5vh, 4.5rem);
+  }
+
+  .home-final__layout {
+    min-height: 0;
+  }
+
+  .community-story {
+    height: clamp(33rem, 67svh, 40rem);
+  }
+
+  .community-magazine {
+    grid-template-rows: minmax(0, 0.84fr) minmax(0, 1.16fr);
+  }
+}
+
+.home-invitation__intro {
+  max-width: 46rem;
+  margin-bottom: clamp(1.35rem, 2.8vw, 2.25rem);
+}
+
+.home-invitation__intro h2 {
+  margin-bottom: 0.45rem;
+  font-size: clamp(1.75rem, 2.55vw, 2.45rem);
+  line-height: 1.12;
+}
+
+.home-invitation__intro p {
+  max-width: 60ch;
+  margin: 0;
+  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+}
+
+.home-promo-video {
+  grid-template-columns: minmax(18rem, 0.43fr) minmax(0, 0.57fr);
+  gap: clamp(0.85rem, 1.6vw, 1.35rem);
+  margin-top: 0;
+}
+
+.home-promo-video__copy {
+  min-height: clamp(21rem, 30vw, 25rem);
+  align-content: center;
+  gap: 0.6rem;
+  padding: clamp(1.35rem, 2.4vw, 2rem);
+}
+
+.home-promo-video__copy h3 {
+  font-size: clamp(2rem, 2.65vw, 2.75rem);
+}
+
+.home-promo-video__frame,
+.home-promo-video__frame video {
+  min-height: clamp(21rem, 30vw, 25rem);
+}
+
+.home-facts--panel {
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 0.45rem;
+}
+
+.home-facts--panel li {
+  padding: 0.7rem 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.94);
+  background: transparent;
+  font-size: 0.92rem;
+}
+
+.home-facts--panel li:first-child {
+  border-top-color: rgba(255, 255, 255, 0.28);
+}
+
+.home-facts--panel svg {
+  color: #f5d8a7;
+}
+
+.home-final__layout {
+  align-items: center;
+}
+
+.sermons-route .page-hero__media {
+  overflow: hidden;
+  background: transparent;
+}
+
+.sermons-route .page-hero__media::before {
+  display: none;
+}
+
+.sermons-route .page-hero__media img {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center 100%;
+  filter: none;
+  transform: none;
+}
+
+.sermons-route .page-hero--light .page-hero__overlay {
+  background: transparent;
+}
+
+.sermons-route .page-hero__content {
+  margin-left: clamp(9rem, 19vw, 20rem);
+}
+
+.sermons-route .page-hero .eyebrow {
+  width: min(100%, 18rem);
+  margin-inline-start: clamp(1.25rem, 3vw, 3rem);
+  text-align: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--accent-gold);
+  background: transparent;
+  box-shadow: none;
+  text-shadow: 0 1px 6px rgba(9, 38, 65, 0.64);
+}
+
+.sermons-route .page-hero::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  width: min(23vw, 22rem);
+  height: 100%;
+  background: url("/assets/church/decor/olive-tree-photographic.webp") right center / auto 106% no-repeat;
+  content: "";
+  opacity: 1;
+  -webkit-mask-image: none;
+  mask-image: none;
+  pointer-events: none;
+}
+
+.sermons-focus__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: inherit;
+}
+
+.sermons-focus__video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.first-visit-steps__photo > img {
+  object-position: 54% center;
+}
+
+.contact-location__map iframe {
+  opacity: 1 !important;
+  filter: saturate(1.14) contrast(1.06) !important;
+  mix-blend-mode: normal;
+}
+
+.contact-page {
+  background: var(--blue-soft);
+}
+
+.church-life-page .section-heading h2,
+.sunday-archive-section .section-heading h2 {
+  color: var(--blue-dark);
+}
+
+.about-pastor {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(1.6rem, 3.2vw, 2.5rem);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(35, 105, 166, 0.3), transparent 36rem),
+    radial-gradient(circle at 8% 92%, rgba(106, 166, 208, 0.14), transparent 32rem),
+    linear-gradient(135deg, #0d2c49 0%, var(--blue-deep) 52%, var(--blue-dark) 100%);
+}
+
+.about-pastor__layout {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(1.25rem, 2.6vw, 2.6rem);
+  align-items: center;
+}
+
+.about-pastor__photo {
+  width: min(100%, 22rem);
+  justify-self: start;
+  overflow: hidden;
+  border-radius: var(--radius);
+  aspect-ratio: 11 / 14;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1rem 2.7rem rgba(3, 21, 38, 0.3);
+}
+
+.about-pastor__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.about-pastor__copy {
+  max-width: 57rem;
+}
+
+.about-pastor__copy h2 {
+  margin: 0.1rem 0 0.45rem;
+  color: var(--white);
+  font-size: clamp(2.15rem, 3.05vw, 3.05rem);
+}
+
+.about-pastor__copy p:not(.eyebrow) {
+  max-width: 67ch;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.87);
+  font-size: clamp(0.9rem, 0.96vw, 0.98rem);
+  line-height: 1.38;
+}
+
+.about-pastor__copy strong {
+  color: var(--white);
+}
+
+.about-pastor__closing {
+  margin: 0.6rem 0 0;
+  padding: 0.55rem 0 0.55rem 0.8rem;
+  border-left: 3px solid var(--accent-gold);
+  color: var(--white) !important;
+  font-size: clamp(0.98rem, 1.08vw, 1.08rem) !important;
+  font-weight: 800;
+  line-height: 1.34 !important;
+}
+
+.program-actions {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f8fcff;
+}
+
+.program-actions::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url("/assets/church/program/program-actions-bg.jpg") center / cover no-repeat;
+  content: "";
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.program-actions .container {
+  position: relative;
+  z-index: 1;
+}
+
+.program-actions .section-heading h2 {
+  color: var(--blue-dark);
+}
+
+.program-event__date {
+  background: var(--blue-soft) !important;
+}
+
+.first-visit-steps__copy .compact-steps article {
+  border-color: rgba(23, 63, 103, 0.16);
+  background: linear-gradient(135deg, #d49a3e 0%, var(--accent-gold) 52%, #f7daa0 100%);
+  box-shadow: 0 0.55rem 1.2rem rgba(191, 143, 47, 0.17);
+}
+
+.first-visit-steps__copy .compact-steps article:hover {
+  background: linear-gradient(135deg, #ca8d31 0%, #eeb967 52%, #fae3b4 100%);
+}
+
+.first-visit-steps__copy .compact-steps article > span {
+  color: var(--blue-dark);
+  background: rgba(255, 255, 255, 0.93);
+}
+
+.first-visit-steps__copy .compact-steps h3 {
+  color: var(--blue-dark);
+}
+
+.first-visit-steps__copy .compact-steps p {
+  color: rgba(16, 47, 79, 0.88);
+}
+
+@media (max-width: 760px) {
+  .program-intro__inner {
+    padding-block: 3.5rem 4rem;
+  }
+
+  .program-intro__actions {
+    margin-top: 1.1rem;
+  }
+
+  .home-invitation.major-viewport-section {
+    padding-block: 2.6rem 3rem;
+  }
+
+  .home-promo-video {
+    grid-template-columns: 1fr;
+  }
+
+  .home-promo-video__copy,
+  .home-promo-video__frame,
+  .home-promo-video__frame video {
+    min-height: 0;
+  }
+
+  .home-promo-video__copy {
+    padding: 1.35rem;
+  }
+
+  .home-promo-video__frame {
+    aspect-ratio: 16 / 10;
+  }
+
+  .home-promo-video__frame video {
+    height: 100%;
+  }
+
+  .home-final.major-viewport-section {
+    padding-block: 2.8rem;
+  }
+
+  .sermons-route .page-hero__media {
+    background: transparent;
+  }
+
+  .sermons-route .page-hero__media::before {
+    display: none;
+  }
+
+  .sermons-route .page-hero__media img {
+    object-fit: cover;
+    filter: none;
+    transform: none;
+  }
+
+  .sermons-route .page-hero__content {
+    margin-left: auto;
+  }
+
+  .sermons-route .page-hero .eyebrow {
+    width: auto;
+    margin-inline-start: 0;
+    text-align: left;
+  }
+
+  .sermons-route .page-hero::after {
+    width: min(30vw, 10rem);
+    opacity: 1;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .sermons-route .page-hero--light .page-hero__overlay {
+    background: transparent;
+  }
+
+  .about-pastor__layout {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .about-pastor__photo {
+    width: min(100%, 28rem);
+  }
+
+  .about-pastor {
+    padding-block: 2.25rem;
+  }
+
+  .about-pastor__copy p:not(.eyebrow) {
+    font-size: 1rem;
+    line-height: 1.55;
   }
 }

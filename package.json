@@ -8,7 +8,8 @@
     "content:generate": "node scripts/generate-gallery-manifest.mjs",
     "content:check": "node scripts/generate-gallery-manifest.mjs --check",
     "sunday:upload": "node scripts/upload-sunday-gallery.mjs",
-    "prebuild": "npm run content:generate",
+    "sermons:refresh": "node scripts/refresh-latest-sermon.mjs",
+    "prebuild": "npm run sermons:refresh && npm run content:generate",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc -b"

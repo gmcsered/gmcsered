@@ -54,9 +54,7 @@ export function SermonsSection() {
                 Pozrieť YouTube kanál
                 <ExternalLink aria-hidden="true" />
               </a>
-            ) : (
-              <p className="note">Odkaz na YouTube kanál doplníme po overení.</p>
-            )}
+            ) : null}
             {youtube.latestSermonUrl ? (
               <a
                 className="button button--secondary"

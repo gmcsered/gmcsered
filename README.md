@@ -238,11 +238,17 @@ Komponenty nesmú hardcodovať súradnice. Ak sa overí presnejší vstup, uprav
 
 ## YouTube a Kázne
 
-YouTube nastavenia sú v `churchContent.youtube`.
+Stránka `/kazne` obnovuje najnovšiu nedeľnú kázeň pri každom produkčnom builde. Nepotrebuje sa týždenne meniť v komponente ani v obsahu.
 
-- Kanál: `https://www.youtube.com/@JanTagaj`
-- Konkrétny odkaz na poslednú kázeň doplňte až po overení verejnej URL.
-- Web nepoužíva autoplay, YouTube SDK ani embedded video skripty.
+Pre automatické obnovenie pridajte do lokálneho `.env` a do GitHub Actions secrets tento kľúč:
+
+```text
+YOUTUBE_API_KEY=...
+```
+
+Ide o bežný kľúč pre YouTube Data API v3; nikdy ho necommitujte. Preferovaná konfigurácia je verejný, sermon-only playlist: do GitHub Actions repository variable `YOUTUBE_SERMON_PLAYLIST_ID` vložte jeho ID. Skript `npm run sermons:refresh` potom zobrazí prvé (najnovšie) video z tohto playlistu. Ak playlist nie je nastavený, použije kanál Ján Tagaj, načíta posledných 50 uploadov a v `scripts/youtube-sermon-config.mjs` centralizovane odmietne Shorts, videá kratšie než 18 minút, pozvánky, promo videá, oznámenia, upútavky, teasery a reklamy. Za kázeň považuje iba dlhé video s relevantným kázňovým/biblickým označením alebo titulkom s dátumom nedele. Workflow nasadenia sa navyše spustí každú nedeľu o 12:30 UTC, aby sa nový výber zverejnil aj bez manuálnej úpravy kódu.
+
+Ak kľúč chýba, API neodpovie alebo sa nenájde vhodná kázeň, vytvorí sa bezpečný prázdny feed a verejná stránka ponechá iba funkčný odkaz na YouTube kanál. Návštevník nikdy neuvidí chybu API ani technický placeholder.
 
 ## Animácie
 
@@ -251,6 +257,8 @@ Voliteľné funkcie sú v `visualFeatures`. Ak treba pohyb zjednodušiť, vypnit
 ## Nasadenie
 
 Web je statická SPA aplikácia. Hosting musí mať fallback pravidlo na `index.html`, aby fungovali route adresy ako `/kto-sme` alebo `/prva-navsteva`.
+
+Vite assety (vrátane faviconov) používajú `%BASE_URL%`. GitHub Pages workflow si preto pred buildom vyžiada reálny `base_path` a odovzdá ho ako `VITE_BASE_PATH`; funguje to rovnako na projektovej Pages adrese aj pri nasadení pod inou cestou. Pri vlastnej doméne nastavte `VITE_BASE_PATH=/`.
 
 Po potvrdení domény vyplňte:
 

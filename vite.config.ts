@@ -1,10 +1,13 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 
-// The production site is served from the custom domain root.
-const productionBase = "/";
+export default defineConfig(({ mode }) => {
+  // GitHub Pages supplies its actual base path in CI. A custom domain can keep
+  // using the root path by setting VITE_BASE_PATH=/ in its deployment settings.
+  const productionBase = loadEnv(mode, ".", "").VITE_BASE_PATH || "/";
 
-export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? productionBase : "/",
-  plugins: [react()],
-}));
+  return {
+    base: mode === "production" ? productionBase : "/",
+    plugins: [react()],
+  };
+});

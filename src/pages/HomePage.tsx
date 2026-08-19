@@ -41,35 +41,32 @@ export function HomePage() {
       />
 
       <section className="home-invitation major-viewport-section" aria-labelledby="home-invitation-title">
-        <Reveal className="container home-invitation__grid">
-          <div>
-            <p className="eyebrow">Pozvanie</p>
-            <h2 id="home-invitation-title">{home.invitation.heading}</h2>
-            <p>{home.invitation.text}</p>
-          </div>
-          <ul className="home-facts" aria-label="Základné informácie">
-            <li>
-              <Clock aria-hidden="true" />
-              <span>{service.day} o {service.time}</span>
-            </li>
-            <li>
-              <MapPin aria-hidden="true" />
-              <span>{address.formatted}</span>
-            </li>
-            {home.invitation.facts.slice(2).map((fact) => (
-              <li key={fact}>
-                <Check aria-hidden="true" />
-                <span>{fact}</span>
-              </li>
-            ))}
-          </ul>
+        <Reveal className="container home-invitation__intro">
+          <h2 id="home-invitation-title">{promoVideo?.heading}</h2>
+          <p>{promoVideo?.text}</p>
         </Reveal>
-
         {promoVideo ? (
           <Reveal className="container home-promo-video">
             <div className="home-promo-video__copy">
-              <h3>{promoVideo.heading}</h3>
-              <p>{promoVideo.text}</p>
+              <p className="eyebrow">Pozvanie</p>
+              <h3>{home.invitation.heading}</h3>
+              <p>{home.invitation.text}</p>
+              <ul className="home-facts home-facts--panel" aria-label="Základné informácie">
+                <li>
+                  <Clock aria-hidden="true" />
+                  <span>{service.day} o {service.time}</span>
+                </li>
+                <li>
+                  <MapPin aria-hidden="true" />
+                  <span>{address.formatted}</span>
+                </li>
+                {home.invitation.facts.slice(2).map((fact) => (
+                  <li key={fact}>
+                    <Check aria-hidden="true" />
+                    <span>{fact}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="home-promo-video__media">
               <div className="home-promo-video__frame">

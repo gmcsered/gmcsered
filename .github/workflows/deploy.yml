@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Refresh the newest Sunday sermon after the morning service has been published.
+    - cron: "30 12 * * 0"
   workflow_dispatch:
 
 permissions:
@@ -31,15 +34,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Build site
         run: npm run build
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_SERMON_PLAYLIST_ID: ${{ vars.YOUTUBE_SERMON_PLAYLIST_ID }}
+          VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       # GitHub Pages serves this copy for direct refreshes on client-side routes.
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

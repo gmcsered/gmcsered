@@ -330,6 +330,10 @@ export const churchContent = {
     name: "GMC Sereď",
     url: "https://www.facebook.com/share/1LUpwXzPsU/?mibextid=wwXIfr",
   },
+  hopestreet: {
+    name: "HopeStreet Facebook",
+    url: "https://www.facebook.com/hopestreet.sk",
+  },
   youtube: {
     channelName: "Ján Tagaj",
     channelUrl: "https://www.youtube.com/@JanTagaj",
@@ -687,7 +691,6 @@ export const churchContent = {
       previewImage: iaImages.sermonsPreacher,
       channelAction: { label: "Pozrieť YouTube kanál Jána Tagaja", href: "https://www.youtube.com/@JanTagaj" },
       latestLabel: "Posledná kázeň",
-      latestUnavailable: "Konkrétny odkaz na poslednú kázeň doplníme po overení.",
       cta: { label: "Prvýkrát u nás", href: "/prva-navsteva", route: true },
       next: { label: "Pokračovať na Prvýkrát u nás", href: "/prva-navsteva", route: true, image: iaImages.aboutChildrenMoment },
     },
@@ -698,7 +701,12 @@ export const churchContent = {
       intro:
         "Možno neviete, čo očakávať. Možno máte otázky alebo trochu obáv. Nemusíte sa ničoho báť, radi vás privítame presne takých, akí ste.",
       image: iaImages.aboutChildrenMoment,
-      secondaryImage: iaImages.aboutChildrenMoment,
+      secondaryImage: asset(
+        "/assets/church/first-visit/first-visit-c10.jpg",
+        1206,
+        888,
+        "Dvaja muži počas spoločného času vonku",
+      ),
       steps: [
         { title: "Prídete", text: "Na adresu Dlhá 6 v Seredi môžete prísť niekoľko minút pred začiatkom." },
         { title: "Nájdete si miesto", text: "Sadnite si tam, kde sa budete cítiť príjemne. Ak nebudete vedieť kam, radi pomôžeme." },
@@ -1503,12 +1511,13 @@ const normalizeSitePaths = (value: unknown): void => {
 normalizeSitePaths(churchContent);
 
 export const getContactLinks = (): LinkTarget[] => {
-  const { contact, facebook, youtube, site } = churchContent;
+  const { contact, facebook, hopestreet, youtube, site } = churchContent;
   return [
     contact.phone ? { label: "Zavolať", href: `tel:${contact.phone.replace(/\s+/g, "")}` } : null,
     contact.email ? { label: "Napísať e-mail", href: `mailto:${contact.email}` } : null,
     facebook.url ? { label: "Facebook GMC Sereď", href: facebook.url } : null,
     youtube.enabled && youtube.channelUrl ? { label: "YouTube kanál Ján Tagaj", href: youtube.channelUrl } : null,
+    hopestreet.url ? { label: hopestreet.name, href: hopestreet.url } : null,
     site.nationalWebsiteUrl ? { label: site.nationalWebsiteLabel, href: site.nationalWebsiteUrl } : null,
   ].filter(Boolean) as LinkTarget[];
 };
