@@ -5,8 +5,10 @@ on:
     branches:
       - main
   schedule:
-    # Refresh the newest Sunday sermon after the morning service has been published.
-    - cron: "30 12 * * 0"
+    # 10:00 UTC is 12:00 in Bratislava during summer time; 11:00 UTC is 12:00 in winter time.
+    # The guard below allows only the candidate that is exactly 12:00 Europe/Bratislava.
+    - cron: "0 10 * * 1-3"
+    - cron: "0 11 * * 1-3"
   workflow_dispatch:
 
 permissions:
@@ -19,7 +21,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  refresh-window:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.local-time.outputs.should_deploy }}
+    steps:
+      - name: Check scheduled Slovak refresh window
+        id: local-time
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          TZ: Europe/Bratislava
+        run: |
+          if [ "$EVENT_NAME" != "schedule" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$(date '+%u %H:%M')" = "1 12:00" ] || [ "$(date '+%u %H:%M')" = "2 12:00" ] || [ "$(date '+%u %H:%M')" = "3 12:00" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping scheduled deploy outside Monday-Wednesday 12:00 Europe/Bratislava."
+          fi
+
   build:
+    needs: refresh-window
+    if: needs.refresh-window.outputs.should_deploy == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -42,8 +69,11 @@ jobs:
         run: npm run build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          YOUTUBE_SERMON_PLAYLIST_ID: ${{ vars.YOUTUBE_SERMON_PLAYLIST_ID }}
           VITE_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+
+      - name: Verify generated latest YouTube video data
+        run: |
+          node --input-type=module -e 'import { readFile } from "node:fs/promises"; const { sermon } = JSON.parse(await readFile("dist/data/latest-sermon.json", "utf8")); if (!sermon?.id || !sermon?.title) throw new Error("Latest YouTube video data was not generated."); console.log(`Latest YouTube video ready: ${sermon.title} (${sermon.id})`);'
 
       # GitHub Pages serves this copy for direct refreshes on client-side routes.
       - name: Add SPA fallback
@@ -56,6 +86,7 @@ jobs:
 
   deploy:
     needs: build
+    if: needs.build.result == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

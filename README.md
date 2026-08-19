@@ -246,9 +246,11 @@ Pre automatické obnovenie pridajte do lokálneho `.env` a do GitHub Actions sec
 YOUTUBE_API_KEY=...
 ```
 
-Ide o bežný kľúč pre YouTube Data API v3; nikdy ho necommitujte. Preferovaná konfigurácia je verejný, sermon-only playlist: do GitHub Actions repository variable `YOUTUBE_SERMON_PLAYLIST_ID` vložte jeho ID. Skript `npm run sermons:refresh` potom zobrazí prvé (najnovšie) video z tohto playlistu. Ak playlist nie je nastavený, použije kanál Ján Tagaj, načíta posledných 50 uploadov a v `scripts/youtube-sermon-config.mjs` centralizovane odmietne Shorts, videá kratšie než 18 minút, pozvánky, promo videá, oznámenia, upútavky, teasery a reklamy. Za kázeň považuje iba dlhé video s relevantným kázňovým/biblickým označením alebo titulkom s dátumom nedele. Workflow nasadenia sa navyše spustí každú nedeľu o 12:30 UTC, aby sa nový výber zverejnil aj bez manuálnej úpravy kódu.
+Ide o bežný kľúč pre YouTube Data API v3; nikdy ho necommitujte. Build skript z API rozpozná kanál `@JanTagaj`, vyžiada jeho uploads playlist a do verejného `public/data/latest-sermon.json` uloží iba najnovšie publikované video (ID, názov, dátum a náhľad). Kľúč nie je súčasťou JSON ani frontendového JavaScriptu.
 
-Ak kľúč chýba, API neodpovie alebo sa nenájde vhodná kázeň, vytvorí sa bezpečný prázdny feed a verejná stránka ponechá iba funkčný odkaz na YouTube kanál. Návštevník nikdy neuvidí chybu API ani technický placeholder.
+GitHub Pages workflow nasadzuje web pri každom pushi a po manuálnom spustení. Automatická kontrola najnovšieho videa beží len v pondelok, utorok a stredu o 12:00 `Europe/Bratislava`: GitHub Actions spúšťa kandidátne crony o 10:00 a 11:00 UTC a samotný workflow podľa časového pásma vyberie presne jeden správny beh pre letný alebo zimný čas.
+
+Ak kľúč chýba pri lokálnom builde alebo kanál nemá žiadne verejné video, vytvorí sa bezpečný prázdny feed a verejná stránka ponechá iba funkčný odkaz na YouTube kanál. Ak API zlyhá v GitHub Actions, build sa zámerne zastaví a log uvedie presnú chybu namiesto tichého nasadenia fallbacku.
 
 ## Animácie
 

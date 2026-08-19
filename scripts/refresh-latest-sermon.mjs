@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { isQualifyingSermon, parseYouTubeDuration, youtubeSermonConfig } from "./youtube-sermon-config.mjs";
+import { youtubeLatestVideoConfig } from "./youtube-sermon-config.mjs";
 
 const outputFile = resolve("public/data/latest-sermon.json");
 
@@ -19,8 +19,18 @@ const apiRequest = async (path, params) => {
   Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, String(value)));
 
   const response = await fetch(url);
+
   if (!response.ok) {
-    throw new Error(`YouTube Data API returned ${response.status}`);
+    let message = response.statusText;
+
+    try {
+      const payload = await response.json();
+      message = payload?.error?.message || message;
+    } catch {
+      // Keep the public status text if the API response is not JSON.
+    }
+
+    throw new Error(`YouTube Data API ${response.status}: ${message}`);
   }
 
   return response.json();
@@ -31,89 +41,56 @@ const chooseThumbnail = (thumbnails = {}) =>
 
 const refresh = async () => {
   const apiKey = process.env.YOUTUBE_API_KEY;
-  const sermonPlaylistId = process.env.YOUTUBE_SERMON_PLAYLIST_ID?.trim();
 
   if (!apiKey) {
-    console.warn("YOUTUBE_API_KEY is not set; latest sermon card will use its graceful channel-only fallback.");
+    console.warn("YOUTUBE_API_KEY is not set; latest-video data will use its graceful channel-only fallback.");
     await writeFeed(null);
     return;
   }
 
-  let playlistId = sermonPlaylistId;
+  const channel = await apiRequest("channels", {
+    part: "contentDetails",
+    forHandle: youtubeLatestVideoConfig.handle,
+    key: apiKey,
+  });
+  const resolvedChannel = channel.items?.[0];
+  const channelId = resolvedChannel?.id;
+  const uploadsPlaylistId = resolvedChannel?.contentDetails?.relatedPlaylists?.uploads;
 
-  if (!playlistId) {
-    const channel = await apiRequest("channels", {
-      part: "contentDetails",
-      id: youtubeSermonConfig.channelId,
-      key: apiKey,
-    });
-    playlistId = channel.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
-
-    if (!playlistId) {
-      throw new Error("Could not resolve the channel uploads playlist.");
-    }
+  if (!channelId || !uploadsPlaylistId) {
+    throw new Error(`Could not resolve the uploads playlist for @${youtubeLatestVideoConfig.handle}.`);
   }
 
   const uploads = await apiRequest("playlistItems", {
     part: "snippet,contentDetails",
-    playlistId,
-    maxResults: youtubeSermonConfig.maxCandidates,
+    playlistId: uploadsPlaylistId,
+    maxResults: 1,
     key: apiKey,
   });
-  const candidateIds = uploads.items
-    ?.map((item) => item.contentDetails?.videoId)
-    .filter(Boolean)
-    .join(",");
+  const latest = uploads.items?.[0];
+  const id = latest?.contentDetails?.videoId;
+  const title = latest?.snippet?.title?.trim();
+  const thumbnail = chooseThumbnail(latest?.snippet?.thumbnails);
 
-  if (!candidateIds) {
-    await writeFeed(null);
-    return;
-  }
-
-  const videos = await apiRequest("videos", {
-    part: "snippet,contentDetails",
-    id: candidateIds,
-    key: apiKey,
-  });
-  const orderedIds = new Map(uploads.items.map((item, index) => [item.contentDetails?.videoId, index]));
-  const orderedVideos = videos.items.sort((left, right) => (orderedIds.get(left.id) ?? Infinity) - (orderedIds.get(right.id) ?? Infinity));
-  const selected = sermonPlaylistId
-    ? orderedVideos[0]
-    : orderedVideos.find((video) =>
-        isQualifyingSermon({
-          id: video.id,
-          title: video.snippet?.title,
-          description: video.snippet?.description,
-          duration: video.contentDetails?.duration,
-        }),
-      );
-
-  if (!selected) {
-    await writeFeed(null);
-    return;
-  }
-
-  const title = selected.snippet?.title?.trim();
-  const thumbnail = chooseThumbnail(selected.snippet?.thumbnails);
-
-  if (!title || !thumbnail) {
+  if (!id || !title || !thumbnail) {
+    console.warn(`No public YouTube video is available yet for @${youtubeLatestVideoConfig.handle}; using the channel fallback.`);
     await writeFeed(null);
     return;
   }
 
   await writeFeed({
-    id: selected.id,
+    id,
     title,
     thumbnail,
-    publishedAt: selected.snippet?.publishedAt ?? "",
-    durationSeconds: parseYouTubeDuration(selected.contentDetails?.duration),
-    url: `https://www.youtube.com/watch?v=${selected.id}`,
-    embedUrl: `https://www.youtube-nocookie.com/embed/${selected.id}`,
-    source: sermonPlaylistId ? "playlist" : "channel-filter",
+    publishedAt: latest.contentDetails?.videoPublishedAt ?? latest.snippet?.publishedAt ?? "",
+    url: `https://www.youtube.com/watch?v=${id}`,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${id}`,
   });
+
+  console.log(`Latest YouTube video refreshed: ${title} (${id}) from @${youtubeLatestVideoConfig.handle}; channel ${channelId}.`);
 };
 
-refresh().catch(async (error) => {
-  console.warn(`Latest sermon refresh skipped: ${error instanceof Error ? error.message : "unknown error"}`);
-  await writeFeed(null);
+refresh().catch((error) => {
+  console.error(`Latest YouTube video refresh failed: ${error instanceof Error ? error.message : "unknown error"}`);
+  process.exitCode = 1;
 });

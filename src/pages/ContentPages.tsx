@@ -36,7 +36,6 @@ type LatestSermon = {
   url: string;
   embedUrl: string;
   publishedAt: string;
-  durationSeconds: number;
 };
 
 type LatestSermonFeed = {
