@@ -116,6 +116,12 @@ const iaImages = {
     ),
     sources: [
       {
+        src: "/assets/church/ia/beliefs-cross-mobile-final.png",
+        width: 864,
+        height: 1821,
+        media: "(max-width: 900px)",
+      },
+      {
         src: "/assets/church/ia/beliefs-cross-hero.jpg",
         width: 1536,
         height: 1024,
@@ -193,12 +199,22 @@ const iaImages = {
     1250,
     "Srdečné privítanie v zbore GMC Sereď",
   ),
-  sermonsBible: asset(
-    "/assets/church/ia/a_bright_serene_outdoor_still_life_scene_on_a_lig.png",
-    1536,
-    1024,
-    "Otvorená Biblia s modrou stužkou, bielym závesom, krajinou a olivovníkom",
-  ),
+  sermonsBible: {
+    ...asset(
+      "/assets/church/ia/a_bright_serene_outdoor_still_life_scene_on_a_lig.png",
+      1536,
+      1024,
+      "Otvorená Biblia s modrou stužkou, bielym závesom, krajinou a olivovníkom",
+    ),
+    sources: [
+      {
+        src: "/assets/church/ia/a_serene_outdoor_still_life_scene_bright_daylight.png",
+        width: 864,
+        height: 1821,
+        media: "(max-width: 760px)",
+      },
+    ],
+  } satisfies ResponsiveImageAsset,
   sermonsPreacher: iaAsset(
     "sermons-preacher.webp",
     1200,

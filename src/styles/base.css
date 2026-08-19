@@ -11112,12 +11112,13 @@ body.gallery-browser-open {
   }
 }
 
-/* Kázne uses one supplied, finished photograph. Its native 3:2 ratio keeps
- * the Bible, ribbon, curtain, landscape and olive tree intact on desktop. */
+/* Kázne uses one supplied, finished photograph. The hero fills the viewport
+ * space beneath the sticky header; anchoring the image to its bottom retains
+ * the complete Bible and ribbon when a wider desktop frame needs a crop. */
 .sermons-route .page-hero {
   min-height: 0;
-  height: auto;
-  aspect-ratio: 3 / 2;
+  height: min(calc(100svh - var(--header-height) - 1px), 52rem);
+  aspect-ratio: auto;
   align-items: start;
   background: #e5f1f6;
 }
@@ -11128,7 +11129,7 @@ body.gallery-browser-open {
 
 .sermons-route .page-hero__media img {
   object-fit: cover;
-  object-position: center;
+  object-position: center bottom;
   filter: none;
   transform: none;
 }
@@ -11140,7 +11141,7 @@ body.gallery-browser-open {
   );
   max-width: none;
   margin: 0 auto;
-  padding: clamp(3.5rem, 9vh, 7rem) 0 0;
+  padding: clamp(0.9rem, 2.4vh, 1.5rem) 0 0;
   align-self: start;
   justify-self: center;
   transform: none;
@@ -11148,7 +11149,7 @@ body.gallery-browser-open {
 
 .sermons-route .page-hero .eyebrow {
   width: auto;
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.45rem;
   padding: 0;
   border: 0;
   border-radius: 0;
@@ -11162,28 +11163,89 @@ body.gallery-browser-open {
 .sermons-route .page-hero h1 {
   max-width: 13ch;
   color: var(--blue-dark);
-  font-size: clamp(3rem, 4.3vw, 4.4rem);
-  line-height: 1.03;
+  font-size: clamp(2.8rem, 3.9vw, 4rem);
+  line-height: 0.98;
   text-wrap: balance;
 }
 
 .sermons-route .page-hero__content > p:not(.eyebrow) {
   max-width: 43ch;
+  margin-bottom: 0.75rem;
   color: var(--blue-dark);
+  font-size: clamp(0.98rem, 1.2vw, 1.1rem);
+  line-height: 1.4;
+}
+
+.sermons-route .page-hero__content .inline-actions {
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+/* On desktop, keep the copy in the curtain-and-sky space so the open Bible
+ * remains the unobstructed focal point in the lower centre of the photograph. */
+@media (min-width: 901px) {
+  .sermons-route .page-hero__content {
+    padding-top: clamp(0.35rem, 1.2vh, 0.75rem);
+    transform: translateY(calc(-1 * clamp(1.8rem, 3.8vh, 2.4rem)));
+  }
+
+  .sermons-route .page-hero h1 {
+    max-width: 13ch;
+    font-size: clamp(2.7rem, 3.55vw, 3.75rem);
+    line-height: 0.96;
+  }
+
+  .sermons-route .page-hero__content > p:not(.eyebrow) {
+    margin-bottom: 0.55rem;
+    font-weight: 600;
+    line-height: 1.36;
+  }
+
+  .sermons-route .page-hero__content .inline-actions {
+    margin-top: 0.65rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sermons-route .page-hero__content {
+    margin-right: auto;
+    margin-left: clamp(5.5rem, 8vw, 10rem);
+  }
 }
 
 .chapter-hub .section-heading h2 {
   color: var(--blue-dark);
 }
 
-@media (max-width: 760px) {
+@media (min-width: 761px) and (max-width: 900px) {
   .sermons-route .page-hero {
     min-height: 34rem;
+    height: auto;
+  }
+
+  .sermons-route .page-hero__media img {
+    object-position: 65% bottom;
+  }
+
+  .sermons-route .page-hero__content {
+    padding: clamp(2rem, 6vh, 3rem) 0 2rem;
+  }
+
+  .sermons-route .page-hero h1 {
+    max-width: 12ch;
+    font-size: clamp(2.65rem, 6.4vw, 3.55rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .sermons-route .page-hero {
+    min-height: 0;
+    height: calc(100svh - var(--header-height) - 1px);
     aspect-ratio: auto;
   }
 
   .sermons-route .page-hero__media img {
-    object-position: 78% center;
+    object-position: center bottom;
   }
 
   .sermons-route .page-hero__content {
@@ -11192,7 +11254,7 @@ body.gallery-browser-open {
       640px
     );
     margin: 0 auto;
-    padding: clamp(2.1rem, 8vh, 3rem) 0 2rem;
+    padding: clamp(8.5rem, 23vh, 11.5rem) 0 1.5rem;
   }
 
   .sermons-route .page-hero h1 {
@@ -11202,5 +11264,117 @@ body.gallery-browser-open {
 
   .sermons-route .page-hero__content > p:not(.eyebrow) {
     max-width: 34ch;
+  }
+}
+
+/* The Čomu veríme mobile composition is intentionally a single, tall story:
+ * an unmodified portrait cross photograph at the top and its natural deep-blue
+ * lower area continuing behind the semantic page content. Desktop retains its
+ * existing two-column composition above this breakpoint. */
+@media (max-width: 900px) {
+  .beliefs-page-hero {
+    min-height: 0;
+    overflow: hidden;
+    background: #031e36;
+  }
+
+  .beliefs-page-hero__background {
+    inset: 0 0 auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 864 / 1821;
+  }
+
+  .beliefs-page-hero__background img {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  .beliefs-page-hero__overlay {
+    display: none;
+  }
+
+  .beliefs-page-hero__layout {
+    display: block;
+    width: min(calc(100% - 2rem), 38rem);
+    min-height: 0;
+    padding: clamp(15.5rem, 67vw, 36rem) 0 clamp(3.5rem, 12vw, 5.5rem);
+  }
+
+  .beliefs-page-hero__content {
+    width: 100%;
+    max-width: none;
+    color: var(--white);
+    text-shadow: 0 2px 16px rgba(2, 20, 37, 0.45);
+  }
+
+  .beliefs-page-hero__content h1 {
+    max-width: none;
+    color: var(--white);
+    font-size: clamp(3.25rem, 14vw, 4.25rem);
+    line-height: 0.98;
+  }
+
+  .beliefs-page-hero__subheading {
+    margin: 0.85rem 0 0.7rem;
+    color: var(--accent-gold);
+    font-size: clamp(1.2rem, 5.4vw, 1.48rem);
+    line-height: 1.18;
+  }
+
+  .beliefs-page-hero__intro {
+    max-width: 34ch;
+    margin-bottom: 1.35rem;
+    color: rgba(255, 255, 255, 0.91);
+    font-size: 1rem;
+    line-height: 1.48;
+  }
+
+  .beliefs-page-hero__item {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-top-color: rgba(214, 232, 245, 0.32);
+  }
+
+  .beliefs-page-hero__item-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--accent-gold);
+  }
+
+  .beliefs-page-hero__item h2 {
+    color: var(--white);
+    font-size: 1.15rem;
+    line-height: 1.22;
+  }
+
+  .beliefs-page-hero__item p {
+    margin-top: 0.25rem;
+    color: rgba(225, 239, 248, 0.94);
+    font-size: 1rem;
+    line-height: 1.43;
+  }
+
+  .beliefs-page-hero__scripture {
+    max-width: 35rem;
+    margin: 2.5rem 0 0;
+    padding: 0.15rem 0 0.15rem 1rem;
+    border-left-color: var(--accent-gold);
+    background: none;
+    color: rgba(255, 255, 255, 0.93);
+  }
+
+  .beliefs-page-hero__scripture p {
+    font-size: clamp(1.1rem, 5vw, 1.35rem);
+    line-height: 1.42;
+  }
+
+  .beliefs-page-hero__scripture cite {
+    color: var(--accent-gold);
   }
 }

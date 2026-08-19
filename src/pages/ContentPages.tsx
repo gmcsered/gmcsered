@@ -145,10 +145,6 @@ export function BeliefsPage() {
         </picture>
         <div className="beliefs-page-hero__overlay" aria-hidden="true" />
         <div className="container beliefs-page-hero__layout">
-          <blockquote className="beliefs-page-hero__scripture">
-            <p>{page.scripture.text}</p>
-            <cite>{page.scripture.citation}</cite>
-          </blockquote>
           <div className="beliefs-page-hero__content">
             <h1 id="beliefs-page-title">{page.heading}</h1>
             <p className="beliefs-page-hero__subheading">{page.subheading}</p>
@@ -171,6 +167,10 @@ export function BeliefsPage() {
               })}
             </div>
           </div>
+          <blockquote className="beliefs-page-hero__scripture">
+            <p>{page.scripture.text}</p>
+            <cite>{page.scripture.citation}</cite>
+          </blockquote>
         </div>
       </section>
     </article>
