@@ -94,7 +94,7 @@ export function SundayArchive({ sundays }: SundayArchiveProps) {
     return (
       <Reveal className="sunday-archive-empty">
         <CalendarDays aria-hidden="true" />
-        <p>Nedeľný fotoarchív je pripravený. Prvé nedeľné galérie sa zobrazia po nahratí fotiek do Cloudflare R2.</p>
+        <p>Pripravujeme</p>
       </Reveal>
     );
   }

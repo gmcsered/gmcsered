@@ -236,7 +236,6 @@ export function ChurchLifePage() {
           <Reveal className="section-heading">
             <p className="eyebrow">Fotoarchív</p>
             <h2 id="sunday-archive-title">Nedele v GMC Sereď</h2>
-            <p>Chronologický archív nedeľných fotografií, oddelený od kurátorských výberov vyššie.</p>
           </Reveal>
           <SundayArchive sundays={sundayArchive} />
         </div>
@@ -395,6 +394,14 @@ export function ProgramPage() {
                     onClick={() => setIsAnniversaryInvitationOpen(true)}
                   >
                     {cardContents}
+                    <span className="program-action-card__invitation-preview" aria-hidden="true">
+                      <img
+                        src={siteAsset("/assets/church/events/100th-anniversary-invitation.jpg")}
+                        width={1132}
+                        height={1600}
+                        alt=""
+                      />
+                    </span>
                   </button>
                 </Reveal>
               ) : (

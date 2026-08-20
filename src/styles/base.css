@@ -6816,12 +6816,54 @@ a {
 
 .program-action-card--interactive {
   display: block;
+  position: relative;
   width: 100%;
   min-height: 100%;
+  overflow: hidden;
   appearance: none;
   cursor: pointer;
   font: inherit;
   text-align: left;
+}
+
+.program-action-card--interactive > svg,
+.program-action-card--interactive > h3,
+.program-action-card--interactive > p {
+  position: relative;
+  z-index: 1;
+}
+
+.program-action-card__invitation-preview {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 0;
+  display: block;
+  width: clamp(3.4rem, 4.5vw, 4.75rem);
+  overflow: hidden;
+  border: 1px solid rgba(240, 189, 114, 0.72);
+  border-radius: 0.3rem;
+  opacity: 0;
+  box-shadow: 0 8px 18px rgba(7, 31, 54, 0.2);
+  transform: translateY(0.4rem) scale(0.92);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  pointer-events: none;
+}
+
+.program-action-card__invitation-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+  .program-action-card--interactive:hover .program-action-card__invitation-preview,
+  .program-action-card--interactive:focus-visible .program-action-card__invitation-preview {
+    opacity: 0.96;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .program-action-card--interactive:focus-visible {
@@ -6856,10 +6898,11 @@ body.program-invitation-open {
 .program-invitation-modal__panel {
   position: relative;
   z-index: 1;
-  width: min(780px, calc(100vw - 2rem));
-  max-height: calc(100dvh - 2rem);
+  width: fit-content;
+  max-width: calc(100vw - 2rem);
+  max-height: 90dvh;
   overflow: auto;
-  padding: 0.85rem;
+  padding: 0.7rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   background: #071f36;
@@ -6902,9 +6945,12 @@ body.program-invitation-open {
 
 .program-invitation-modal__panel img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: calc(100vw - 4rem);
   height: auto;
+  max-height: 82dvh;
   margin: 0 auto;
+  object-fit: contain;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
 }
 
@@ -9700,10 +9746,16 @@ body.gallery-browser-open {
   }
 
   .program-invitation-modal__panel {
-    width: calc(100vw - 0.8rem);
-    max-height: calc(100dvh - 0.8rem);
+    width: fit-content;
+    max-width: calc(100vw - 0.8rem);
+    max-height: 90dvh;
     padding: 0.45rem;
     border-radius: 0.8rem;
+  }
+
+  .program-invitation-modal__panel img {
+    max-width: calc(100vw - 1.7rem);
+    max-height: 84dvh;
   }
 
   .program-invitation-modal__close {
