@@ -6778,16 +6778,29 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  margin-top: 0.45rem;
   color: var(--blue);
   font-size: 0.84rem;
   font-weight: 800;
 }
 
+.program-event__invitation-action {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
 .program-event__invitation-cue svg,
 .program-action-card__invitation-cue svg {
+  flex: 0 0 auto;
   width: 1rem;
   height: 1rem;
+}
+
+.program-event__invitation-cue {
+  max-width: 6.4rem;
+  line-height: 1.18;
 }
 
 .program-event__invitation-thumb {
@@ -11243,15 +11256,29 @@ body.gallery-browser-open {
   .program-event__invitation-thumb {
     width: 3.6rem;
   }
+
+  .program-event__invitation-action {
+    gap: 0.55rem;
+  }
+
+  .program-event__invitation-cue {
+    max-width: 5.6rem;
+    font-size: 0.78rem;
+  }
 }
 
 @media (max-width: 520px) {
   .program-event--interactive {
-    grid-template-columns: 1fr;
+    grid-template-columns: 86px minmax(0, 1fr);
   }
 
   .program-event__invitation-thumb {
     width: 4.2rem;
+  }
+
+  .program-event__invitation-action {
+    grid-column: 1 / -1;
+    justify-self: end;
   }
 
   .program-action-card__invitation-preview {

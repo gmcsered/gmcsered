@@ -26,16 +26,16 @@ export function ProgramEventCard({ event, onOpenInvitation }: ProgramEventCardPr
       <div className="program-event__details">
         <h3>{event.title}</h3>
         <p>{event.description}</p>
-        {invitation ? (
+      </div>
+      {invitation ? (
+        <span className="program-event__invitation-action">
+          <span className="program-event__invitation-thumb" aria-hidden="true">
+            <img src={invitation.src} width={invitation.width} height={invitation.height} alt="" loading="lazy" />
+          </span>
           <span className="program-event__invitation-cue">
             <Eye aria-hidden="true" />
             Pozrieť pozvánku
           </span>
-        ) : null}
-      </div>
-      {invitation ? (
-        <span className="program-event__invitation-thumb" aria-hidden="true">
-          <img src={invitation.src} width={invitation.width} height={invitation.height} alt="" loading="lazy" />
         </span>
       ) : null}
     </>
