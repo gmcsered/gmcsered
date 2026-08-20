@@ -88,11 +88,13 @@ function parseProgramText(source) {
 
   const events = eventLines.map(({ line, lineNumber }) => {
     const parts = line.split("|").map((part) => part.trim());
-    if (parts.length !== 4 || parts.some((part) => !part)) {
-      throw new Error(`public/content/program/program.txt riadok ${lineNumber}: použite formát "dátum | čas | názov | popis".`);
+    if ((parts.length !== 4 && parts.length !== 5) || parts.slice(0, 4).some((part) => !part)) {
+      throw new Error(
+        `public/content/program/program.txt riadok ${lineNumber}: použite formát "dátum | čas | názov | popis" alebo "dátum | čas | názov | popis | obrázok pozvánky".`,
+      );
     }
 
-    const [date, time, eventTitle, description] = parts;
+    const [date, time, eventTitle, description, invitationImage] = parts;
     if (!/^\d{1,2}\.\d{1,2}\.$/.test(date)) {
       throw new Error(`public/content/program/program.txt riadok ${lineNumber}: dátum musí byť napr. "6.9.".`);
     }
@@ -100,7 +102,13 @@ function parseProgramText(source) {
       throw new Error(`public/content/program/program.txt riadok ${lineNumber}: čas musí byť napr. "9:30".`);
     }
 
-    return { date, time, title: eventTitle, description };
+    return {
+      date,
+      time,
+      title: eventTitle,
+      description,
+      ...(invitationImage ? { invitationImage } : {}),
+    };
   });
 
   return {

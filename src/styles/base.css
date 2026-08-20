@@ -6725,6 +6725,15 @@ a {
     border-color 220ms ease;
 }
 
+.program-event--interactive {
+  width: 100%;
+  grid-template-columns: 105px minmax(0, 1fr) auto;
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
 .program-event:hover,
 .program-event:focus-visible {
   outline: none;
@@ -6762,6 +6771,47 @@ a {
 .program-event p {
   margin: 0;
   color: #657383;
+}
+
+.program-event__invitation-cue,
+.program-action-card__invitation-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+  color: var(--blue);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.program-event__invitation-cue svg,
+.program-action-card__invitation-cue svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.program-event__invitation-thumb {
+  display: block;
+  width: clamp(3.4rem, 4.6vw, 4.9rem);
+  overflow: hidden;
+  border: 1px solid rgba(240, 189, 114, 0.7);
+  border-radius: 0.35rem;
+  box-shadow: 0 8px 18px rgba(7, 31, 54, 0.15);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.program-event__invitation-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.program-event--interactive:hover .program-event__invitation-thumb,
+.program-event--interactive:focus-visible .program-event__invitation-thumb {
+  box-shadow: 0 12px 24px rgba(7, 31, 54, 0.22);
+  transform: scale(1.04);
 }
 
 .program-actions {
@@ -6815,8 +6865,10 @@ a {
 }
 
 .program-action-card--interactive {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: relative;
+  gap: 0;
   width: 100%;
   min-height: 100%;
   overflow: hidden;
@@ -6828,24 +6880,22 @@ a {
 
 .program-action-card--interactive > svg,
 .program-action-card--interactive > h3,
-.program-action-card--interactive > p {
+.program-action-card--interactive > p,
+.program-action-card--interactive > span {
   position: relative;
   z-index: 1;
 }
 
 .program-action-card__invitation-preview {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 0.75rem;
-  z-index: 0;
   display: block;
-  width: clamp(3.4rem, 4.5vw, 4.75rem);
+  width: clamp(3.7rem, 4.8vw, 5.15rem);
+  margin-top: 0.75rem;
   overflow: hidden;
   border: 1px solid rgba(240, 189, 114, 0.72);
   border-radius: 0.3rem;
-  opacity: 0;
+  opacity: 0.92;
   box-shadow: 0 8px 18px rgba(7, 31, 54, 0.2);
-  transform: translateY(0.4rem) scale(0.92);
+  transform: translateY(0) scale(1);
   transition:
     opacity 180ms ease,
     transform 180ms ease;
@@ -6861,8 +6911,8 @@ a {
 @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
   .program-action-card--interactive:hover .program-action-card__invitation-preview,
   .program-action-card--interactive:focus-visible .program-action-card__invitation-preview {
-    opacity: 0.96;
-    transform: translateY(0) scale(1);
+    opacity: 1;
+    transform: translateY(-0.12rem) scale(1.08);
   }
 }
 
@@ -11174,6 +11224,39 @@ body.gallery-browser-open {
 
 .program-event__date {
   background: var(--blue-soft) !important;
+}
+
+.program-event--interactive {
+  grid-template-columns: 112px minmax(0, 1fr) auto;
+}
+
+.program-event--interactive:focus-visible {
+  outline: 3px solid rgba(240, 189, 130, 0.95);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .program-event--interactive {
+    grid-template-columns: 86px minmax(0, 1fr) auto;
+  }
+
+  .program-event__invitation-thumb {
+    width: 3.6rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .program-event--interactive {
+    grid-template-columns: 1fr;
+  }
+
+  .program-event__invitation-thumb {
+    width: 4.2rem;
+  }
+
+  .program-action-card__invitation-preview {
+    width: 4.4rem;
+  }
 }
 
 .first-visit-steps__copy .compact-steps article {

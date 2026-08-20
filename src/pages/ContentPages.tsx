@@ -4,6 +4,7 @@ import {
   Check,
   Clock,
   Cross,
+  Eye,
   ExternalLink,
   Heart,
   Mail,
@@ -13,8 +14,9 @@ import {
   Users,
   Utensils,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { churchContent } from "../content/churchContent";
+import { InvitationLightbox, type InvitationImage } from "../components/ui/InvitationLightbox";
 import { NextPageLink } from "../components/ui/NextPageLink";
 import { PageHero } from "../components/ui/PageHero";
 import { ProgramEventCard } from "../components/sections/ProgramEventCard";
@@ -28,6 +30,13 @@ import { siteAsset } from "../utils/site";
 const routeAttr = (route?: boolean) => (route ? "true" : undefined);
 
 const beliefIcons = [Cross, Heart, BookOpen, Check, Users];
+
+const anniversaryInvitation: InvitationImage = {
+  src: siteAsset("/assets/church/events/100th-anniversary-invitation.jpg"),
+  alt: "Pozvánka na 100. výročie založenia zboru GMC Sereď, 13. september 2026",
+  width: 1132,
+  height: 1600,
+};
 
 type LatestSermon = {
   id: string;
@@ -288,27 +297,7 @@ export function ChurchLifePage() {
 
 export function ProgramPage() {
   const page = churchContent.pages.program;
-  const [isAnniversaryInvitationOpen, setIsAnniversaryInvitationOpen] = useState(false);
-  const invitationDialogRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (!isAnniversaryInvitationOpen) return undefined;
-
-    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsAnniversaryInvitationOpen(false);
-    };
-
-    document.body.classList.add("program-invitation-open");
-    document.addEventListener("keydown", closeOnEscape);
-    window.requestAnimationFrame(() => invitationDialogRef.current?.focus());
-
-    return () => {
-      document.body.classList.remove("program-invitation-open");
-      document.removeEventListener("keydown", closeOnEscape);
-      previouslyFocused?.focus();
-    };
-  }, [isAnniversaryInvitationOpen]);
+  const [openInvitation, setOpenInvitation] = useState<InvitationImage | null>(null);
 
   return (
     <article className="route-page program-route">
@@ -361,7 +350,7 @@ export function ProgramPage() {
             <h2 id="program-title">{programData.title}</h2>
             <div className="program-events" aria-label={programData.monthLabel}>
               {programData.events.map((event) => (
-                <ProgramEventCard event={event} key={`${event.date}-${event.time}-${event.title}`} />
+                <ProgramEventCard event={event} key={`${event.date}-${event.time}-${event.title}`} onOpenInvitation={setOpenInvitation} />
               ))}
             </div>
           </Reveal>
@@ -381,6 +370,17 @@ export function ProgramPage() {
                   <Check aria-hidden="true" />
                   <h3>{action.title}</h3>
                   <p>{action.text}</p>
+                  {isAnniversaryAction ? (
+                    <>
+                      <span className="program-action-card__invitation-preview" aria-hidden="true">
+                        <img src={anniversaryInvitation.src} width={anniversaryInvitation.width} height={anniversaryInvitation.height} alt="" />
+                      </span>
+                      <span className="program-action-card__invitation-cue">
+                        <Eye aria-hidden="true" />
+                        Pozrieť pozvánku
+                      </span>
+                    </>
+                  ) : null}
                 </>
               );
 
@@ -390,18 +390,11 @@ export function ProgramPage() {
                     className="program-action-card program-action-card--interactive"
                     type="button"
                     aria-label="Zobraziť pozvánku na 100. výročie"
-                    aria-controls="anniversary-invitation-dialog"
-                    onClick={() => setIsAnniversaryInvitationOpen(true)}
+                    aria-controls="program-invitation-dialog"
+                    aria-haspopup="dialog"
+                    onClick={() => setOpenInvitation(anniversaryInvitation)}
                   >
                     {cardContents}
-                    <span className="program-action-card__invitation-preview" aria-hidden="true">
-                      <img
-                        src={siteAsset("/assets/church/events/100th-anniversary-invitation.jpg")}
-                        width={1132}
-                        height={1600}
-                        alt=""
-                      />
-                    </span>
                   </button>
                 </Reveal>
               ) : (
@@ -413,41 +406,13 @@ export function ProgramPage() {
           </div>
         </div>
       </section>
-      {isAnniversaryInvitationOpen ? (
-        <div className="program-invitation-modal" role="presentation">
-          <button
-            className="program-invitation-modal__backdrop"
-            type="button"
-            aria-label="Zatvoriť pozvánku"
-            onClick={() => setIsAnniversaryInvitationOpen(false)}
-          />
-          <section
-            className="program-invitation-modal__panel"
-            id="anniversary-invitation-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Pozvánka na 100. výročie"
-            ref={invitationDialogRef}
-            tabIndex={-1}
-          >
-            <div className="program-invitation-modal__header">
-              <button
-                className="program-invitation-modal__close"
-                type="button"
-                aria-label="Zatvoriť pozvánku"
-                onClick={() => setIsAnniversaryInvitationOpen(false)}
-              >
-                ×
-              </button>
-            </div>
-            <img
-              src={siteAsset("/assets/church/events/100th-anniversary-invitation.jpg")}
-              width={1132}
-              height={1600}
-              alt="Pozvánka na 100. výročie založenia zboru GMC Sereď, 13. september 2026"
-            />
-          </section>
-        </div>
+      {openInvitation ? (
+        <InvitationLightbox
+          invitation={openInvitation}
+          id="program-invitation-dialog"
+          label={openInvitation.alt}
+          onClose={() => setOpenInvitation(null)}
+        />
       ) : null}
       <NextPageLink link={page.next} />
     </article>
