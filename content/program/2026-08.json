@@ -48,7 +48,11 @@
       "title": "Nedeľná bohoslužba",
       "description": "Pastor Ján Tagaj",
       "speaker": "Pastor Ján Tagaj",
-      "published": true
+      "published": true,
+      "invitationImage": "/content/invitations/program/2026-08/2026-08-23-bohosluzba-1787231365861.webp",
+      "invitationWidth": 1080,
+      "invitationHeight": 1080,
+      "invitationAlt": "Pozvánka: Nedeľná bohoslužba, 23.8."
     },
     {
       "id": "2026-08-29-rodinny-den",

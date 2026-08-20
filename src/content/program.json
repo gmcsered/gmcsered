@@ -41,7 +41,11 @@
       "time": "9:30",
       "title": "Nedeľná bohoslužba",
       "description": "Pastor Ján Tagaj",
-      "speaker": "Pastor Ján Tagaj"
+      "speaker": "Pastor Ján Tagaj",
+      "invitationImage": "/content/invitations/program/2026-08/2026-08-23-bohosluzba-1787231365861.webp",
+      "invitationAlt": "Pozvánka: Nedeľná bohoslužba, 23.8.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1080
     },
     {
       "id": "2026-08-29-rodinny-den",
