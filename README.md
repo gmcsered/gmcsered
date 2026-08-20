@@ -6,6 +6,26 @@ Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React
 
 Web ostáva jednoduchý statický web: jeden príkaz skontroluje obsah, pripraví fotky, vytvorí build, commitne zmeny a pošle ich na GitHub. GitHub Actions potom web automaticky zverejní. Nie je potrebný žiadny redakčný systém ani server.
 
+### Ako upravovať obsah GMC webu
+
+Najjednoduchší postup je použiť lokálne menu:
+
+```bash
+cd <project>
+npm run content
+```
+
+Menu ponúkne tieto možnosti:
+
+- `Program` – vyberiete mesiac, pridáte/upravíte/vymažete udalosť a môžete jej pridať pozvánku.
+- `Pozvánky` – rýchla správa pozvánky ku konkrétnej programovej udalosti.
+- `Nedeľné fotografie` – pridanie novej nedele z priečinka fotiek; systém vytvorí WebP fotky, náhľady a manifest galérie.
+- `Špeciálne udalosti` – úprava udalostí ako `100. výročie`, vrátane pozvánky a viditeľnosti.
+- `Náhľad webu` – spustí lokálny Vite náhľad.
+- `Publikovať zmeny` – skontroluje obsah, spustí build, ukáže zmenené súbory a až po potvrdení commitne a pushne na `origin/main`.
+
+Editovateľný zdroj obsahu je v priečinku `content/`. Generované súbory v `src/content/` a `public/content/` sa vytvárajú automaticky cez menu alebo cez `npm run content:generate`.
+
 ### Nedeľné fotky
 
 Toto je bežný týždenný postup pre nedeľný fotoarchív `Nedele v GMC Sereď`.

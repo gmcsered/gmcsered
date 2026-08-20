@@ -2,10 +2,13 @@ import monthlyProgram from "./program.json";
 import { siteAsset } from "../utils/site";
 
 export type ProgramEvent = {
+  id?: string;
   date: string;
   time: string;
   title: string;
   description: string;
+  speaker?: string;
+  published?: boolean;
   invitationImage?: string;
   invitationAlt?: string;
   invitationWidth?: number;

@@ -24,19 +24,13 @@ import { ChurchLifeGalleries } from "../components/sections/ChurchLifeGalleries"
 import { SundayArchive } from "../components/sections/SundayArchive";
 import { Reveal } from "../components/ui/Reveal";
 import { programData } from "../content/program";
+import { specialEvents } from "../content/specialEvents";
 import { sundayArchive } from "../content/sundayArchive";
 import { siteAsset } from "../utils/site";
 
 const routeAttr = (route?: boolean) => (route ? "true" : undefined);
 
 const beliefIcons = [Cross, Heart, BookOpen, Check, Users];
-
-const anniversaryInvitation: InvitationImage = {
-  src: siteAsset("/assets/church/events/100th-anniversary-invitation.jpg"),
-  alt: "Pozvánka na 100. výročie založenia zboru GMC Sereď, 13. september 2026",
-  width: 1132,
-  height: 1600,
-};
 
 type LatestSermon = {
   id: string;
@@ -298,6 +292,15 @@ export function ChurchLifePage() {
 export function ProgramPage() {
   const page = churchContent.pages.program;
   const [openInvitation, setOpenInvitation] = useState<InvitationImage | null>(null);
+  const anniversaryEvent = specialEvents.find((event) => event.id === "100-vyrocie" && event.published !== false);
+  const anniversaryInvitation = anniversaryEvent?.invitationImage
+    ? {
+        src: anniversaryEvent.invitationImage,
+        alt: anniversaryEvent.invitationAlt ?? anniversaryEvent.title,
+        width: anniversaryEvent.invitationWidth,
+        height: anniversaryEvent.invitationHeight,
+      }
+    : null;
 
   return (
     <article className="route-page program-route">
@@ -365,12 +368,14 @@ export function ProgramPage() {
           <div className="program-action-grid">
             {page.actions.map((action) => {
               const isAnniversaryAction = action.title === "Pripravujeme 100. výročie";
+              const actionTitle = isAnniversaryAction ? anniversaryEvent?.title ?? action.title : action.title;
+              const actionText = isAnniversaryAction ? anniversaryEvent?.description ?? action.text : action.text;
               const cardContents = (
                 <>
                   <Check aria-hidden="true" />
-                  <h3>{action.title}</h3>
-                  <p>{action.text}</p>
-                  {isAnniversaryAction ? (
+                  <h3>{actionTitle}</h3>
+                  <p>{actionText}</p>
+                  {isAnniversaryAction && anniversaryInvitation ? (
                     <>
                       <span className="program-action-card__invitation-preview" aria-hidden="true">
                         <img src={anniversaryInvitation.src} width={anniversaryInvitation.width} height={anniversaryInvitation.height} alt="" />
@@ -384,12 +389,12 @@ export function ProgramPage() {
                 </>
               );
 
-              return isAnniversaryAction ? (
+              return isAnniversaryAction && anniversaryInvitation ? (
                 <Reveal className="program-action-card-wrapper" key={action.title}>
                   <button
                     className="program-action-card program-action-card--interactive"
                     type="button"
-                    aria-label="Zobraziť pozvánku na 100. výročie"
+                    aria-label={`Zobraziť pozvánku: ${actionTitle}`}
                     aria-controls="program-invitation-dialog"
                     aria-haspopup="dialog"
                     onClick={() => setOpenInvitation(anniversaryInvitation)}

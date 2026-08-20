@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "id": "100-vyrocie",
+      "title": "Pripravujeme 100. výročie",
+      "description": "Pripravujeme 100. výročie stretávania metodistického spoločenstva v Seredi.",
+      "date": "2026-09-13",
+      "published": true,
+      "sortOrder": 10,
+      "invitationImage": "/assets/church/events/100th-anniversary-invitation.jpg",
+      "invitationAlt": "Pozvánka na 100. výročie založenia zboru GMC Sereď, 13. september 2026",
+      "invitationWidth": 1132,
+      "invitationHeight": 1600
+    }
+  ]
+}
