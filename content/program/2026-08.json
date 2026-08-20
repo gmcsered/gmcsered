@@ -60,7 +60,11 @@
       "time": "15:00",
       "title": "Rodinný deň",
       "description": "Spoločný čas pre rodiny a priateľov.",
-      "published": true
+      "published": true,
+      "invitationImage": "/content/invitations/program/2026-08/2026-08-29-rodinny-den-1787233083080.webp",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350,
+      "invitationAlt": "Pozvánka: Rodinný deň, 29.8."
     },
     {
       "id": "2026-08-30-bohosluzba",
