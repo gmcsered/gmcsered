@@ -22,7 +22,6 @@ const allowedPublishPrefixes = [
   "src/content/specialEvents.json",
   "src/content/sundays.json",
   "src/generated/gallery-manifest.json",
-  "README.md",
 ];
 
 const rl = readline.createInterface({
@@ -439,13 +438,29 @@ async function previewSite() {
 }
 
 function gitChangedFiles() {
-  const result = spawnSync("git", ["status", "--porcelain"], { cwd: rootDirectory, encoding: "utf8" });
+  const result = spawnSync("git", ["status", "--porcelain=v1", "-z", "-uall"], { cwd: rootDirectory, encoding: "utf8" });
   if (result.status !== 0) throw new Error("Nepodarilo sa zistiť git status.");
-  return result.stdout
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => line.slice(3));
+  const records = result.stdout.split("\0").filter(Boolean);
+  const changedFiles = [];
+
+  for (let index = 0; index < records.length; index += 1) {
+    const record = records[index];
+    if (record.length < 4) continue;
+
+    const status = record.slice(0, 2);
+    const filePath = record.slice(3);
+    if (filePath) changedFiles.push(filePath);
+
+    if (status.includes("R") || status.includes("C")) {
+      const originalPath = records[index + 1];
+      if (originalPath) {
+        changedFiles.push(originalPath);
+        index += 1;
+      }
+    }
+  }
+
+  return [...new Set(changedFiles)];
 }
 
 async function publishChanges() {
