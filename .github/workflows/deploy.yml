@@ -6,7 +6,7 @@ on:
       - main
   schedule:
     # 10:00 UTC is 12:00 in Bratislava during summer time; 11:00 UTC is 12:00 in winter time.
-    # The guard below allows only the candidate that is exactly 12:00 Europe/Bratislava.
+    # The guard below allows only the DST candidate matching Bratislava's current UTC offset.
     - cron: "0 10 * * 1-3"
     - cron: "0 11 * * 1-3"
   workflow_dispatch:
@@ -30,18 +30,40 @@ jobs:
         id: local-time
         env:
           EVENT_NAME: ${{ github.event_name }}
-          TZ: Europe/Bratislava
+          SCHEDULE_EXPR: ${{ github.event.schedule }}
         run: |
+          set -euo pipefail
+
           if [ "$EVENT_NAME" != "schedule" ]; then
+            echo "Non-scheduled ${EVENT_NAME} run: deployment will proceed."
             echo "should_deploy=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          if [ "$(date '+%u %H:%M')" = "1 12:00" ] || [ "$(date '+%u %H:%M')" = "2 12:00" ] || [ "$(date '+%u %H:%M')" = "3 12:00" ]; then
+          bratislava_offset="$(TZ=Europe/Bratislava date '+%z')"
+
+          case "$bratislava_offset" in
+            +0200)
+              expected_schedule="0 10 * * 1-3"
+              ;;
+            +0100)
+              expected_schedule="0 11 * * 1-3"
+              ;;
+            *)
+              expected_schedule=""
+              ;;
+          esac
+
+          echo "Scheduled cron expression: ${SCHEDULE_EXPR}"
+          echo "Europe/Bratislava UTC offset: ${bratislava_offset}"
+          echo "Valid DST candidate cron expression: ${expected_schedule:-none}"
+
+          if [ -n "$expected_schedule" ] && [ "$SCHEDULE_EXPR" = "$expected_schedule" ]; then
+            echo "This scheduled run is the valid Bratislava noon DST candidate. Deployment will proceed."
             echo "should_deploy=true" >> "$GITHUB_OUTPUT"
           else
+            echo "This scheduled run is not the valid Bratislava noon DST candidate. Deployment will be skipped."
             echo "should_deploy=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping scheduled deploy outside Monday-Wednesday 12:00 Europe/Bratislava."
           fi
 
   build:
