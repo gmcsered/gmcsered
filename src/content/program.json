@@ -64,7 +64,11 @@
       "time": "9:30",
       "title": "Nedeľná bohoslužba",
       "description": "Pastor Ján Tagaj",
-      "speaker": "Pastor Ján Tagaj"
+      "speaker": "Pastor Ján Tagaj",
+      "invitationImage": "/content/invitations/program/2026-08/2026-08-30-bohosluzba-1787924330058.webp",
+      "invitationAlt": "Pozvánka: Nedeľná bohoslužba, 30.8.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1080
     }
   ]
 }
