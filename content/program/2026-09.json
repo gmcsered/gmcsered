@@ -1,18 +1,18 @@
 {
   "id": "2026-09",
+  "active": true,
   "monthLabel": "September 2026",
   "title": "September",
   "poster": "/content/program/2026-09/2026-09-mesacny-plagat-1787927274592.webp",
-  "posterAlt": "Mesačný plagát: September 2026",
-  "posterWidth": 1080,
-  "posterHeight": 1350,
+  "posterAlt": "Mesačný plagát: September – 09 / 2026 v GMC Sereď",
   "events": [
     {
       "id": "2026-09-6-9-nedelna-bohosluzba",
       "date": "6.9.",
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
-      "description": "Ján Tagaj",
+      "description": "",
+      "published": true,
       "speaker": "Ján Tagaj"
     },
     {
@@ -20,19 +20,21 @@
       "date": "13.9.",
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
-      "description": "100.VÝROČIE",
+      "description": "",
+      "published": true,
       "speaker": "100.VÝROČIE",
       "invitationImage": "/content/invitations/program/2026-09/2026-09-13-9-nedelna-bohosluzba-1787930008373.webp",
-      "invitationAlt": "Pozvánka: Nedeľná BOHOSLUŽBA, 13.9.",
       "invitationWidth": 1132,
-      "invitationHeight": 1600
+      "invitationHeight": 1600,
+      "invitationAlt": "Pozvánka: Nedeľná BOHOSLUŽBA, 13.9."
     },
     {
       "id": "2026-09-20-9-nedelna-bohosluzba",
       "date": "20.9.",
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
-      "description": "JÁN TAGAJ",
+      "description": "",
+      "published": true,
       "speaker": "JÁN TAGAJ"
     },
     {
@@ -40,8 +42,11 @@
       "date": "27.9.",
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
-      "description": "JÁN TAGAJ",
+      "description": "",
+      "published": true,
       "speaker": "JÁN TAGAJ"
     }
-  ]
+  ],
+  "posterWidth": 1080,
+  "posterHeight": 1350
 }
