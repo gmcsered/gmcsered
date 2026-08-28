@@ -5,6 +5,8 @@ import path from "node:path";
 import readline from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { resolveUserPathInput } from "./content-paths.mjs";
+import { compareProgramMonthIds, isProgramMonthId, programMonthLabel, programMonthName } from "./program-months.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(rootDirectory, "content");
@@ -23,20 +25,6 @@ const allowedPublishPrefixes = [
   "src/content/specialEvents.json",
   "src/content/sundays.json",
   "src/generated/gallery-manifest.json",
-];
-const slovakMonthNames = [
-  "Január",
-  "Február",
-  "Marec",
-  "Apríl",
-  "Máj",
-  "Jún",
-  "Júl",
-  "August",
-  "September",
-  "Október",
-  "November",
-  "December",
 ];
 
 const rl = readline.createInterface({
@@ -65,24 +53,8 @@ function slugify(value) {
     .slice(0, 80);
 }
 
-function normalizeInputPath(value) {
-  const trimmed = value.trim().replace(/^['"]|['"]$/g, "");
-  return trimmed.replace(/\\(.)/g, "$1");
-}
-
 function resolveUserPath(value) {
-  return path.resolve(rootDirectory, normalizeInputPath(value));
-}
-
-function formatMonthLabel(id) {
-  const [, month] = id.split("-").map(Number);
-  const monthName = slovakMonthNames[month - 1] ?? id.slice(5);
-  return `${monthName} ${id.slice(0, 4)} v GMC Sereď`;
-}
-
-function defaultProgramTitle(id) {
-  const [, month] = id.split("-").map(Number);
-  return slovakMonthNames[month - 1] ?? "Mesačný program";
+  return resolveUserPathInput(value, rootDirectory);
 }
 
 function assertProgramDate(date) {
@@ -142,12 +114,17 @@ async function listJsonFiles(directory) {
 }
 
 async function loadProgramFiles() {
-  return Promise.all(
+  const files = await Promise.all(
     (await listJsonFiles(programDirectory)).map(async (file) => ({
       file,
       data: await readJson(file),
     })),
   );
+  return files.sort((left, right) => compareProgramMonthIds(programId(left), programId(right)));
+}
+
+function programId(programFile) {
+  return programFile.data?.id || path.basename(programFile.file, ".json");
 }
 
 function publicPathFromFile(filePath) {
@@ -195,7 +172,7 @@ async function saveMonthlyPosterImage(inputPath, program) {
 async function chooseProgram() {
   const programs = await loadProgramFiles();
   const options = programs.map(({ data, file }) => ({
-    label: `${data.monthLabel || path.basename(file, ".json")} ${data.active === false ? "(skryté)" : ""}`,
+    label: `${programMonthLabel(data.id || path.basename(file, ".json"))}${data.active === false ? " (skryté)" : ""}`,
     value: { data, file },
   }));
   options.push({ label: "Vytvoriť nový mesiac", value: "new" });
@@ -204,15 +181,14 @@ async function chooseProgram() {
   if (selected.value !== "new") return selected.value;
 
   const id = await prompt("ID mesiaca vo formáte YYYY-MM, napr. 2026-09");
-  if (!/^\d{4}-\d{2}$/.test(id)) throw new Error("ID mesiaca musí byť vo formáte YYYY-MM.");
-  const title = await prompt("Názov programu", defaultProgramTitle(id));
-  const monthLabel = formatMonthLabel(id);
+  if (!isProgramMonthId(id)) throw new Error("ID mesiaca musí byť vo formáte YYYY-MM.");
   const file = path.join(programDirectory, `${id}.json`);
+  if (await exists(file)) throw new Error(`Mesiac ${programMonthLabel(id)} už existuje.`);
   const data = {
     id,
     active: true,
-    monthLabel,
-    title,
+    monthLabel: programMonthLabel(id),
+    title: programMonthName(id),
     events: [],
   };
   await writeJson(file, data);
@@ -291,11 +267,15 @@ async function manageMonthlyPoster(program) {
   program.poster = saved.src;
   program.posterWidth = saved.width;
   program.posterHeight = saved.height;
-  program.posterAlt = `Mesačný plagát: ${program.title || "Program"} – ${program.monthLabel || formatMonthLabel(program.id)}`;
+  program.posterAlt = `Mesačný plagát: ${programMonthLabel(program.id)}`;
 }
 
 function normalizeProgramForWrite(program) {
-  if (!program.monthLabel && program.id) program.monthLabel = formatMonthLabel(program.id);
+  if (program.id) {
+    program.monthLabel = programMonthLabel(program.id);
+    program.title = programMonthName(program.id);
+  }
+  delete program.name;
   delete program.description;
   return program;
 }
@@ -306,7 +286,7 @@ async function programMenu() {
   const { data: program, file } = selectedProgram;
   let done = false;
   while (!done) {
-    const action = await choose(`Program: ${program.monthLabel}`, [
+    const action = await choose(`Program: ${programMonthLabel(program.id)}`, [
       { label: "Zobraziť udalosti", value: "list" },
       { label: "Pridať udalosť", value: "add" },
       { label: "Upraviť udalosť", value: "edit" },

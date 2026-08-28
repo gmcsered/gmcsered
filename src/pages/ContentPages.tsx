@@ -351,7 +351,6 @@ export function ProgramPage() {
             </Reveal>
           </div>
           <Reveal className="program-copy">
-            <p className="eyebrow">{programData.monthLabel}</p>
             <h2 id="program-title">{programData.title}</h2>
             <div className="program-events" aria-label={programData.monthLabel}>
               {programData.events.map((event) => (

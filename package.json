@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "content": "node scripts/content-manager.mjs",
+    "content:path-test": "node --test scripts/content-paths.test.mjs",
     "content:validate": "node scripts/content-manager.mjs --validate",
     "content:generate": "node scripts/generate-gallery-manifest.mjs",
     "content:check": "node scripts/generate-gallery-manifest.mjs --check",

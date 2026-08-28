@@ -16,6 +16,7 @@ export type ProgramEvent = {
 };
 
 export type ProgramData = {
+  id?: string;
   monthLabel: string;
   title: string;
   poster?: string;

@@ -1,6 +1,7 @@
 import { access, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { compareProgramMonthIds, isProgramMonthId, programMonthLabel, programMonthName } from "./program-months.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(rootDirectory, "content");
@@ -167,7 +168,7 @@ async function loadProgram() {
   const files = await listJsonFiles(programDirectory);
   if (!files.length) return parseProgramText(await readFile(legacyProgramTextPath, "utf8"));
 
-  const programs = await Promise.all(files.map((file) => readJson(file)));
+  const programs = (await Promise.all(files.map((file) => readJson(file)))).sort((left, right) => compareProgramMonthIds(left?.id, right?.id));
   const activePrograms = programs.filter((program) => program?.active !== false);
   const programsWithPublishedEvents = activePrograms.filter((program) => Array.isArray(program.events) && program.events.some((event) => event.published !== false));
   const selected = programsWithPublishedEvents.at(-1) ?? activePrograms.at(-1) ?? programs.at(-1);
@@ -176,8 +177,11 @@ async function loadProgram() {
 }
 
 async function validateProgram(program) {
-  if (!program.id || !program.monthLabel || !program.title) {
-    throw new Error("Program musí obsahovať id, monthLabel a title.");
+  if (!program.id) {
+    throw new Error("Program musí obsahovať id vo formáte YYYY-MM.");
+  }
+  if (program.id !== "legacy-program" && !isProgramMonthId(program.id)) {
+    throw new Error(`Program ${program.id}: id musí byť vo formáte YYYY-MM.`);
   }
   if (!Array.isArray(program.events)) throw new Error("Program musí obsahovať pole events.");
   if (program.poster) await assertPublicReference(program.poster, `Program ${program.id}, mesačný plagát`);
@@ -196,10 +200,11 @@ async function validateProgram(program) {
 
 function publicProgram(program) {
   return {
-    monthLabel: program.monthLabel,
-    title: program.title,
+    id: program.id,
+    monthLabel: programMonthLabel(program.id),
+    title: programMonthName(program.id),
     ...(program.poster ? { poster: program.poster } : {}),
-    ...(program.posterAlt ? { posterAlt: program.posterAlt } : {}),
+    ...(program.poster ? { posterAlt: `Mesačný plagát: ${programMonthLabel(program.id)}` } : {}),
     ...(program.posterWidth ? { posterWidth: program.posterWidth } : {}),
     ...(program.posterHeight ? { posterHeight: program.posterHeight } : {}),
     events: program.events
