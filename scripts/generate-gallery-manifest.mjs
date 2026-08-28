@@ -169,17 +169,18 @@ async function loadProgram() {
 
   const programs = await Promise.all(files.map((file) => readJson(file)));
   const activePrograms = programs.filter((program) => program?.active !== false);
-  const selected = activePrograms.at(-1) ?? programs.at(-1);
+  const programsWithPublishedEvents = activePrograms.filter((program) => Array.isArray(program.events) && program.events.some((event) => event.published !== false));
+  const selected = programsWithPublishedEvents.at(-1) ?? activePrograms.at(-1) ?? programs.at(-1);
   if (!selected) throw new Error("content/program neobsahuje žiadny program.");
   return selected;
 }
 
 async function validateProgram(program) {
-  if (!program.id || !program.monthLabel || !program.title || !program.poster || !program.posterAlt) {
-    throw new Error("Program musí obsahovať id, monthLabel, title, poster a posterAlt.");
+  if (!program.id || !program.monthLabel || !program.title) {
+    throw new Error("Program musí obsahovať id, monthLabel a title.");
   }
-  if (!Array.isArray(program.events) || !program.events.length) throw new Error("Program musí obsahovať aspoň jednu udalosť.");
-  await assertPublicReference(program.poster, `Program ${program.id}, plagát`);
+  if (!Array.isArray(program.events)) throw new Error("Program musí obsahovať pole events.");
+  if (program.poster) await assertPublicReference(program.poster, `Program ${program.id}, mesačný plagát`);
 
   const eventIds = new Set();
   for (const [index, event] of program.events.entries()) {
@@ -197,8 +198,10 @@ function publicProgram(program) {
   return {
     monthLabel: program.monthLabel,
     title: program.title,
-    poster: program.poster,
-    posterAlt: program.posterAlt,
+    ...(program.poster ? { poster: program.poster } : {}),
+    ...(program.posterAlt ? { posterAlt: program.posterAlt } : {}),
+    ...(program.posterWidth ? { posterWidth: program.posterWidth } : {}),
+    ...(program.posterHeight ? { posterHeight: program.posterHeight } : {}),
     events: program.events
       .filter((event) => event.published !== false)
       .map(({ id, date, time, title, description = "", speaker, invitationImage, invitationAlt, invitationWidth, invitationHeight }) => ({

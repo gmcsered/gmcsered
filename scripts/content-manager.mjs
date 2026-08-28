@@ -13,6 +13,7 @@ const specialEventsDirectory = path.join(contentDirectory, "special-events");
 const sundayGalleryDirectory = path.join(contentDirectory, "sunday-galleries");
 const publicDirectory = path.join(rootDirectory, "public");
 const publicInvitationDirectory = path.join(publicDirectory, "content", "invitations");
+const publicProgramDirectory = path.join(publicDirectory, "content", "program");
 const publicSundayDirectory = path.join(publicDirectory, "content", "sundays");
 const supportedInputExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"]);
 const allowedPublishPrefixes = [
@@ -22,6 +23,20 @@ const allowedPublishPrefixes = [
   "src/content/specialEvents.json",
   "src/content/sundays.json",
   "src/generated/gallery-manifest.json",
+];
+const slovakMonthNames = [
+  "Január",
+  "Február",
+  "Marec",
+  "Apríl",
+  "Máj",
+  "Jún",
+  "Júl",
+  "August",
+  "September",
+  "Október",
+  "November",
+  "December",
 ];
 
 const rl = readline.createInterface({
@@ -51,7 +66,23 @@ function slugify(value) {
 }
 
 function normalizeInputPath(value) {
-  return value.trim().replace(/^['"]|['"]$/g, "");
+  const trimmed = value.trim().replace(/^['"]|['"]$/g, "");
+  return trimmed.replace(/\\(.)/g, "$1");
+}
+
+function resolveUserPath(value) {
+  return path.resolve(rootDirectory, normalizeInputPath(value));
+}
+
+function formatMonthLabel(id) {
+  const [, month] = id.split("-").map(Number);
+  const monthName = slovakMonthNames[month - 1] ?? id.slice(5);
+  return `${monthName} ${id.slice(0, 4)} v GMC Sereď`;
+}
+
+function defaultProgramTitle(id) {
+  const [, month] = id.split("-").map(Number);
+  return slovakMonthNames[month - 1] ?? "Mesačný program";
 }
 
 function assertProgramDate(date) {
@@ -132,19 +163,18 @@ async function optimizeImage(inputPath, outputPath, options) {
   return { width: info.width, height: info.height };
 }
 
-async function saveInvitationImage(inputPath, targetKind, baseName) {
-  const absoluteInput = path.resolve(rootDirectory, normalizeInputPath(inputPath));
+async function saveWebImage(inputPath, targetDirectory, baseName, options) {
+  const absoluteInput = resolveUserPath(inputPath);
   if (!(await exists(absoluteInput))) throw new Error(`Obrázok neexistuje: ${absoluteInput}`);
 
   const extension = path.extname(absoluteInput).toLowerCase();
   if (!supportedInputExtensions.has(extension)) throw new Error("Podporované obrázky sú JPG, PNG, WebP, HEIC a HEIF.");
 
-  const targetDirectory = path.join(publicInvitationDirectory, targetKind);
   await mkdir(targetDirectory, { recursive: true });
   const outputPath = path.join(targetDirectory, `${slugify(baseName)}-${Date.now()}.webp`);
 
   try {
-    const dimensions = await optimizeImage(absoluteInput, outputPath, { maxLongEdge: 2200, quality: 90 });
+    const dimensions = await optimizeImage(absoluteInput, outputPath, options);
     return { src: publicPathFromFile(outputPath), ...dimensions };
   } catch (error) {
     if (extension === ".heic" || extension === ".heif") {
@@ -152,6 +182,14 @@ async function saveInvitationImage(inputPath, targetKind, baseName) {
     }
     throw error;
   }
+}
+
+async function saveInvitationImage(inputPath, targetKind, baseName) {
+  return saveWebImage(inputPath, path.join(publicInvitationDirectory, targetKind), baseName, { maxLongEdge: 2200, quality: 90 });
+}
+
+async function saveMonthlyPosterImage(inputPath, program) {
+  return saveWebImage(inputPath, path.join(publicProgramDirectory, program.id), `${program.id}-mesacny-plagat`, { maxLongEdge: 2400, quality: 90 });
 }
 
 async function chooseProgram() {
@@ -167,16 +205,14 @@ async function chooseProgram() {
 
   const id = await prompt("ID mesiaca vo formáte YYYY-MM, napr. 2026-09");
   if (!/^\d{4}-\d{2}$/.test(id)) throw new Error("ID mesiaca musí byť vo formáte YYYY-MM.");
-  const title = await prompt("Názov programu", "Mesačný program");
-  const monthLabel = await prompt("Popis mesiaca", `${id.slice(5)} / ${id.slice(0, 4)} v GMC Sereď`);
+  const title = await prompt("Názov programu", defaultProgramTitle(id));
+  const monthLabel = formatMonthLabel(id);
   const file = path.join(programDirectory, `${id}.json`);
   const data = {
     id,
     active: true,
     monthLabel,
     title,
-    poster: "/content/program/current-program.jpg",
-    posterAlt: `${title} – ${monthLabel}`,
     events: [],
   };
   await writeJson(file, data);
@@ -234,6 +270,36 @@ async function manageProgramInvitations(program) {
   event.invitationAlt = `Pozvánka: ${event.title}, ${event.date}`;
 }
 
+async function manageMonthlyPoster(program) {
+  console.log(program.poster ? `Aktuálny mesačný plagát: ${program.poster}` : "Tento mesiac zatiaľ nemá mesačný plagát.");
+  const action = await choose("Mesačný plagát", [
+    { label: "Pridať alebo vymeniť plagát", value: "replace" },
+    { label: "Odstrániť plagát", value: "remove" },
+    { label: "Späť", value: "back" },
+  ]);
+  if (!action || action.value === "back") return;
+  if (action.value === "remove") {
+    delete program.poster;
+    delete program.posterAlt;
+    delete program.posterWidth;
+    delete program.posterHeight;
+    return;
+  }
+
+  const inputPath = await prompt("Cesta k obrázku mesačného plagátu");
+  const saved = await saveMonthlyPosterImage(inputPath, program);
+  program.poster = saved.src;
+  program.posterWidth = saved.width;
+  program.posterHeight = saved.height;
+  program.posterAlt = `Mesačný plagát: ${program.title || "Program"} – ${program.monthLabel || formatMonthLabel(program.id)}`;
+}
+
+function normalizeProgramForWrite(program) {
+  if (!program.monthLabel && program.id) program.monthLabel = formatMonthLabel(program.id);
+  delete program.description;
+  return program;
+}
+
 async function programMenu() {
   const selectedProgram = await chooseProgram();
   if (!selectedProgram) return;
@@ -246,6 +312,7 @@ async function programMenu() {
       { label: "Upraviť udalosť", value: "edit" },
       { label: "Vymazať udalosť", value: "delete" },
       { label: "Pozvánka k udalosti", value: "invitation" },
+      { label: "Mesačný plagát", value: "poster" },
       { label: "Uložiť a späť", value: "save" },
     ]);
     if (!action) continue;
@@ -269,9 +336,10 @@ async function programMenu() {
       if (selected && (await confirm("Naozaj chcete odstrániť túto udalosť?"))) program.events.splice(selected.value, 1);
     }
     if (action.value === "invitation") await manageProgramInvitations(program);
+    if (action.value === "poster") await manageMonthlyPoster(program);
     if (action.value === "save") done = true;
   }
-  await writeJson(file, program);
+  await writeJson(file, normalizeProgramForWrite(program));
   runCommand("npm", ["run", "content:generate"]);
 }
 
@@ -289,7 +357,7 @@ async function addSundayGallery() {
   const date = await prompt("Dátum nedele vo formáte YYYY-MM-DD");
   assertIsoDate(date);
   const title = await prompt("Názov galérie", formatSundayTitle(date));
-  const sourceFolder = path.resolve(rootDirectory, normalizeInputPath(await prompt("Cesta k priečinku s fotografiami")));
+  const sourceFolder = resolveUserPath(await prompt("Cesta k priečinku s fotografiami"));
   if (!(await exists(sourceFolder)) || !(await stat(sourceFolder)).isDirectory()) throw new Error("Zadaná cesta nie je priečinok.");
 
   const images = await listSourceImages(sourceFolder);
@@ -463,6 +531,29 @@ function gitChangedFiles() {
   return [...new Set(changedFiles)];
 }
 
+function gitOutput(args) {
+  const result = spawnSync("git", args, { cwd: rootDirectory, encoding: "utf8" });
+  if (result.status !== 0) return "";
+  return result.stdout.trim();
+}
+
+function currentPublishTarget() {
+  const branch = gitOutput(["branch", "--show-current"]);
+  const upstream = gitOutput(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"]);
+  if (!branch || !upstream || !upstream.includes("/")) return null;
+  const slashIndex = upstream.indexOf("/");
+  return {
+    branch,
+    remote: upstream.slice(0, slashIndex),
+    remoteBranch: upstream.slice(slashIndex + 1),
+    upstream,
+  };
+}
+
+function publishableContentFiles(files) {
+  return files.filter((file) => allowedPublishPrefixes.some((prefix) => file === prefix.replace(/\/$/, "") || file.startsWith(prefix)));
+}
+
 async function publishChanges() {
   console.log("Kontrolujem obsah...");
   const latestSermonPath = path.join(publicDirectory, "data", "latest-sermon.json");
@@ -473,26 +564,51 @@ async function publishChanges() {
   if (latestSermonBeforeBuild !== null) await writeFile(latestSermonPath, latestSermonBeforeBuild);
 
   const changed = gitChangedFiles();
+  const publishable = publishableContentFiles(changed);
+  const unrelated = changed.filter((file) => !publishable.includes(file));
+
   if (!changed.length) {
     console.log("Nie sú tu žiadne zmeny na publikovanie.");
     return;
   }
 
-  const unrelated = changed.filter((file) => !allowedPublishPrefixes.some((prefix) => file === prefix.replace(/\/$/, "") || file.startsWith(prefix)));
   console.log("\nZmenené súbory:");
   changed.forEach((file) => console.log(`- ${file}`));
-  if (unrelated.length) {
-    console.log("\nNašiel som zmeny mimo obsahových súborov. Nebudem ich automaticky publikovať:");
-    unrelated.forEach((file) => console.log(`- ${file}`));
-    console.log("Najprv tieto zmeny vyriešte ručne, potom spustite publikovanie znova.");
+
+  if (!publishable.length) {
+    console.log("\nNenašiel som žiadne obsahové/generované súbory, ktoré patria do automatického publikovania.");
+    if (unrelated.length) {
+      console.log("Tieto zmeny nechávam nedotknuté:");
+      unrelated.forEach((file) => console.log(`- ${file}`));
+    }
     return;
   }
 
-  if (!(await confirm("Chcete tieto zmeny commitnúť a poslať na origin/main?"))) return;
-  runCommand("git", ["add", ...changed]);
+  console.log("\nSúbory pripravené na publikovanie:");
+  publishable.forEach((file) => console.log(`- ${file}`));
+
+  if (unrelated.length) {
+    console.log("\nTieto zmeny nepatria do automatického publikovania a nebudú zahrnuté do commitu:");
+    unrelated.forEach((file) => console.log(`- ${file}`));
+  }
+
+  const publishTarget = currentPublishTarget();
+  if (!publishTarget) {
+    console.log("\nNepodarilo sa zistiť aktuálnu vetvu alebo jej upstream. Zmeny som nepridal do commitu.");
+    console.log("Skontrolujte git branch/upstream a publikovanie spustite znova.");
+    return;
+  }
+
+  if (!(await confirm(`Chcete tieto zmeny commitnúť a poslať na ${publishTarget.upstream}?`))) return;
+  runCommand("git", ["add", ...publishable]);
+  const hasStagedChanges = spawnSync("git", ["diff", "--cached", "--quiet"], { cwd: rootDirectory }).status !== 0;
+  if (!hasStagedChanges) {
+    console.log("Po stage kroku nie sú pripravené žiadne zmeny na commit.");
+    return;
+  }
   runCommand("git", ["commit", "-m", "content: update GMC program and galleries"], { inherit: true });
-  runCommand("git", ["push", "origin", "main"], { inherit: true });
-  console.log("Hotovo. GitHub Pages nasadí web z vetvy main.");
+  runCommand("git", ["push", publishTarget.remote, `HEAD:${publishTarget.remoteBranch}`], { inherit: true });
+  console.log(`Hotovo. Zmeny sú publikované na ${publishTarget.upstream}; GitHub Pages nasadí web z tejto vetvy.`);
 }
 
 async function validateOnly() {

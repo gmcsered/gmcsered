@@ -334,9 +334,11 @@ export function ProgramPage() {
       <section className="section page-chapter program-page major-viewport-section" aria-labelledby="program-title">
         <div className="container program-layout">
           <div className="program-poster-column">
-            <Reveal className="program-poster">
-              <img src={programData.poster} alt={programData.posterAlt} loading="lazy" />
-            </Reveal>
+            {programData.poster ? (
+              <Reveal className="program-poster">
+                <img src={programData.poster} alt={programData.posterAlt ?? programData.title} loading="lazy" />
+              </Reveal>
+            ) : null}
             <Reveal as="figure" className="program-moment">
               <img
                 src={page.contextImage.src}

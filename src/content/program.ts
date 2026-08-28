@@ -18,8 +18,10 @@ export type ProgramEvent = {
 export type ProgramData = {
   monthLabel: string;
   title: string;
-  poster: string;
-  posterAlt: string;
+  poster?: string;
+  posterAlt?: string;
+  posterWidth?: number;
+  posterHeight?: number;
   events: ProgramEvent[];
 };
 
@@ -30,7 +32,7 @@ const monthlyProgramSource = monthlyProgram as RawProgramData;
 // Monthly content is edited in public/content/program/program.txt; program.json is generated automatically.
 export const programData: ProgramData = {
   ...monthlyProgramSource,
-  poster: siteAsset(monthlyProgramSource.poster),
+  ...(monthlyProgramSource.poster ? { poster: siteAsset(monthlyProgramSource.poster) } : {}),
   events: monthlyProgramSource.events.map((event) => ({
     ...event,
     ...(event.invitationImage ? { invitationImage: siteAsset(event.invitationImage) } : {}),
