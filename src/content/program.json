@@ -13,7 +13,11 @@
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "invitationImage": "/content/invitations/program/2026-09/2026-09-6-9-nedelna-bohosluzba-1788526286258.webp",
+      "invitationAlt": "Pozvánka: Nedeľná BOHOSLUŽBA, 6.9.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350
     },
     {
       "id": "2026-09-13-9-nedelna-bohosluzba",
