@@ -7,7 +7,6 @@ const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)),
 const contentDirectory = path.join(rootDirectory, "content");
 const publicDirectory = path.join(rootDirectory, "public");
 const galleryDirectory = path.join(publicDirectory, "content", "gallery");
-const sundayManifestDirectory = path.join(publicDirectory, "content", "sundays");
 const manifestPath = path.join(rootDirectory, "src", "generated", "gallery-manifest.json");
 const categoriesPath = path.join(rootDirectory, "src", "content", "galleryCategories.json");
 const programDirectory = path.join(contentDirectory, "program");
@@ -15,7 +14,6 @@ const legacyProgramTextPath = path.join(publicDirectory, "content", "program", "
 const programPath = path.join(rootDirectory, "src", "content", "program.json");
 const specialEventsDirectory = path.join(contentDirectory, "special-events");
 const specialEventsPath = path.join(rootDirectory, "src", "content", "specialEvents.json");
-const sundayGalleryDirectory = path.join(contentDirectory, "sunday-galleries");
 const sundaysPath = path.join(rootDirectory, "src", "content", "sundays.json");
 const mediaConfigPath = path.join(rootDirectory, "src", "content", "mediaConfig.json");
 const supportedExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
@@ -237,54 +235,6 @@ async function loadSpecialEvents() {
   return events.sort((left, right) => (left.sortOrder ?? 999).toString().localeCompare((right.sortOrder ?? 999).toString(), "sk", { numeric: true }));
 }
 
-async function loadSundayGalleriesFromContent() {
-  const files = await listJsonFiles(sundayGalleryDirectory);
-  const galleries = [];
-
-  for (const file of files) {
-    const gallery = await readJson(file);
-    const relativeName = path.relative(rootDirectory, file);
-    if (!gallery?.date || !gallery?.title) throw new Error(`${relativeName}: galéria musí obsahovať date a title.`);
-    assertValidIsoDate(gallery.date, `Nedeľná galéria ${gallery.date}`);
-    if (!Array.isArray(gallery.photos)) throw new Error(`${relativeName}: photos musí byť pole.`);
-    if (gallery.published === false) continue;
-    if (!gallery.photos.length) throw new Error(`${relativeName}: publikovaná galéria musí mať aspoň jednu fotografiu.`);
-
-    const sortedPhotos = [...gallery.photos].sort((left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0));
-    const photoIds = new Set();
-    for (const [index, photo] of sortedPhotos.entries()) {
-      const context = `Nedeľa ${gallery.date}, fotografia ${index + 1}`;
-      if (!photo.id || !photo.thumbnail || !photo.full) throw new Error(`${context}: chýba id, thumbnail alebo full.`);
-      if (photoIds.has(photo.id)) throw new Error(`${context}: duplicitné id "${photo.id}".`);
-      photoIds.add(photo.id);
-      await assertPublicReference(photo.thumbnail, `${context}, thumbnail`);
-      await assertPublicReference(photo.full, `${context}, full`);
-    }
-
-    const coverPhoto = sortedPhotos.find((photo) => photo.id === gallery.coverPhotoId) ?? sortedPhotos[0];
-    galleries.push({
-      date: gallery.date,
-      title: gallery.title,
-      cover: coverPhoto.thumbnail,
-      photoCount: sortedPhotos.length,
-      manifest: `/content/sundays/${gallery.date}.json`,
-      manifestData: {
-        date: gallery.date,
-        title: gallery.title,
-        photos: sortedPhotos.map(({ thumbnail, full, alt, width, height }) => ({
-          thumbnail,
-          full,
-          ...(alt ? { alt } : {}),
-          ...(width ? { width } : {}),
-          ...(height ? { height } : {}),
-        })),
-      },
-    });
-  }
-
-  return galleries.sort((left, right) => right.date.localeCompare(left.date));
-}
-
 async function loadLegacySundayArchive() {
   const mediaConfig = await readJson(mediaConfigPath, { publicMediaBaseUrl: "https://media.gmcsered.sk" });
   const publicMediaBaseUrl = normalizeBaseUrl(process.env.R2_PUBLIC_BASE_URL || mediaConfig.publicMediaBaseUrl || "");
@@ -303,8 +253,6 @@ async function loadLegacySundayArchive() {
 }
 
 async function loadSundayArchive() {
-  const contentGalleries = await loadSundayGalleriesFromContent();
-  if (contentGalleries.length) return contentGalleries;
   return loadLegacySundayArchive();
 }
 
@@ -372,9 +320,7 @@ async function main() {
   const galleryOutput = stableJson(manifest);
   const programOutput = stableJson(publicProgramData);
   const specialEventsOutput = stableJson({ events: specialEvents });
-  const sundaysOutput = stableJson({
-    sundays: sundayArchive.map(({ manifestData: _manifestData, ...sunday }) => sunday),
-  });
+  const sundaysOutput = stableJson({ sundays: sundayArchive });
   for (const warning of warnings) console.warn(`⚠ ${warning}`);
 
   if (isCheck) {
@@ -392,16 +338,10 @@ async function main() {
 
   await mkdir(path.dirname(manifestPath), { recursive: true });
   await mkdir(path.dirname(programPath), { recursive: true });
-  await mkdir(sundayManifestDirectory, { recursive: true });
   await writeFile(manifestPath, galleryOutput);
   await writeFile(programPath, programOutput);
   await writeFile(specialEventsPath, specialEventsOutput);
   await writeFile(sundaysPath, sundaysOutput);
-
-  for (const sunday of sundayArchive) {
-    if (!sunday.manifestData) continue;
-    await writeFile(path.join(sundayManifestDirectory, `${sunday.date}.json`), stableJson(sunday.manifestData));
-  }
 
   console.log(`Vytvorený program, špeciálne udalosti, nedeľný archív a manifest galérie pre ${categories.length} kategórií.`);
 }

@@ -26,20 +26,20 @@ Menu ponúkne tieto možnosti:
 
 Editovateľný zdroj obsahu je v priečinku `content/`. Generované súbory v `src/content/` a `public/content/` sa vytvárajú automaticky cez menu alebo cez `npm run content:generate`.
 
-### Nedeľné fotky
+## Ako pridať fotky z nedele
 
 Toto je bežný týždenný postup pre nedeľný fotoarchív `Nedele v GMC Sereď`.
 
 1. Vytvorte priečinok s dátumom nedele:
 
    ```text
-   content-import/sundays/YYYY-MM-DD/
+   content/sunday-galleries/YYYY-MM-DD/
    ```
 
    Príklad:
 
    ```text
-   content-import/sundays/2026-08-23/
+   content/sunday-galleries/2026-09-20/
    ```
 
 2. Skopírujte doň všetky fotky z tej nedele.
@@ -52,13 +52,7 @@ Toto je bežný týždenný postup pre nedeľný fotoarchív `Nedele v GMC Sere�
    ./update-site.sh
    ```
 
-Skript fotky automaticky zmenší, prevedie na WebP, vytvorí náhľady, nahrá ich do Cloudflare R2 a do GitHubu uloží iba malý manifest s URL adresami. Originálne fotky z `content-import/` sa nikdy necommitujú do GitHubu.
-
-Ak chcete spracovať iba jednu konkrétnu nedeľu, môžete použiť:
-
-```bash
-./update-site.sh 2026-08-23
-```
+Skript fotky automaticky zmenší, prevedie na WebP, vytvorí náhľady, nahrá ich do Cloudflare R2 a do GitHubu uloží iba malý manifest s URL adresami. Originálne fotky z `content/sunday-galleries/` sa nikdy necommitujú do GitHubu.
 
 ### Mesačný program
 
@@ -97,7 +91,7 @@ Používajú sa presne tieto priečinky:
 
 Pri builde sa tieto galérie načítajú automaticky zo všetkých podporovaných obrázkov v priečinkoch. Poradie, názvy a popisy ovláda jediný súbor `src/content/galleryCategories.json`.
 
-Týždenné nedeľné fotky nedávajte sem. Tie patria do `content-import/sundays/YYYY-MM-DD/` a po uploadnutí budú uložené v Cloudflare R2.
+Týždenné nedeľné fotky nedávajte sem. Tie patria do `content/sunday-galleries/YYYY-MM-DD/` a po uploadnutí budú uložené v Cloudflare R2.
 
 ### Presun na iný Mac
 

@@ -9388,6 +9388,26 @@ body.gallery-browser-open {
   object-fit: contain;
 }
 
+.gallery-browser__photo-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0.25rem 0.1rem;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.9rem;
+}
+
+.gallery-browser__photo-caption strong {
+  color: var(--white);
+}
+
+.gallery-browser__photo-caption span {
+  flex: 0 0 auto;
+  color: var(--accent-gold);
+  font-weight: 850;
+}
+
 .gallery-browser__nav {
   position: absolute;
   z-index: 2;
@@ -9423,7 +9443,8 @@ body.gallery-browser-open {
 
 .sunday-archive-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 360px));
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -9460,9 +9481,9 @@ body.gallery-browser-open {
 }
 
 .sunday-archive-card img {
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 500ms ease;
+  object-fit: contain;
+  object-position: center;
+  transition: opacity 180ms ease;
 }
 
 .sunday-archive-card__shade {
@@ -9500,7 +9521,7 @@ body.gallery-browser-open {
 
 .sunday-archive-card button:hover img,
 .sunday-archive-card button:focus-visible img {
-  transform: scale(1.035);
+  opacity: 0.92;
 }
 
 .sunday-archive-card button:focus-visible {

@@ -3,61 +3,98 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-sunday_date="${1:-}"
+log_file="$(mktemp -t gmc-update.XXXXXX)"
+latest_sermon_path="public/data/latest-sermon.json"
+latest_sermon_backup=""
 
-echo "GMC Sereď website update"
-echo "------------------------"
+cleanup() {
+  if [[ -n "$latest_sermon_backup" && -f "$latest_sermon_backup" ]]; then
+    cp "$latest_sermon_backup" "$latest_sermon_path"
+  fi
+  rm -f "$log_file"
+  if [[ -n "$latest_sermon_backup" ]]; then rm -f "$latest_sermon_backup"; fi
+}
+trap cleanup EXIT
 
-if [[ -n "$sunday_date" ]]; then
-  echo "Processing Sunday photo import: $sunday_date"
-  npm run sunday:upload -- "$sunday_date"
-else
-  echo "Checking for Sunday photo imports..."
-  npm run sunday:upload
+run_quietly() {
+  local label="$1"
+  shift
+
+  echo "$label"
+  if ! "$@" >"$log_file" 2>&1; then
+    echo "Chyba: $label"
+    tail -n 80 "$log_file"
+    exit 1
+  fi
+}
+
+restore_latest_sermon() {
+  if [[ -n "$latest_sermon_backup" ]]; then
+    cp "$latest_sermon_backup" "$latest_sermon_path"
+  fi
+}
+
+if [[ "$#" -ne 0 ]]; then
+  echo "Tento skript nepotrebuje žiadny parameter. Stačí spustiť: ./update-site.sh"
+  exit 1
 fi
 
-echo "Generating website content..."
-npm run content:generate
-
-echo "Validating content..."
-npm run content:check
-
-echo "Type-checking..."
-npm run typecheck
-
-echo "Building production website..."
-npm run build
-
-if git diff --quiet && git diff --cached --quiet; then
-  echo "No website changes to commit."
-  exit 0
+if ! git diff --cached --quiet; then
+  echo "Chyba: pred spustením dokončite alebo zrušte už staged Git zmeny. Skript ich nebude miešať do nového commitu."
+  exit 1
 fi
 
-echo "Preparing Git commit..."
-git add \
+branch="$(git branch --show-current)"
+upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
+if [[ -z "$branch" || -z "$upstream" || "$upstream" != */* ]]; then
+  echo "Chyba: nepodarilo sa zistiť Git vetvu alebo jej vzdialený cieľ. Nič nebolo zmenené."
+  exit 1
+fi
+
+remote="${upstream%%/*}"
+remote_branch="${upstream#*/}"
+
+echo "GMC Sereď – aktualizácia webu"
+echo "--------------------------------"
+
+node scripts/upload-sunday-gallery.mjs
+run_quietly "Generujem obsah webu…" npm run content:generate
+run_quietly "Kontrolujem obsah…" npm run content:check
+run_quietly "Kontrolujem TypeScript…" npm run typecheck
+
+if [[ -f "$latest_sermon_path" ]]; then
+  latest_sermon_backup="$(mktemp -t gmc-latest-sermon.XXXXXX)"
+  cp "$latest_sermon_path" "$latest_sermon_backup"
+fi
+
+run_quietly "Vytváram produkčný build…" npm run build
+restore_latest_sermon
+echo "Produkčný build: OK"
+
+echo "Pripravujem bezpečný Git commit…"
+git add -- \
   .env.example \
   .gitignore \
   README.md \
   package-lock.json \
   package.json \
-  public/content/program/current-program.jpg \
-  public/content/program/program.txt \
+  content/program \
+  content/special-events \
+  content/sunday-galleries/.gitkeep \
+  public/content/invitations \
+  public/content/program \
   public/content/sundays \
   scripts \
   src \
   update-site.sh
 
 if git diff --cached --quiet; then
-  echo "No tracked website changes to commit."
+  echo "Nie sú žiadne zmeny na commit. Web je aktuálny."
   exit 0
 fi
 
-commit_message="Update GMC website content"
-if [[ -n "$sunday_date" ]]; then
-  commit_message="Update Sunday gallery ${sunday_date}"
-fi
+git commit -m "content: update GMC website"
+git push "$remote" "HEAD:$remote_branch"
 
-git commit -m "$commit_message"
-git push origin main
-
-echo "Done. GitHub Pages will deploy automatically from main."
+echo "Commit vytvorený. Push: OK"
+echo "GitHub Pages teraz automaticky nasadí web z vetvy $branch."

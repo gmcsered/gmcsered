@@ -16,7 +16,6 @@ const sundayGalleryDirectory = path.join(contentDirectory, "sunday-galleries");
 const publicDirectory = path.join(rootDirectory, "public");
 const publicInvitationDirectory = path.join(publicDirectory, "content", "invitations");
 const publicProgramDirectory = path.join(publicDirectory, "content", "program");
-const publicSundayDirectory = path.join(publicDirectory, "content", "sundays");
 const supportedInputExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic", ".heif"]);
 const allowedPublishPrefixes = [
   "content/",
@@ -323,89 +322,8 @@ async function programMenu() {
   runCommand("npm", ["run", "content:generate"]);
 }
 
-async function listSourceImages(directory) {
-  const entries = await readdir(directory, { withFileTypes: true });
-  const files = entries.filter((entry) => entry.isFile() && !entry.name.startsWith(".")).map((entry) => entry.name);
-  const unsupported = files.filter((name) => !supportedInputExtensions.has(path.extname(name).toLowerCase()));
-  if (unsupported.length) {
-    throw new Error(`Priečinok obsahuje nepodporované súbory: ${unsupported.join(", ")}. Podporované sú JPG, PNG, WebP, HEIC a HEIF.`);
-  }
-  return files.sort((left, right) => left.localeCompare(right, "sk", { numeric: true, sensitivity: "base" }));
-}
-
-async function addSundayGallery() {
-  const date = await prompt("Dátum nedele vo formáte YYYY-MM-DD");
-  assertIsoDate(date);
-  const title = await prompt("Názov galérie", formatSundayTitle(date));
-  const sourceFolder = resolveUserPath(await prompt("Cesta k priečinku s fotografiami"));
-  if (!(await exists(sourceFolder)) || !(await stat(sourceFolder)).isDirectory()) throw new Error("Zadaná cesta nie je priečinok.");
-
-  const images = await listSourceImages(sourceFolder);
-  if (!images.length) throw new Error("Priečinok neobsahuje podporované obrázky.");
-  console.log(`Našiel som ${images.length} fotografií.`);
-  const coverAnswer = await prompt("Číslo titulnej fotky", "1");
-  const coverIndex = Math.max(0, Math.min(images.length - 1, Number(coverAnswer) - 1 || 0));
-
-  const outputDirectory = path.join(publicSundayDirectory, date);
-  const thumbDirectory = path.join(outputDirectory, "thumbs");
-  await mkdir(thumbDirectory, { recursive: true });
-
-  const photos = [];
-  const padLength = Math.max(3, String(images.length).length);
-  for (const [index, image] of images.entries()) {
-    const sourcePath = path.join(sourceFolder, image);
-    const id = `photo-${String(index + 1).padStart(padLength, "0")}`;
-    const fullPath = path.join(outputDirectory, `${id}.webp`);
-    const thumbPath = path.join(thumbDirectory, `${id}.webp`);
-    process.stdout.write(`Spracovávam ${index + 1} z ${images.length}: ${image} ... `);
-    try {
-      const full = await optimizeImage(sourcePath, fullPath, { maxLongEdge: 2200, quality: 83 });
-      await optimizeImage(sourcePath, thumbPath, { maxLongEdge: 700, quality: 80 });
-      photos.push({
-        id,
-        full: publicPathFromFile(fullPath),
-        thumbnail: publicPathFromFile(thumbPath),
-        width: full.width,
-        height: full.height,
-        alt: `Fotografia z GMC Sereď, ${title}, ${index + 1}`,
-        sortOrder: index + 1,
-      });
-      console.log("hotovo");
-    } catch (error) {
-      const extension = path.extname(image).toLowerCase();
-      if (extension === ".heic" || extension === ".heif") {
-        console.log("chyba");
-        throw new Error(`HEIC/HEIF fotku "${image}" sa nepodarilo spracovať cez sharp. Exportujte ju ako JPG a skúste import znova.`);
-      }
-      throw error;
-    }
-  }
-
-  await writeJson(path.join(sundayGalleryDirectory, `${date}.json`), {
-    id: date,
-    date,
-    title,
-    published: true,
-    coverPhotoId: photos[coverIndex]?.id ?? photos[0].id,
-    photos,
-  });
-  runCommand("npm", ["run", "content:generate"]);
-}
-
-function formatSundayTitle(date) {
-  const [year, month, day] = date.split("-").map(Number);
-  return `Nedeľa ${day}. ${month}. ${year}`;
-}
-
 async function sundayMenu() {
-  const action = await choose("Nedeľné fotografie", [
-    { label: "Pridať nedeľu", value: "add" },
-    { label: "Spustiť existujúci R2 upload skript", value: "legacy" },
-    { label: "Späť", value: "back" },
-  ]);
-  if (!action || action.value === "back") return;
-  if (action.value === "add") await addSundayGallery();
-  if (action.value === "legacy") runCommand("npm", ["run", "sunday:upload"], { inherit: true });
+  console.log("\nNedeľné fotky: vytvorte content/sunday-galleries/YYYY-MM-DD/, vložte fotky a v koreni projektu spustite ./update-site.sh.");
 }
 
 async function loadSpecialEventFiles() {
