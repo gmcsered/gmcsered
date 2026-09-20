@@ -2,7 +2,7 @@ import { access, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promi
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { compareProgramMonthIds, isProgramMonthId, programMonthLabel, programMonthName } from "./program-months.mjs";
-import { configuredPublicMediaBaseUrl, isConfiguredPublicMediaUrl } from "./public-media-config.mjs";
+import { configuredPublicMediaBaseUrl, isPublishedPublicMediaUrl } from "./public-media-config.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(rootDirectory, "content");
@@ -231,6 +231,33 @@ async function loadSpecialEvents() {
   return events.sort((left, right) => (left.sortOrder ?? 999).toString().localeCompare((right.sortOrder ?? 999).toString(), "sk", { numeric: true }));
 }
 
+function assertPublishedSundayMediaUrl(reference, context, publicMediaBaseUrl) {
+  if (!isPublishedPublicMediaUrl(reference, publicMediaBaseUrl)) {
+    throw new Error(`${context} musí byť lokálna cesta, URL z nastavenej verejnej R2 domény alebo Cloudflare r2.dev URL.`);
+  }
+}
+
+async function validatePublishedSundayManifest(sunday, publicMediaBaseUrl) {
+  if (!sunday.manifest?.startsWith("/")) throw new Error(`Nedeľa ${sunday.date}: manifest musí byť lokálna public cesta.`);
+  const manifestFilePath = path.join(publicDirectory, sunday.manifest.replace(/^\//, ""));
+  const manifest = await readJson(manifestFilePath, null);
+  if (!manifest || manifest.date !== sunday.date || !Array.isArray(manifest.photos) || !manifest.photos.length) {
+    throw new Error(`Nedeľa ${sunday.date}: chýba alebo je neplatný manifest ${sunday.manifest}.`);
+  }
+  if (manifest.photos.length !== sunday.photoCount) {
+    throw new Error(`Nedeľa ${sunday.date}: index uvádza ${sunday.photoCount} fotiek, manifest ich obsahuje ${manifest.photos.length}.`);
+  }
+
+  const thumbnails = new Set();
+  for (const [index, photo] of manifest.photos.entries()) {
+    const context = `Nedeľa ${sunday.date}, fotografia ${index + 1}`;
+    assertPublishedSundayMediaUrl(photo.full, `${context}, plná fotografia`, publicMediaBaseUrl);
+    assertPublishedSundayMediaUrl(photo.thumbnail, `${context}, náhľad`, publicMediaBaseUrl);
+    thumbnails.add(photo.thumbnail);
+  }
+  if (!thumbnails.has(sunday.cover)) throw new Error(`Nedeľa ${sunday.date}: cover musí byť náhľad z jej publikovaného manifestu.`);
+}
+
 async function loadLegacySundayArchive() {
   const publicMediaBaseUrl = await configuredPublicMediaBaseUrl(mediaConfigPath);
 
@@ -238,9 +265,8 @@ async function loadLegacySundayArchive() {
   if (!archive || !Array.isArray(archive.sundays)) throw new Error("src/content/sundays.json musí obsahovať objekt { \"sundays\": [...] }.");
 
   for (const sunday of archive.sundays) {
-    if (!isConfiguredPublicMediaUrl(sunday.cover, publicMediaBaseUrl) && !sunday.cover.startsWith("/")) {
-      throw new Error(`Nedeľa ${sunday.date}: cover musí byť lokálna cesta alebo public media URL ${publicMediaBaseUrl}.`);
-    }
+    assertPublishedSundayMediaUrl(sunday.cover, `Nedeľa ${sunday.date}: cover`, publicMediaBaseUrl);
+    await validatePublishedSundayManifest(sunday, publicMediaBaseUrl);
   }
 
   return archive.sundays.map((sunday) => ({ ...sunday, manifestData: null }));

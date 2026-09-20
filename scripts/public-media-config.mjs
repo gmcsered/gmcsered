@@ -28,3 +28,16 @@ export async function configuredPublicMediaBaseUrl(mediaConfigPath) {
 export function isConfiguredPublicMediaUrl(value, publicMediaBaseUrl) {
   return typeof value === "string" && value.startsWith(`${publicMediaBaseUrl}/`);
 }
+
+export function isPublishedPublicMediaUrl(value, publicMediaBaseUrl) {
+  if (typeof value !== "string") return false;
+  if (value.startsWith("/")) return true;
+  if (isConfiguredPublicMediaUrl(value, publicMediaBaseUrl)) return true;
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname.endsWith(".r2.dev");
+  } catch {
+    return false;
+  }
+}
