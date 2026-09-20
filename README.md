@@ -50,6 +50,8 @@ Dátum a názov sa z názvu súboru doplnia automaticky. Najnovšia špeciálna 
 
 Vytvorte priečinok `content/sunday-galleries/YYYY-MM-DD/`, napríklad `content/sunday-galleries/2026-09-20/`, a vložte doň všetky fotky z nedele.
 
+Fotky z iPhonu vo formáte HEIC/HEIF netreba ručne prevádzať. Skript ich spracuje priamo; ak ich Sharp na macOS neotvorí, automaticky použije dočasnú konverziu cez systémový `sips` bez zmeny originálu.
+
 Po úspešnom `./update-site.sh` a kontrole webu môžete originály presunúť do vlastného externého fotoarchívu a celý dátumový priečinok z projektu GMC odstrániť. Publikovaná galéria aj jej fotky v Cloudflare R2 zostanú zachované.
 
 Ak neskôr nájdete ďalšie fotky z rovnakej nedele:

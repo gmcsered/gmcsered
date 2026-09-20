@@ -1,10 +1,9 @@
 import "dotenv/config";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { createHash } from "node:crypto";
 import { access, mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import sharp from "sharp";
+import { processSundayImage, sourceFileHash } from "./sunday-image-processor.mjs";
 import { findPublishedPhotoByHash, mergeSundayGallery } from "./sunday-gallery-state.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -138,11 +137,6 @@ async function listSourceImages(directory) {
   return images.sort(naturalCompare);
 }
 
-async function fileSignature(filePath) {
-  const source = await readFile(filePath);
-  return createHash("sha256").update(source).digest("hex");
-}
-
 async function publicMediaBaseUrl() {
   const mediaConfig = await readJson(mediaConfigPath, { publicMediaBaseUrl: "" });
   const baseUrl = process.env.R2_PUBLIC_BASE_URL || mediaConfig.publicMediaBaseUrl;
@@ -160,30 +154,6 @@ async function uploadBuffer(client, key, buffer) {
       CacheControl: "public, max-age=31536000, immutable",
     }),
   );
-}
-
-async function processImage(sourcePath, sourceName) {
-  try {
-    const basePipeline = sharp(sourcePath, { failOn: "warning" }).rotate();
-    const full = await basePipeline
-      .clone()
-      .resize({ width: 2000, height: 2000, fit: "inside", withoutEnlargement: true })
-      .webp({ quality: 83 })
-      .toBuffer();
-    const thumbnail = await basePipeline
-      .clone()
-      .resize({ width: 700, height: 700, fit: "inside", withoutEnlargement: true })
-      .webp({ quality: 80 })
-      .toBuffer();
-
-    return { full, thumbnail };
-  } catch (error) {
-    const extension = path.extname(sourceName).toLowerCase();
-    if (extension === ".heic" || extension === ".heif") {
-      throw new Error(`HEIC/HEIF súbor "${sourceName}" sa na tomto Macu nepodarilo spracovať. Exportujte ho ako JPG a spustite skript znova.`);
-    }
-    throw new Error(`Fotku "${sourceName}" sa nepodarilo spracovať: ${error.message}`);
-  }
 }
 
 function photoFromR2Keys(baseUrl, { fullKey, thumbnailKey }, date, index, hash) {
@@ -204,7 +174,7 @@ async function uploadSunday(date, { dryRun }) {
   if (dryRun) {
     let processedCount = 0;
     for (const sourceName of images) {
-      await processImage(path.join(sourceDirectory, sourceName), sourceName);
+      await processSundayImage(path.join(sourceDirectory, sourceName), sourceName);
       processedCount += 1;
     }
     console.log(`Test spracovania: ${processedCount} fotografií OK`);
@@ -224,7 +194,7 @@ async function uploadSunday(date, { dryRun }) {
 
   for (const sourceName of images) {
     const sourcePath = path.join(sourceDirectory, sourceName);
-    const signature = await fileSignature(sourcePath);
+    const signature = await sourceFileHash(sourcePath);
     if (findPublishedPhotoByHash([...existingPhotos, ...incomingPhotos], signature)) {
       duplicatesSkipped += 1;
       continue;
@@ -234,7 +204,7 @@ async function uploadSunday(date, { dryRun }) {
     const keyHash = signature.slice(0, 24);
     const fullKey = `sundays/${date}/${keyHash}.webp`;
     const thumbnailKey = `sundays/${date}/thumbs/${keyHash}.webp`;
-    const { full, thumbnail } = await processImage(sourcePath, sourceName);
+    const { full, thumbnail } = await processSundayImage(sourcePath, sourceName);
     await uploadBuffer(client, fullKey, full);
     await uploadBuffer(client, thumbnailKey, thumbnail);
     r2Uploads += 2;
