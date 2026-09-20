@@ -1,9 +1,9 @@
-import "dotenv/config";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { access, mkdir, readFile, readdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { processSundayImage, sourceFileHash } from "./sunday-image-processor.mjs";
+import { configuredPublicMediaBaseUrl } from "./public-media-config.mjs";
 import { findPublishedPhotoByHash, mergeSundayGallery } from "./sunday-gallery-state.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -49,10 +49,6 @@ function formatSundayTitle(date) {
 
 function naturalCompare(left, right) {
   return left.localeCompare(right, "sk", { numeric: true, sensitivity: "base" });
-}
-
-function normalizeBaseUrl(value) {
-  return value.replace(/\/+$/, "");
 }
 
 function requireR2Environment() {
@@ -138,10 +134,7 @@ async function listSourceImages(directory) {
 }
 
 async function publicMediaBaseUrl() {
-  const mediaConfig = await readJson(mediaConfigPath, { publicMediaBaseUrl: "" });
-  const baseUrl = process.env.R2_PUBLIC_BASE_URL || mediaConfig.publicMediaBaseUrl;
-  if (!baseUrl) throw new Error("Chýba R2_PUBLIC_BASE_URL v .env aj publicMediaBaseUrl v src/content/mediaConfig.json.");
-  return normalizeBaseUrl(baseUrl);
+  return configuredPublicMediaBaseUrl(mediaConfigPath);
 }
 
 async function uploadBuffer(client, key, buffer) {

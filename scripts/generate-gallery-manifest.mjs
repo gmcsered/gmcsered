@@ -2,6 +2,7 @@ import { access, mkdir, readFile, readdir, stat, writeFile } from "node:fs/promi
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { compareProgramMonthIds, isProgramMonthId, programMonthLabel, programMonthName } from "./program-months.mjs";
+import { configuredPublicMediaBaseUrl, isConfiguredPublicMediaUrl } from "./public-media-config.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(rootDirectory, "content");
@@ -158,10 +159,6 @@ async function assertPublicReference(reference, context) {
   if (!(await exists(localPath))) throw new Error(`${context}: obrázok neexistuje (${reference}).`);
 }
 
-function normalizeBaseUrl(baseUrl) {
-  return baseUrl.replace(/\/+$/, "");
-}
-
 async function loadProgram() {
   const files = await listJsonFiles(programDirectory);
   if (!files.length) return parseProgramText(await readFile(legacyProgramTextPath, "utf8"));
@@ -235,15 +232,13 @@ async function loadSpecialEvents() {
 }
 
 async function loadLegacySundayArchive() {
-  const mediaConfig = await readJson(mediaConfigPath, { publicMediaBaseUrl: "https://media.gmcsered.sk" });
-  const publicMediaBaseUrl = normalizeBaseUrl(process.env.R2_PUBLIC_BASE_URL || mediaConfig.publicMediaBaseUrl || "");
-  if (!publicMediaBaseUrl) throw new Error("src/content/mediaConfig.json musí obsahovať publicMediaBaseUrl.");
+  const publicMediaBaseUrl = await configuredPublicMediaBaseUrl(mediaConfigPath);
 
   const archive = await readJson(sundaysPath, { sundays: [] });
   if (!archive || !Array.isArray(archive.sundays)) throw new Error("src/content/sundays.json musí obsahovať objekt { \"sundays\": [...] }.");
 
   for (const sunday of archive.sundays) {
-    if (!sunday.cover.startsWith(`${publicMediaBaseUrl}/`) && !sunday.cover.startsWith("/")) {
+    if (!isConfiguredPublicMediaUrl(sunday.cover, publicMediaBaseUrl) && !sunday.cover.startsWith("/")) {
       throw new Error(`Nedeľa ${sunday.date}: cover musí byť lokálna cesta alebo public media URL ${publicMediaBaseUrl}.`);
     }
   }

@@ -1,3 +1,12 @@
 {
-  "sundays": []
+  "sundays": [
+    {
+      "date": "2026-09-20",
+      "title": "20. september 2026",
+      "cover": "https://pub-e172f3ebbda24e5695b1cc06a43aa025.r2.dev/sundays/2026-09-20/thumbs/0f941b30dfda4f03315fbc45.webp",
+      "photoCount": 23,
+      "manifest": "/content/sundays/2026-09-20.json",
+      "manifestData": null
+    }
+  ]
 }
