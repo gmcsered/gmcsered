@@ -50,6 +50,17 @@ Dátum a názov sa z názvu súboru doplnia automaticky. Najnovšia špeciálna 
 
 Vytvorte priečinok `content/sunday-galleries/YYYY-MM-DD/`, napríklad `content/sunday-galleries/2026-09-20/`, a vložte doň všetky fotky z nedele.
 
+Po úspešnom `./update-site.sh` a kontrole webu môžete originály presunúť do vlastného externého fotoarchívu a celý dátumový priečinok z projektu GMC odstrániť. Publikovaná galéria aj jej fotky v Cloudflare R2 zostanú zachované.
+
+Ak neskôr nájdete ďalšie fotky z rovnakej nedele:
+
+1. znovu vytvorte ten istý priečinok `content/sunday-galleries/YYYY-MM-DD/`,
+2. vložte doň iba novonájdené fotky,
+3. spustite `./update-site.sh`,
+4. nové fotky sa pridajú na koniec už publikovanej galérie.
+
+`./update-site.sh` nikdy neodstraňuje už publikované nedeľné fotky len preto, že lokálne originály chýbajú. Ak dátumový priečinok už nepotrebujete, odstráňte celý priečinok; nenechávajte v ňom prázdny adresár.
+
 ### Spoločný posledný krok
 
 V koreni projektu spustite:

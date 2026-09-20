@@ -5,10 +5,10 @@ import { access, mkdir, readFile, readdir, rename, writeFile } from "node:fs/pro
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { findPublishedPhotoByHash, mergeSundayGallery } from "./sunday-gallery-state.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const sourceRoot = path.join(rootDirectory, "content", "sunday-galleries");
-const cacheRoot = path.join(rootDirectory, ".content-cache", "sunday-galleries");
 const publicSundayDirectory = path.join(rootDirectory, "public", "content", "sundays");
 const sundaysPath = path.join(rootDirectory, "src", "content", "sundays.json");
 const mediaConfigPath = path.join(rootDirectory, "src", "content", "mediaConfig.json");
@@ -140,7 +140,7 @@ async function listSourceImages(directory) {
 
 async function fileSignature(filePath) {
   const source = await readFile(filePath);
-  return createHash("sha256").update(source).digest("hex").slice(0, 24);
+  return createHash("sha256").update(source).digest("hex");
 }
 
 async function publicMediaBaseUrl() {
@@ -186,19 +186,11 @@ async function processImage(sourcePath, sourceName) {
   }
 }
 
-function cacheEntryFor(marker, sourceName, signature) {
-  const exactEntry = marker?.images?.[sourceName];
-  if (exactEntry?.signature === signature && exactEntry.fullKey && exactEntry.thumbnailKey) return exactEntry;
-
-  return Object.values(marker?.images ?? {}).find(
-    (entry) => entry?.signature === signature && entry.fullKey && entry.thumbnailKey,
-  );
-}
-
-function photoFromCacheEntry(baseUrl, entry, date, index) {
+function photoFromR2Keys(baseUrl, { fullKey, thumbnailKey }, date, index, hash) {
   return {
-    thumbnail: `${baseUrl}/${entry.thumbnailKey}`,
-    full: `${baseUrl}/${entry.fullKey}`,
+    hash,
+    thumbnail: `${baseUrl}/${thumbnailKey}`,
+    full: `${baseUrl}/${fullKey}`,
     alt: `Fotografia z GMC Sereď, ${formatSundayTitle(date)}, ${index + 1}`,
   };
 }
@@ -207,9 +199,6 @@ async function uploadSunday(date, { dryRun }) {
   const sourceDirectory = path.join(sourceRoot, date);
   const images = await listSourceImages(sourceDirectory);
   if (!images.length) throw new Error(`Priečinok ${sourceFolderLabel(date)} neobsahuje žiadne fotky.`);
-
-  console.log(`\nNájdená nedeľná galéria: ${date}`);
-  console.log(`Fotografie: ${images.length}`);
 
   const baseUrl = await publicMediaBaseUrl();
   if (dryRun) {
@@ -223,72 +212,61 @@ async function uploadSunday(date, { dryRun }) {
     return { date, photoCount: images.length, processedCount };
   }
 
-  const markerPath = path.join(cacheRoot, `${date}.json`);
-  const marker = await readJson(markerPath, { version: 2, images: {} });
-  const cachedImages = {};
-  const photos = [];
+  const manifestPath = path.join(publicSundayDirectory, `${date}.json`);
+  const existingManifest = await readJson(manifestPath, null);
+  const archive = await readJson(sundaysPath, { sundays: [] });
+  const existingSummary = archive.sundays.find((sunday) => sunday.date === date) ?? null;
+  const existingPhotos = Array.isArray(existingManifest?.photos) ? existingManifest.photos : [];
+  const incomingPhotos = [];
   let client = null;
-  let processedCount = 0;
-  let reusedCount = 0;
+  let duplicatesSkipped = 0;
+  let r2Uploads = 0;
 
-  for (const [index, sourceName] of images.entries()) {
+  for (const sourceName of images) {
     const sourcePath = path.join(sourceDirectory, sourceName);
     const signature = await fileSignature(sourcePath);
-    let cacheEntry = cacheEntryFor(marker, sourceName, signature);
-
-    if (!cacheEntry) {
-      if (!client) client = createR2Client();
-      const outputName = `${signature}.webp`;
-      const fullKey = `sundays/${date}/${outputName}`;
-      const thumbnailKey = `sundays/${date}/thumbs/${outputName}`;
-      const { full, thumbnail } = await processImage(sourcePath, sourceName);
-
-      await uploadBuffer(client, fullKey, full);
-      await uploadBuffer(client, thumbnailKey, thumbnail);
-      cacheEntry = { signature, fullKey, thumbnailKey };
-      processedCount += 1;
-    } else {
-      reusedCount += 1;
+    if (findPublishedPhotoByHash([...existingPhotos, ...incomingPhotos], signature)) {
+      duplicatesSkipped += 1;
+      continue;
     }
 
-    cachedImages[sourceName] = cacheEntry;
-    photos.push(photoFromCacheEntry(baseUrl, cacheEntry, date, index));
+    if (!client) client = createR2Client();
+    const keyHash = signature.slice(0, 24);
+    const fullKey = `sundays/${date}/${keyHash}.webp`;
+    const thumbnailKey = `sundays/${date}/thumbs/${keyHash}.webp`;
+    const { full, thumbnail } = await processImage(sourcePath, sourceName);
+    await uploadBuffer(client, fullKey, full);
+    await uploadBuffer(client, thumbnailKey, thumbnail);
+    r2Uploads += 2;
+    incomingPhotos.push(photoFromR2Keys(baseUrl, { fullKey, thumbnailKey }, date, existingPhotos.length + incomingPhotos.length, signature));
   }
 
-  const sundayManifest = {
+  const merged = mergeSundayGallery({
     date,
     title: formatSundayTitle(date),
-    photos,
-  };
-  const manifestPublicPath = `/content/sundays/${date}.json`;
-  const sundaySummary = {
-    date,
-    title: sundayManifest.title,
-    cover: photos[0].thumbnail,
-    photoCount: photos.length,
-    manifest: manifestPublicPath,
-  };
-
-  const archive = await readJson(sundaysPath, { sundays: [] });
-  const updatedSundays = [sundaySummary, ...archive.sundays.filter((sunday) => sunday.date !== date)].sort((left, right) =>
+    existingManifest,
+    existingSummary,
+    incomingPhotos,
+  });
+  duplicatesSkipped += merged.duplicatesSkipped;
+  const updatedSundays = [merged.summary, ...archive.sundays.filter((sunday) => sunday.date !== date)].sort((left, right) =>
     right.date.localeCompare(left.date),
   );
 
-  await writeJsonAtomic(path.join(publicSundayDirectory, `${date}.json`), sundayManifest);
+  await writeJsonAtomic(manifestPath, merged.manifest);
   await writeJsonAtomic(sundaysPath, { sundays: updatedSundays });
-  await writeJsonAtomic(markerPath, {
-    version: 2,
-    date,
-    photoCount: photos.length,
-    images: cachedImages,
-  });
 
-  console.log(`Spracované fotografie: ${processedCount}`);
-  if (reusedCount) console.log(`Nezmenené fotografie: ${reusedCount}`);
+  console.log(`\nNedeľná galéria: ${merged.summary.title}`);
+  console.log(`Už publikované fotografie: ${merged.existingCount}`);
+  console.log(`Lokálne pridané fotografie: ${images.length}`);
+  console.log(`Nové fotografie: ${merged.newCount}`);
+  console.log(`Preskočené duplicity: ${duplicatesSkipped}`);
+  console.log(`Konečný počet fotografií: ${merged.manifest.photos.length}`);
+  console.log(`R2 upload: ${r2Uploads} objektov (${merged.newCount} plných + ${merged.newCount} náhľadov)`);
   console.log("Manifest galérie aktualizovaný.");
-  console.log(`Nedeľa ${formatSundayTitle(date)} je pripravená na build.`);
+  console.log(`Nedeľa ${merged.summary.title} je pripravená na build.`);
 
-  return { date, photoCount: photos.length, processedCount, reusedCount };
+  return { date, photoCount: merged.manifest.photos.length, newCount: merged.newCount, duplicatesSkipped, r2Uploads };
 }
 
 function parseArguments() {
