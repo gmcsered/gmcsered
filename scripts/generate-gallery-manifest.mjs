@@ -168,8 +168,7 @@ async function loadProgram() {
 
   const programs = (await Promise.all(files.map((file) => readJson(file)))).sort((left, right) => compareProgramMonthIds(left?.id, right?.id));
   const activePrograms = programs.filter((program) => program?.active !== false);
-  const programsWithPublishedEvents = activePrograms.filter((program) => Array.isArray(program.events) && program.events.some((event) => event.published !== false));
-  const selected = programsWithPublishedEvents.at(-1) ?? activePrograms.at(-1) ?? programs.at(-1);
+  const selected = activePrograms.at(-1) ?? programs.at(-1);
   if (!selected) throw new Error("content/program neobsahuje žiadny program.");
   return selected;
 }

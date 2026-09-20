@@ -57,6 +57,7 @@ remote_branch="${upstream#*/}"
 echo "GMC Sereď – aktualizácia webu"
 echo "--------------------------------"
 
+node scripts/import-routine-content.mjs
 node scripts/upload-sunday-gallery.mjs
 run_quietly "Generujem obsah webu…" npm run content:generate
 run_quietly "Kontrolujem obsah…" npm run content:check

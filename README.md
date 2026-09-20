@@ -1,82 +1,64 @@
 # GMC Sereď
 
-Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React aplikácia bez backendu. Web beží na GitHub Pages, mesačný program je v jednoduchom textovom súbore a dlhodobý nedeľný fotoarchív je pripravený pre Cloudflare R2.
+Produkčný web pre miestny kresťanský zbor GMC Sereď. Web je statická React aplikácia bez backendu. Web beží na GitHub Pages a nedeľný fotoarchív používa Cloudflare R2.
 
 ## Ako aktualizovať web GMC Sereď
 
 Web ostáva jednoduchý statický web: jeden príkaz skontroluje obsah, pripraví fotky, vytvorí build, commitne zmeny a pošle ich na GitHub. GitHub Actions potom web automaticky zverejní. Nie je potrebný žiadny redakčný systém ani server.
 
-### Ako upravovať obsah GMC webu
+## Ako pridávať obsah na web
 
-Najjednoduchší postup je použiť lokálne menu:
+Vložte originálny súbor do správneho priečinka v `content/`. Nič nezmenšujte a neupravujte žiadny JSON.
 
-```bash
-cd <project>
-npm run content
+### Pozvánka
+
+Vložte obrázok do `content/invitations/` a pomenujte ho:
+
+```text
+YYYY-MM-DD--HHMM--Názov-udalosti.jpg
 ```
 
-Menu ponúkne tieto možnosti:
+Príklad: `2026-10-04--0930--Nedeľná-bohoslužba.jpg`.
 
-- `Program` – vyberiete mesiac, pridáte/upravíte/vymažete udalosť a môžete jej pridať pozvánku.
-- `Pozvánky` – rýchla správa pozvánky ku konkrétnej programovej udalosti.
-- `Nedeľné fotografie` – pridanie novej nedele z priečinka fotiek; systém vytvorí WebP fotky, náhľady a manifest galérie.
-- `Špeciálne udalosti` – úprava udalostí ako `100. výročie`, vrátane pozvánky a viditeľnosti.
-- `Náhľad webu` – spustí lokálny Vite náhľad.
-- `Publikovať zmeny` – skontroluje obsah, spustí build, ukáže zmenené súbory a až po potvrdení commitne a pushne na `origin/main`.
-
-Editovateľný zdroj obsahu je v priečinku `content/`. Generované súbory v `src/content/` a `public/content/` sa vytvárajú automaticky cez menu alebo cez `npm run content:generate`.
-
-## Ako pridať fotky z nedele
-
-Toto je bežný týždenný postup pre nedeľný fotoarchív `Nedele v GMC Sereď`.
-
-1. Vytvorte priečinok s dátumom nedele:
-
-   ```text
-   content/sunday-galleries/YYYY-MM-DD/
-   ```
-
-   Príklad:
-
-   ```text
-   content/sunday-galleries/2026-09-20/
-   ```
-
-2. Skopírujte doň všetky fotky z tej nedele.
-
-   Netreba ich triediť. Netreba ich premenovať. Netreba ich zmenšovať.
-
-3. Spustite:
-
-   ```bash
-   ./update-site.sh
-   ```
-
-Skript fotky automaticky zmenší, prevedie na WebP, vytvorí náhľady, nahrá ich do Cloudflare R2 a do GitHubu uloží iba malý manifest s URL adresami. Originálne fotky z `content/sunday-galleries/` sa nikdy necommitujú do GitHubu.
+Dátum, čas a názov sa z názvu súboru doplnia do programu. Ak už tento termín v programe existuje, zachová sa jeho popis aj rečník a doplní sa len pozvánka.
 
 ### Mesačný program
 
-1. Nahraďte súbor `public/content/program/current-program.jpg` novým plagátom. Názov súboru musí zostať presne `current-program.jpg`.
-2. Otvorte `public/content/program/program.txt`.
-3. Upravte prvý riadok, druhý riadok a udalosti.
-4. Spustite:
-
-   ```bash
-   ./update-site.sh
-   ```
-
-Formát programu:
+Vložte mesačný plagát do `content/program/` a pomenujte ho:
 
 ```text
-September v GMC Sereď
-Jesenný program
-
-6.9. | 9:30 | Nedeľná bohoslužba | Pastor Ján Tagaj
-13.9. | 9:30 | Nedeľná bohoslužba | Pastor Ján Tagaj
-20.9. | 9:30 | Nedeľná bohoslužba | Pastor Ján Tagaj
+YYYY-MM.jpg
 ```
 
-Stránka programu vždy používa ten istý súbor plagátu. Pri novom mesiaci preto netreba meniť žiadny komponent ani cestu k obrázku. Súbor `src/content/program.json` je generovaný automaticky; neupravujte ho ručne.
+Príklad: `2026-10.jpg`.
+
+Plagát automaticky nastaví program pre daný mesiac. Z obrázka sa nečítajú dátumy ani text; jednotlivé udalosti preto pridávajte vlastnými pozvánkami podľa formátu vyššie.
+
+### Špeciálna udalosť
+
+Vložte obrázok do `content/special-events/` a pomenujte ho:
+
+```text
+YYYY-MM-DD--Názov-udalosti.jpg
+```
+
+Príklad: `2026-10-10--Rodinný-deň.jpg`.
+
+Dátum a názov sa z názvu súboru doplnia automaticky. Najnovšia špeciálna udalosť sa zobrazí ako pozvánka v časti Program.
+
+### Fotky z nedele
+
+Vytvorte priečinok `content/sunday-galleries/YYYY-MM-DD/`, napríklad `content/sunday-galleries/2026-09-20/`, a vložte doň všetky fotky z nedele.
+
+### Spoločný posledný krok
+
+V koreni projektu spustite:
+
+```bash
+./update-site.sh
+```
+
+Skript spracuje všetky nové súbory, vytvorí web, commitne zmeny, pošle ich na GitHub a GitHub Pages ich zverejní. Originálne obrázky v `content/` sa necommitujú.
 
 ### Kurátorské výberové galérie
 

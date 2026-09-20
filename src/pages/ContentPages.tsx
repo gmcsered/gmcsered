@@ -292,13 +292,18 @@ export function ChurchLifePage() {
 export function ProgramPage() {
   const page = churchContent.pages.program;
   const [openInvitation, setOpenInvitation] = useState<InvitationImage | null>(null);
-  const anniversaryEvent = specialEvents.find((event) => event.id === "100-vyrocie" && event.published !== false);
-  const anniversaryInvitation = anniversaryEvent?.invitationImage
+  const featuredSpecialEvent = [...specialEvents]
+    .filter((event) => event.published !== false)
+    .sort((left, right) => {
+      const dateComparison = (right.date ?? "").localeCompare(left.date ?? "");
+      return dateComparison || (right.sortOrder ?? 0) - (left.sortOrder ?? 0);
+    })[0];
+  const featuredSpecialInvitation = featuredSpecialEvent?.invitationImage
     ? {
-        src: anniversaryEvent.invitationImage,
-        alt: anniversaryEvent.invitationAlt ?? anniversaryEvent.title,
-        width: anniversaryEvent.invitationWidth,
-        height: anniversaryEvent.invitationHeight,
+        src: featuredSpecialEvent.invitationImage,
+        alt: featuredSpecialEvent.invitationAlt ?? featuredSpecialEvent.title,
+        width: featuredSpecialEvent.invitationWidth,
+        height: featuredSpecialEvent.invitationHeight,
       }
     : null;
 
@@ -369,17 +374,17 @@ export function ProgramPage() {
           <div className="program-action-grid">
             {page.actions.map((action) => {
               const isAnniversaryAction = action.title === "Pripravujeme 100. výročie";
-              const actionTitle = isAnniversaryAction ? anniversaryEvent?.title ?? action.title : action.title;
-              const actionText = isAnniversaryAction ? anniversaryEvent?.description ?? action.text : action.text;
+              const actionTitle = isAnniversaryAction ? featuredSpecialEvent?.title ?? action.title : action.title;
+              const actionText = isAnniversaryAction ? featuredSpecialEvent?.description ?? "Viac informácií nájdete v pozvánke." : action.text;
               const cardContents = (
                 <>
                   <Check aria-hidden="true" />
                   <h3>{actionTitle}</h3>
                   <p>{actionText}</p>
-                  {isAnniversaryAction && anniversaryInvitation ? (
+                  {isAnniversaryAction && featuredSpecialInvitation ? (
                     <>
                       <span className="program-action-card__invitation-preview" aria-hidden="true">
-                        <img src={anniversaryInvitation.src} width={anniversaryInvitation.width} height={anniversaryInvitation.height} alt="" />
+                        <img src={featuredSpecialInvitation.src} width={featuredSpecialInvitation.width} height={featuredSpecialInvitation.height} alt="" />
                       </span>
                       <span className="program-action-card__invitation-cue">
                         <Eye aria-hidden="true" />
@@ -390,7 +395,7 @@ export function ProgramPage() {
                 </>
               );
 
-              return isAnniversaryAction && anniversaryInvitation ? (
+              return isAnniversaryAction && featuredSpecialInvitation ? (
                 <Reveal className="program-action-card-wrapper" key={action.title}>
                   <button
                     className="program-action-card program-action-card--interactive"
@@ -398,7 +403,7 @@ export function ProgramPage() {
                     aria-label={`Zobraziť pozvánku: ${actionTitle}`}
                     aria-controls="program-invitation-dialog"
                     aria-haspopup="dialog"
-                    onClick={() => setOpenInvitation(anniversaryInvitation)}
+                    onClick={() => setOpenInvitation(featuredSpecialInvitation)}
                   >
                     {cardContents}
                   </button>

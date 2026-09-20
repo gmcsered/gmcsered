@@ -5,6 +5,14 @@ dist/
 .env.*
 !.env.example
 # Originálne nedeľné fotografie ostávajú lokálne; do GitHubu idú len manifesty.
+content/invitations/*
+!content/invitations/.gitkeep
+content/program/*
+!content/program/*.json
+!content/program/.gitkeep
+content/special-events/*
+!content/special-events/*.json
+!content/special-events/.gitkeep
 content/sunday-galleries/*
 !content/sunday-galleries/.gitkeep
 .content-cache/
