@@ -428,9 +428,9 @@ export const churchContent = {
       image: iaImages.homeWorship.src,
     },
     about: {
-      title: "Kto sme | GMC Sereď",
+      title: "O nás | GMC Sereď",
       description:
-        "Spoznajte GMC Sereď ako spoločenstvo ľudí, ktorých spája viera v Ježiša Krista, láska, prijatie a skutočné vzťahy.",
+        "Spoznajte GMC Sereď: našu identitu, príbeh, pastora aj vieru v Ježiša Krista, ktorá nás spája.",
       image: iaImages.aboutPeople.src,
     },
     beliefs: {
@@ -464,9 +464,9 @@ export const churchContent = {
       image: iaImages.sermonsBible.src,
     },
     firstVisit: {
-      title: "Prvýkrát u nás | GMC Sereď",
+      title: "Navštívte nás | GMC Sereď",
       description:
-        "Pokojný a stručný sprievodca prvou návštevou zboru GMC Sereď. Príďte bez prihlasovania, v pohodlnom oblečení a bez tlaku.",
+        "Praktické informácie k návšteve GMC Sereď: prvá návšteva, adresa, mapa, čas bohoslužby, vstup a kontakt.",
       image: iaImages.aboutChildrenMoment.src,
     },
     contact: {
@@ -485,8 +485,8 @@ export const churchContent = {
         text:
           "Sme spoločenstvo ľudí, ktorých spája viera v Ježiša Krista, láska k Bohu a túžba vytvárať miesto prijatia.",
         image: iaImages.homeWorship,
-        primaryAction: { label: "Prvýkrát u nás", href: "/prva-navsteva", route: true },
-        secondaryAction: { label: "Čomu veríme", href: "/comu-verime", route: true },
+        primaryAction: { label: "Navštívte nás", href: "/navstivte-nas", route: true },
+        secondaryAction: { label: "O nás", href: "/o-nas", route: true },
       },
       invitation: {
         heading: "Každý je vítaný.",
@@ -503,30 +503,16 @@ export const churchContent = {
       },
       chapters: [
         {
-          title: "Kto sme",
-          href: "/kto-sme",
-          text: "Sme ľudia, ktorí našli nádej v Ježišovi Kristovi a chcú žiť vieru v reálnych vzťahoch.",
+          title: "O nás",
+          href: "/o-nas",
+          text: "Spoznajte našu identitu, príbeh GMC v Seredi, pastora aj základy viery.",
           image: iaImages.aboutPeople,
-          route: true,
-        },
-        {
-          title: "Čomu veríme",
-          href: "/comu-verime",
-          text: "Naša viera stojí na Ježišovi Kristovi, Božom slove a milosti, ktorá premieňa život.",
-          image: iaImages.beliefsCross,
-          route: true,
-        },
-        {
-          title: "Spoločenstvo",
-          href: "/spolocenstvo",
-          text: "Radi sa rozprávame, kávičkujeme, jeme, modlíme sa a budujeme skutočné vzťahy.",
-          image: iaImages.communityConversations,
           route: true,
         },
         {
           title: "Život zboru",
           href: "/zivot-zboru",
-          text: "Krátky vizuálny pohľad na bohoslužby, chvály, deti, mládež a spoločné stretnutia.",
+          text: "Vzťahy, bohoslužby, fotogalérie, nedeľný archív, deti, mládež a spoločné stretnutia.",
           image: iaImages.worshipCongregation,
           route: true,
         },
@@ -545,17 +531,10 @@ export const churchContent = {
           route: true,
         },
         {
-          title: "Prvýkrát u nás",
-          href: "/prva-navsteva",
-          text: "Stručne a ľudsky: kam prísť, čo čakať a prečo sa nemusíte báť prvej návštevy.",
+          title: "Navštívte nás",
+          href: "/navstivte-nas",
+          text: "Prvá návšteva, adresa, čas bohoslužby, mapa, vstup a priame kontakty na zbor.",
           image: iaImages.aboutChildrenMoment,
-          route: true,
-        },
-        {
-          title: "Kontakt a návšteva",
-          href: "/kontakt",
-          text: "Adresa, správny vstup, čas bohoslužby, mapa a priame kontakty na zbor.",
-          image: iaImages.worshipCongregation,
           route: true,
         },
       ],
@@ -563,7 +542,7 @@ export const churchContent = {
         heading: "Príďte medzi nás.",
         text:
           "Najlepšie sa spoločenstvo spozná osobne. V nedeľu o 9:30 vás radi privítame na Dlhej 6 v Seredi.",
-        action: { label: "Prídem v nedeľu", href: "/prva-navsteva", route: true },
+        action: { label: "Navštívte nás", href: "/navstivte-nas", route: true },
         leadership: [
           { label: "Pastor", name: "Ján Tagaj" },
           { label: "Konferenčná superintendentka", name: "Mgr. Gabriella Kopas, PhD." },
@@ -571,7 +550,7 @@ export const churchContent = {
       },
     },
     about: {
-      path: "/kto-sme",
+      path: "/o-nas",
       eyebrow: "Kto sme",
       heading: "Sme ľudia, ktorí našli nádej v Ježišovi Kristovi.",
       intro: "Spoločenstvo, do ktorého môžete prísť presne takí, akí ste.",
@@ -584,10 +563,10 @@ export const churchContent = {
       quote: "Cirkev nie je budova. Cirkev sú ľudia.",
       collage: [iaImages.aboutTwoWomen],
       cta: { label: "Spoznajte život nášho zboru", href: "/zivot-zboru", route: true },
-      next: { label: "Pokračovať na Čomu veríme", href: "/comu-verime", route: true, image: iaImages.beliefsCross },
+      next: { label: "Pokračovať na Život zboru", href: "/zivot-zboru", route: true, image: iaImages.worshipCongregation },
     },
     beliefs: {
-      path: "/comu-verime",
+      path: "/o-nas#comu-verime",
       eyebrow: "Čomu veríme",
       heading: "Čomu veríme",
       subheading: "Naša nádej stojí na Ježišovi Kristovi.",
@@ -621,11 +600,11 @@ export const churchContent = {
           text: "Vieru chceme žiť cez lásku, porozumenie, odpustenie, službu a pomoc druhým.",
         },
       ],
-      cta: { label: "Spoznať naše spoločenstvo", href: "/spolocenstvo", route: true },
-      next: { label: "Pokračovať na Spoločenstvo", href: "/spolocenstvo", route: true, image: iaImages.communityConversations },
+      cta: { label: "Spoznať život nášho zboru", href: "/zivot-zboru", route: true },
+      next: { label: "Pokračovať na Život zboru", href: "/zivot-zboru", route: true, image: iaImages.communityConversations },
     },
     community: {
-      path: "/spolocenstvo",
+      path: "/zivot-zboru#spolocenstvo",
       eyebrow: "Spoločenstvo",
       heading: "Spolu je život krajší.",
       intro:
@@ -640,8 +619,8 @@ export const churchContent = {
       ],
       quote: "Pri dobrom jedle a káve sa často začínajú tie najlepšie rozhovory.",
       collage: [iaImages.communityRoomFull, iaImages.communityDesserts, iaImages.communityRoses],
-      cta: { label: "Príďte nás osobne spoznať", href: "/prva-navsteva", route: true },
-      next: { label: "Pokračovať na Život zboru", href: "/zivot-zboru", route: true, image: iaImages.worshipCongregation },
+      cta: { label: "Príďte nás osobne spoznať", href: "/navstivte-nas", route: true },
+      next: { label: "Pozrieť fotogalérie", href: "/zivot-zboru#fotogalerie", route: true, image: iaImages.worshipCongregation },
     },
     churchLife: {
       path: "/zivot-zboru",
@@ -707,15 +686,15 @@ export const churchContent = {
       previewImage: iaImages.sermonsPreacher,
       channelAction: { label: "Pozrieť YouTube kanál Jána Tagaja", href: "https://www.youtube.com/@JanTagaj" },
       latestLabel: "Posledná kázeň",
-      cta: { label: "Prvýkrát u nás", href: "/prva-navsteva", route: true },
-      next: { label: "Pokračovať na Prvýkrát u nás", href: "/prva-navsteva", route: true, image: iaImages.aboutChildrenMoment },
+      cta: { label: "Navštívte nás", href: "/navstivte-nas", route: true },
+      next: { label: "Pokračovať na návštevu", href: "/navstivte-nas", route: true, image: iaImages.aboutChildrenMoment },
     },
     firstVisit: {
-      path: "/prva-navsteva",
-      eyebrow: "Prvýkrát u nás?",
-      heading: "To je úplne v poriadku.",
+      path: "/navstivte-nas",
+      eyebrow: "Navštívte nás",
+      heading: "Radi vás osobne privítame.",
       intro:
-        "Možno neviete, čo očakávať. Možno máte otázky alebo trochu obáv. Nemusíte sa ničoho báť, radi vás privítame presne takých, akí ste.",
+        "Všetko dôležité pre prvú návštevu nájdete na jednom mieste: čo očakávať, kam prísť, ako sa zorientovať a ako nás kontaktovať.",
       image: iaImages.aboutChildrenMoment,
       secondaryImage: asset(
         "/assets/church/first-visit/first-visit-c10.jpg",
@@ -737,13 +716,13 @@ export const churchContent = {
         "Môžete sa iba pozerať.",
         "Príďte v pohodlnom oblečení.",
       ],
-      cta: { label: "Prídem v nedeľu", href: "/kontakt", route: true },
+      cta: { label: "Praktické informácie", href: "#prakticke-informacie" },
       routeAction: { label: "Zobraziť cestu", href: mapUrl },
       sermonAction: { label: "Pozrieť nedeľnú kázeň", href: "https://www.youtube.com/@JanTagaj" },
-      next: { label: "Pokračovať na Kontakt a návštevu", href: "/kontakt", route: true, image: iaImages.worshipCongregation },
+      next: { label: "Späť na domov", href: "/", route: true, image: iaImages.homeWorship },
     },
     contact: {
-      path: "/kontakt",
+      path: "/navstivte-nas#prakticke-informacie",
       eyebrow: "Kontakt a návšteva",
       heading: "Radi vás osobne privítame.",
       intro: "Stretávame sa každú nedeľu o 9:30 na adrese Dlhá 6 v Seredi.",
@@ -1327,7 +1306,7 @@ export const churchContent = {
       "Spoločný čas zboru GMC Sereď vonku",
     ),
     actions: [
-      { label: "Naplánovať prvú návštevu", href: "/prva-navsteva", route: true },
+      { label: "Naplánovať návštevu", href: "/navstivte-nas", route: true },
       { label: "Zobraziť cestu", href: mapUrl },
       { label: "Pozrieť kázeň", href: "https://www.youtube.com/@JanTagaj" },
     ],
@@ -1487,14 +1466,10 @@ export const churchContent = {
   },
   nav: [
     { label: "Domov", href: "/" },
-    { label: "Kto sme", href: "/kto-sme" },
-    { label: "Čomu veríme", href: "/comu-verime" },
-    { label: "Spoločenstvo", href: "/spolocenstvo" },
+    { label: "O nás", href: "/o-nas" },
     { label: "Život zboru", href: "/zivot-zboru" },
     { label: "Program", href: "/program" },
     { label: "Kázne", href: "/kazne" },
-    { label: "Prvýkrát", href: "/prva-navsteva" },
-    { label: "Kontakt", href: "/kontakt" },
   ],
 };
 

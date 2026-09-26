@@ -60,7 +60,7 @@ export function VisitSection() {
           ) : null}
 
           <div className="inline-actions">
-            <a className="button button--primary" href="/prva-navsteva" data-route>
+            <a className="button button--primary" href="/navstivte-nas" data-route>
               {visit.primaryAction}
               <ArrowRight aria-hidden="true" />
             </a>

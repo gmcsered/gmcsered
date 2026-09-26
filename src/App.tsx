@@ -7,10 +7,7 @@ import { FirstVisitPage } from "./pages/FirstVisitPage";
 import { HomePage } from "./pages/HomePage";
 import {
   AboutPage,
-  BeliefsPage,
   ChurchLifePage,
-  CommunityPage,
-  ContactPage,
   ProgramPage,
   SermonsPage,
 } from "./pages/ContentPages";
@@ -22,9 +19,16 @@ export default function App() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
 
   useLayoutEffect(() => {
-    if (!window.location.hash) {
+    const { hash } = window.location;
+
+    if (!hash) {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      return;
     }
+
+    window.requestAnimationFrame(() => {
+      document.querySelector(hash)?.scrollIntoView({ behavior: "auto" });
+    });
   }, [path]);
 
   useEffect(() => {
@@ -75,14 +79,16 @@ export default function App() {
 
   const routes: Record<string, { page: ReactElement; seo: typeof churchContent.seo.home }> = {
     "/": { page: <HomePage />, seo: churchContent.seo.home },
+    "/o-nas": { page: <AboutPage />, seo: churchContent.seo.about },
     "/kto-sme": { page: <AboutPage />, seo: churchContent.seo.about },
-    "/comu-verime": { page: <BeliefsPage />, seo: churchContent.seo.beliefs },
-    "/spolocenstvo": { page: <CommunityPage />, seo: churchContent.seo.community },
+    "/comu-verime": { page: <AboutPage />, seo: churchContent.seo.about },
     "/zivot-zboru": { page: <ChurchLifePage />, seo: churchContent.seo.churchLife },
+    "/spolocenstvo": { page: <ChurchLifePage />, seo: churchContent.seo.churchLife },
     "/program": { page: <ProgramPage />, seo: churchContent.seo.program },
     "/kazne": { page: <SermonsPage />, seo: churchContent.seo.sermons },
+    "/navstivte-nas": { page: <FirstVisitPage />, seo: churchContent.seo.firstVisit },
     "/prva-navsteva": { page: <FirstVisitPage />, seo: churchContent.seo.firstVisit },
-    "/kontakt": { page: <ContactPage />, seo: churchContent.seo.contact },
+    "/kontakt": { page: <FirstVisitPage />, seo: churchContent.seo.firstVisit },
   };
 
   const route = routes[path] ?? routes["/"];

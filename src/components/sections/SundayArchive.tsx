@@ -165,13 +165,13 @@ export function SundayArchive({ sundays }: SundayArchiveProps) {
                 onNext={showNext}
               />
             ) : (
-              <div className="gallery-browser__grid">
+              <div className="gallery-browser__grid gallery-browser__grid--sunday">
                 {activeGallery.photos.map((image, index) => (
                   <button type="button" key={image.thumbnail} onClick={() => setActivePhotoIndex(index)} aria-label={`Zväčšiť fotografiu ${index + 1}`}>
-                    <span className="gallery-browser__thumbnail">
+                    <span className="gallery-browser__thumbnail gallery-browser__thumbnail--sunday">
                       <img src={image.thumbnail} alt={image.alt ?? `Fotografia ${index + 1} z ${activeGallery.title}`} loading="lazy" />
                     </span>
-                    <span>{index + 1}</span>
+                    <span className="gallery-browser__photo-number">{index + 1}</span>
                   </button>
                 ))}
               </div>

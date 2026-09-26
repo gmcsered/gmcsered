@@ -43,8 +43,8 @@ export function FirstVisitPreview() {
             })}
           </div>
           <div className="section-action section-action--left">
-            <a className="button button--primary" href="/prva-navsteva" data-route>
-              Prejsť prvou návštevou
+            <a className="button button--primary" href="/navstivte-nas" data-route>
+              Naplánovať návštevu
               <ArrowRight aria-hidden="true" />
             </a>
           </div>

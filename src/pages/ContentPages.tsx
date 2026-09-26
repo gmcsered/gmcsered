@@ -129,8 +129,54 @@ export function AboutPage() {
           </Reveal>
         </div>
       </section>
+      <BeliefsSummary />
       <NextPageLink link={page.next} />
     </article>
+  );
+}
+
+function BeliefsSummary() {
+  const page = churchContent.pages.beliefs;
+
+  return (
+    <section className="beliefs-page-hero about-beliefs" id="comu-verime" aria-labelledby="beliefs-title">
+      <picture className="beliefs-page-hero__background">
+        {page.image.sources.map((source) => (
+          <source key={source.src} srcSet={source.src} media={source.media} width={source.width} height={source.height} />
+        ))}
+        <img src={page.image.src} width={page.image.width} height={page.image.height} alt="" />
+      </picture>
+      <div className="beliefs-page-hero__overlay" aria-hidden="true" />
+      <div className="container beliefs-page-hero__layout">
+        <div className="beliefs-page-hero__content">
+          <p className="eyebrow">Čomu veríme</p>
+          <h2 className="beliefs-page-hero__heading" id="beliefs-title">{page.heading}</h2>
+          <p className="beliefs-page-hero__subheading">{page.subheading}</p>
+          <p className="beliefs-page-hero__intro">{page.intro}</p>
+          <div className="beliefs-page-hero__items" aria-label="Základy našej viery">
+            {page.items.map((item, index) => {
+              const Icon = beliefIcons[index] ?? Check;
+
+              return (
+                <article className="beliefs-page-hero__item" key={item.title}>
+                  <span className="beliefs-page-hero__item-icon" aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+        <blockquote className="beliefs-page-hero__scripture">
+          <p>{page.scripture.text}</p>
+          <cite>{page.scripture.citation}</cite>
+        </blockquote>
+      </div>
+    </section>
   );
 }
 
@@ -221,11 +267,41 @@ export function CommunityPage() {
 
 export function ChurchLifePage() {
   const page = churchContent.pages.churchLife;
+  const community = churchContent.pages.community;
 
   return (
     <article className="route-page church-life-route">
       <PageHero eyebrow={page.eyebrow} heading={page.heading} text={page.intro} image={page.image} primaryAction={page.cta} />
-      <section className="section page-chapter church-life-page major-viewport-section" aria-labelledby="church-life-gallery-title">
+      <section className="section page-chapter community-page-chapter major-viewport-section" id="spolocenstvo" aria-labelledby="community-body-title">
+        <div className="container community-story">
+          <Reveal className="community-story__copy">
+            <p className="eyebrow">Spoločenstvo</p>
+            <h2 id="community-body-title">{community.quote}</h2>
+            <p>{community.intro}</p>
+            <ul className="warm-list">
+              {community.statements.map((statement) => (
+                <li key={statement}>
+                  <Heart aria-hidden="true" />
+                  <span>{statement}</span>
+                </li>
+              ))}
+            </ul>
+            <a className="button button--primary" href="/navstivte-nas" data-route>
+              Príďte nás osobne spoznať
+              <ArrowRight aria-hidden="true" />
+            </a>
+          </Reveal>
+          <Reveal className="community-magazine">
+            {community.collage.map((image) => (
+              <figure key={image.src}>
+                <img src={image.src} width={image.width} height={image.height} alt={image.alt} loading="lazy" />
+                {image.caption ? <figcaption>{image.caption}</figcaption> : null}
+              </figure>
+            ))}
+          </Reveal>
+        </div>
+      </section>
+      <section className="section page-chapter church-life-page major-viewport-section" id="fotogalerie" aria-labelledby="church-life-gallery-title">
         <div className="container">
           <Reveal className="section-heading">
             <p className="eyebrow">Výber fotografií</p>

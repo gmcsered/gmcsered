@@ -47,7 +47,7 @@ export function Header() {
           ))}
         </nav>
 
-        <a className="button button--primary header-action" href={withSiteBase("/prva-navsteva")} data-route>
+        <a className="button button--primary header-action" href={withSiteBase("/navstivte-nas")} data-route>
           Navštív nás
         </a>
 
@@ -70,7 +70,7 @@ export function Header() {
               {item.label}
             </a>
           ))}
-          <a className="button button--primary" href={withSiteBase("/prva-navsteva")} data-route onClick={closeMenu}>
+          <a className="button button--primary" href={withSiteBase("/navstivte-nas")} data-route onClick={closeMenu}>
             Navštív nás
           </a>
         </nav>
