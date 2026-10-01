@@ -41,7 +41,11 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "invitationImage": "/content/invitations/program/2026-10/2026-10-14-1800-zaklady-krestanskeho-zivota-copy.webp",
+      "invitationAlt": "Pozvánka: Základy kresťanského života, 14.10.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350
     },
     {
       "id": "2026-10-18-930-nedelna-bohosluzba",
@@ -57,7 +61,11 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Martin Poláček",
-      "speaker": "Martin Poláček"
+      "speaker": "Martin Poláček",
+      "invitationImage": "/content/invitations/program/2026-10/2026-10-21-1800-zaklady-krestanskeho-zivota-copy-2.webp",
+      "invitationAlt": "Pozvánka: Základy kresťanského života, 21.10.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350
     },
     {
       "id": "2026-10-25-930-nedelna-bohosluzba",
@@ -73,7 +81,11 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "invitationImage": "/content/invitations/program/2026-10/2026-10-28-1800-zaklady-krestanskeho-zivota-copy-3.webp",
+      "invitationAlt": "Pozvánka: Základy kresťanského života, 28.10.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350
     }
   ]
 }
