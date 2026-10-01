@@ -1,11 +1,8 @@
 {
   "id": "2026-10",
+  "active": true,
   "monthLabel": "Október 2026",
   "title": "Október",
-  "poster": "/content/program/2026-10/2026-10-program.webp",
-  "posterAlt": "Mesačný plagát: Október 2026",
-  "posterWidth": 1206,
-  "posterHeight": 1492,
   "events": [
     {
       "id": "2026-10-4-930-nedelna-bohosluzba",
@@ -13,7 +10,8 @@
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "published": true
     },
     {
       "id": "2026-10-7-1800-zaklady-krestanskeho-zivota",
@@ -21,7 +19,8 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "published": true
     },
     {
       "id": "2026-10-11-930-nedelna-bohosluzba",
@@ -29,7 +28,8 @@
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "published": true
     },
     {
       "id": "2026-10-14-1800-zaklady-krestanskeho-zivota",
@@ -37,7 +37,8 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "published": true
     },
     {
       "id": "2026-10-18-930-nedelna-bohosluzba",
@@ -45,7 +46,8 @@
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
       "description": "Martin Poláček",
-      "speaker": "Martin Poláček"
+      "speaker": "Martin Poláček",
+      "published": true
     },
     {
       "id": "2026-10-21-1800-zaklady-krestanskeho-zivota",
@@ -53,7 +55,8 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Martin Poláček",
-      "speaker": "Martin Poláček"
+      "speaker": "Martin Poláček",
+      "published": true
     },
     {
       "id": "2026-10-25-930-nedelna-bohosluzba",
@@ -61,7 +64,8 @@
       "time": "9:30",
       "title": "Nedeľná BOHOSLUŽBA",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "published": true
     },
     {
       "id": "2026-10-28-1800-zaklady-krestanskeho-zivota",
@@ -69,7 +73,12 @@
       "time": "18:00",
       "title": "Základy kresťanského života",
       "description": "Ján Tagaj",
-      "speaker": "Ján Tagaj"
+      "speaker": "Ján Tagaj",
+      "published": true
     }
-  ]
+  ],
+  "poster": "/content/program/2026-10/2026-10-program.webp",
+  "posterAlt": "Mesačný plagát: Október 2026",
+  "posterWidth": 1206,
+  "posterHeight": 1492
 }
