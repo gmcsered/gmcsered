@@ -32,7 +32,9 @@ YYYY-MM.jpg
 
 Príklad: `2026-10.jpg`.
 
-Plagát automaticky nastaví program pre daný mesiac. Z obrázka sa nečítajú dátumy ani text; jednotlivé udalosti preto pridávajte vlastnými pozvánkami podľa formátu vyššie.
+Ak pre daný mesiac ešte neexistuje súbor `content/program/YYYY-MM.json`, skript na Macu z plagátu automaticky rozpozná dátumy, časy, názvy a rečníkov a vytvorí ho. Potom pri `./update-site.sh` plagát optimalizuje, vytvorí program a zverejní stránku.
+
+Rozpoznanie je nastavené na bežný grafický formát programov GMC. Ak nevie spoľahlivo nájsť dátum, čas alebo názov udalosti, aktualizácia sa zastaví a nič sa nezverejní. Existujúci JSON nikdy automaticky neprepíše; takto ostávajú ručné opravy bezpečné.
 
 ### Špeciálna udalosť
 

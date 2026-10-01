@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { isProgramMonthId, programMonthLabel, programMonthName } from "./program-months.mjs";
+import { programFromPosterImage } from "./program-poster-ocr.mjs";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(rootDirectory, "content");
@@ -193,6 +194,7 @@ async function loadProgram(month) {
   if (!program) {
     return {
       path: programPath,
+      exists: false,
       data: {
         id: month,
         active: true,
@@ -205,7 +207,7 @@ async function loadProgram(month) {
 
   if (program.id !== month) throw new Error(`content/program/${month}.json: id musí byť ${month}.`);
   if (!Array.isArray(program.events)) throw new Error(`content/program/${month}.json: events musí byť pole.`);
-  return { path: programPath, data: program };
+  return { path: programPath, exists: true, data: program };
 }
 
 function sortProgramEvents(events) {
@@ -220,12 +222,15 @@ async function importProgramPosters(cache) {
   const files = await listImageFiles(programDirectory, "content/program", { allowJson: true });
   const months = new Set();
   let imported = 0;
+  let createdPrograms = 0;
 
   for (const filename of files) {
     const month = parseProgramFilename(filename);
     if (months.has(month)) throw new Error(`Pre ${month} je v content/program viac než jeden plagát. Nechajte tam iba jeden súbor ${month}.ext.`);
     months.add(month);
     const sourcePath = path.join(programDirectory, filename);
+    const program = await loadProgram(month);
+    const programData = program.exists ? program.data : await programFromPosterImage(sourcePath, month);
     const outputPath = path.join(publicProgramDirectory, month, `${month}-program.webp`);
     const asset = await importImage({
       cache,
@@ -235,9 +240,8 @@ async function importProgramPosters(cache) {
       outputPath,
       maxLongEdge: 2400,
     });
-    const program = await loadProgram(month);
     const nextData = {
-      ...program.data,
+      ...programData,
       poster: asset.src,
       posterAlt: `Mesačný plagát: ${programMonthLabel(month)}`,
       posterWidth: asset.width,
@@ -246,9 +250,10 @@ async function importProgramPosters(cache) {
 
     await writeJsonAtomic(program.path, nextData);
     if (asset.processed) imported += 1;
+    if (!program.exists) createdPrograms += 1;
   }
 
-  return { files: files.length, imported };
+  return { files: files.length, imported, createdPrograms };
 }
 
 async function importInvitations(cache) {
@@ -358,7 +363,7 @@ async function main() {
   const specialEvents = await importSpecialEvents(cache);
   await writeJsonAtomic(cachePath, cache);
 
-  console.log(`Mesačné plagáty: ${program.files} nájdené, ${program.imported} spracované.`);
+  console.log(`Mesačné plagáty: ${program.files} nájdené, ${program.imported} spracované, ${program.createdPrograms} programov vytvorených z plagátu.`);
   console.log(`Pozvánky: ${invitations.files} nájdené, ${invitations.imported} spracované.`);
   console.log(`Špeciálne udalosti: ${specialEvents.files} nájdené, ${specialEvents.imported} spracované.`);
 }
