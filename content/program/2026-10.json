@@ -32,7 +32,11 @@
       "title": "Základy kresťanského života",
       "description": "Ján Tagaj",
       "speaker": "Ján Tagaj",
-      "published": true
+      "published": true,
+      "invitationImage": "/content/invitations/program/2026-10/2026-10-07-1800-zaklady-krestanskeho-zivota.webp",
+      "invitationAlt": "Pozvánka: Základy kresťanského života, 7.10.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350
     },
     {
       "id": "2026-10-11-930-nedelna-bohosluzba",
