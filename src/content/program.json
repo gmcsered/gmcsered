@@ -8,6 +8,17 @@
   "posterHeight": 1492,
   "events": [
     {
+      "id": "2026-10-2026-10-04-18-00-zaklady-krestanskeho-zivota",
+      "date": "4.10.",
+      "time": "18:00",
+      "title": "Základy Kresťanského Života",
+      "description": "",
+      "invitationImage": "/content/invitations/program/2026-10/2026-10-04-1800-zaklady-krestanskeho-zivota.webp",
+      "invitationAlt": "Pozvánka: Základy Kresťanského Života, 4.10.",
+      "invitationWidth": 1080,
+      "invitationHeight": 1350
+    },
+    {
       "id": "2026-10-4-930-nedelna-bohosluzba",
       "date": "4.10.",
       "time": "9:30",
