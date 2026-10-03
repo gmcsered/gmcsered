@@ -11,7 +11,11 @@
       "title": "Nedeľná BOHOSLUŽBA",
       "description": "Ján Tagaj",
       "speaker": "Ján Tagaj",
-      "published": true
+      "published": true,
+      "invitationImage": "/content/invitations/program/2026-10/2026-10-04-0930-nedelna-bohosluzba.webp",
+      "invitationAlt": "Pozvánka: Nedeľná BOHOSLUŽBA, 4.10.",
+      "invitationWidth": 1280,
+      "invitationHeight": 720
     },
     {
       "id": "2026-10-7-1800-zaklady-krestanskeho-zivota",
